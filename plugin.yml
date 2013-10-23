@@ -1,0 +1,13 @@
+name: Pandora
+version: ${pom.version}
+
+description: Bukkit plugin with many miscellaneous features specifically created for Addstar MC
+
+main: au.com.addstar.pandora.MasterPlugin
+
+
+permissions:
+  quickshop.allowinclaims:
+    default: op
+  trustedhomes.bypass:
+    default: op
