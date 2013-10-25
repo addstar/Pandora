@@ -5,6 +5,7 @@ description: Bukkit plugin with many miscellaneous features specifically created
 
 main: au.com.addstar.pandora.MasterPlugin
 
+depend: [Essentials]
 
 permissions:
   quickshop.allowinclaims:

@@ -6,8 +6,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import au.com.addstar.pandora.modules.AntiAutoFish;
 import au.com.addstar.pandora.modules.QuickshopGPInterop;
 import au.com.addstar.pandora.modules.TrustedHomes;
+import au.com.addstar.pandora.modules.VanishCitizensIO;
 
 public class MasterPlugin extends JavaPlugin
 {
@@ -23,6 +25,8 @@ public class MasterPlugin extends JavaPlugin
 	{
 		registerModule(new TrustedHomes());
 		registerModule(new QuickshopGPInterop());
+		registerModule(new VanishCitizensIO());
+		registerModule(new AntiAutoFish());
 		// Register additional modules here
 	}
 	
