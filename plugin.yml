@@ -12,3 +12,10 @@ permissions:
     default: op
   trustedhomes.bypass:
     default: op
+  pandora.command:
+    default: op
+    
+commands:
+  pandora:
+    usage: /<command>
+    permission: pandora.command

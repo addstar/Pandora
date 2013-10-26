@@ -15,7 +15,12 @@ import au.com.addstar.pandora.Module;
 
 public class QuickshopGPInterop implements Module, Listener
 {
-
+	@Override
+	public String getName()
+	{
+		return "Quickshop-Griefprevention-Interop";
+	}
+	
 	@EventHandler(priority=EventPriority.HIGH)
 	private void onShopCreate(ShopCreateEvent event)
 	{

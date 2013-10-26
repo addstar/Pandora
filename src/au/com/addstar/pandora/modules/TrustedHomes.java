@@ -22,6 +22,13 @@ import au.com.addstar.pandora.Module;
 public class TrustedHomes implements Module, Listener
 {
 	private List<String> mAllValid;
+	
+	@Override
+	public String getName()
+	{
+		return "Trusted Homes";
+	}
+	
 	@Override
 	public void setPandoraInstance( MasterPlugin plugin ) {}
 	

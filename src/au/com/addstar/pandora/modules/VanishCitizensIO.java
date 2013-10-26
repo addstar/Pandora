@@ -1,6 +1,7 @@
 package au.com.addstar.pandora.modules;
 
 import java.lang.reflect.Field;
+import java.util.logging.Logger;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.speech.Talkable;
@@ -23,9 +24,18 @@ public class VanishCitizensIO implements Listener, Module
 	private Field mTalkableField;
 	
 	@Override
+	public String getName()
+	{
+		return "Vanish-Citizens-Interop";
+	}
+	
+	@Override
 	public void onEnable()
 	{
-		CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(LookCloseSafe.class).withName("lookclosesafe"));
+		if(CitizensAPI.getTraitFactory().getTrait("lookclosesafe") == null)
+			CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(LookCloseSafe.class).withName("lookclosesafe"));
+		else
+			Logger.getLogger("Pandora").warning("Could not register the trait lookclosesafe. It already exists.");
 		
 		try
 		{
