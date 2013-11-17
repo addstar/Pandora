@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import au.com.addstar.pandora.modules.AntiAutoFish;
+import au.com.addstar.pandora.modules.KeywordFilter;
 import au.com.addstar.pandora.modules.QuickshopGPInterop;
 import au.com.addstar.pandora.modules.TrustedHomes;
 import au.com.addstar.pandora.modules.VanishCitizensIO;
@@ -27,12 +28,14 @@ public class MasterPlugin extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		getDataFolder().mkdir();
 		getCommand("pandora").setExecutor(new PandoraCommand(this));
 		
 		registerModule(new TrustedHomes());
 		registerModule(new QuickshopGPInterop());
 		registerModule(new VanishCitizensIO());
 		registerModule(new AntiAutoFish());
+		registerModule(new KeywordFilter());
 		// Register additional modules here
 	}
 	
