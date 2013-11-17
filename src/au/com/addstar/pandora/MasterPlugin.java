@@ -29,7 +29,9 @@ public class MasterPlugin extends JavaPlugin
 	public void onEnable()
 	{
 		getDataFolder().mkdir();
-		getCommand("pandora").setExecutor(new PandoraCommand(this));
+		PandoraCommand cmd = new PandoraCommand(this);
+		getCommand("pandora").setExecutor(cmd);
+		getCommand("pandora").setTabCompleter(cmd);
 		
 		registerModule(new TrustedHomes());
 		registerModule(new QuickshopGPInterop());
@@ -57,6 +59,29 @@ public class MasterPlugin extends JavaPlugin
 	public final List<Module> getDisabledModules()
 	{
 		return Collections.unmodifiableList(mDisabledModules);
+	}
+	
+	public final boolean reloadModule(Module module)
+	{
+		if(mModules.remove(module))
+			module.onDisable();
+		
+		mDisabledModules.remove(module);
+		
+		try
+		{
+			module.onEnable();
+			mModules.add(module);
+			return true;
+		}
+		catch(Throwable e)
+		{
+			getLogger().severe("Failed to enable module: " + module.getName());
+			e.printStackTrace();
+			mDisabledModules.add(module);
+			
+			return false;
+		}
 	}
 	
 	public final void registerModule(Module module)

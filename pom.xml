@@ -113,6 +113,7 @@
         <directory>${basedir}/.</directory>
         <includes>
           <include>plugin.yml</include>
+          <include>keywords.txt</include>
         </includes>
       </resource>
       <resource>
