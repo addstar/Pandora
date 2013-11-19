@@ -121,7 +121,7 @@ public class KeywordFilter implements Module, Listener
 	@Override
 	public String getName()
 	{
-		return "Important Keyword Filter";
+		return "KeywordHighlighter";
 	}
 
 	// This level handles removing recipients

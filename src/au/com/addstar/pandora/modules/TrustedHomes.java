@@ -26,7 +26,7 @@ public class TrustedHomes implements Module, Listener
 	@Override
 	public String getName()
 	{
-		return "Trusted Homes";
+		return "TrustedHomes";
 	}
 	
 	@Override
