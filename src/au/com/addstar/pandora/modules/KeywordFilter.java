@@ -124,6 +124,7 @@ public class KeywordFilter implements Module, Listener
 		return "Important Keyword Filter";
 	}
 
+	// This level handles removing recipients
 	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
 	private void onChat(AsyncPlayerChatEvent event)
 	{
@@ -137,6 +138,25 @@ public class KeywordFilter implements Module, Listener
 				continue;
 			
 			event.getRecipients().remove(permissible);
+		}
+	}
+	
+	// This one was added because the format is not always set in lowest priority level depending on the load order of plugins.
+	// And since by the agreement of MONITOR priority, it does not modify the event at all, which is why we have both levels
+	
+	// This level handles sending the fake messages
+	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
+	private void onChatResult(AsyncPlayerChatEvent event)
+	{
+		String newMessage = highlightKeywords(event.getMessage(), ChatColor.getLastColors(event.getFormat()));
+		if(newMessage == null)
+			return;
+		
+		for(Permissible permissible : Bukkit.getPluginManager().getPermissionSubscriptions("pandora.keyword-filter.listen"))
+		{
+			if(!(permissible instanceof Player))
+				continue;
+			
 			((Player)permissible).sendMessage(String.format(event.getFormat(), event.getPlayer().getDisplayName(), newMessage));
 		}
 	}
@@ -150,6 +170,7 @@ public class KeywordFilter implements Module, Listener
 		for(Entry<Pattern, String> entry : mPatterns.entrySet())
 		{
 			Matcher m = entry.getKey().matcher(message);
+			String modified = message;
 			
 			int offset = 0;
 			
@@ -159,10 +180,12 @@ public class KeywordFilter implements Module, Listener
 				if(currentColour.isEmpty())
 					currentColour = defaultColour;
 				
-				message = message.substring(0,m.start() + offset) + entry.getValue() + m.group(0) + currentColour + message.substring(m.end() + offset);
+				modified = modified.substring(0,m.start() + offset) + entry.getValue() + m.group(0) + currentColour + modified.substring(m.end() + offset);
 				offset += entry.getValue().length() + currentColour.length();
 				matched = true;
 			}
+			
+			message = modified;
 		}
 		
 		if(matched)
