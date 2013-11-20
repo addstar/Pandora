@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +29,7 @@ import au.com.addstar.pandora.Module;
 public class KeywordFilter implements Module, Listener
 {
 	private HashMap<Pattern, String> mPatterns = new HashMap<Pattern, String>();
+	private HashSet<AsyncPlayerChatEvent> mModified = new HashSet<AsyncPlayerChatEvent>();
 	private MasterPlugin mPlugin;
 	
 	@Override
@@ -132,6 +134,8 @@ public class KeywordFilter implements Module, Listener
 		if(newMessage == null)
 			return;
 		
+		mModified.add(event);
+		
 		for(Permissible permissible : Bukkit.getPluginManager().getPermissionSubscriptions("pandora.keyword-filter.listen"))
 		{
 			if(!(permissible instanceof Player))
@@ -145,9 +149,12 @@ public class KeywordFilter implements Module, Listener
 	// And since by the agreement of MONITOR priority, it does not modify the event at all, which is why we have both levels
 	
 	// This level handles sending the fake messages
-	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
+	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=false)
 	private void onChatResult(AsyncPlayerChatEvent event)
 	{
+		if((!mModified.remove(event) && event.isCancelled()) || event.getMessage() == null)
+			return;
+		
 		String newMessage = highlightKeywords(event.getMessage(), ChatColor.getLastColors(event.getFormat()));
 		if(newMessage == null)
 			return;
