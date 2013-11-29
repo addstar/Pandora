@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.com.mineauz</groupId>
   <artifactId>Pandora</artifactId>
-  <version>1.0.0-b${env.BUILD_NUMBER}</version>
+  <version>b${env.BUILD_NUMBER}</version>
   <name>Pandora</name>
 
   <repositories>
@@ -103,6 +103,13 @@
 	  <type>jar</type>
 	  <scope>compile</scope>
 	</dependency>
+	
+	<dependency>
+		<groupId>com.earth2me</groupId>
+		<artifactId>essentials</artifactId>
+		<version>pre2.12.1.2</version>
+    </dependency>
+                                                        
   </dependencies>
 
   <build>

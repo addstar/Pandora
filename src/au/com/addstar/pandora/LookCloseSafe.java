@@ -33,7 +33,7 @@ public class LookCloseSafe extends Trait
 
 	private boolean canSee(Player player)
 	{
-		return ((realisticLooking) ? npc.getBukkitEntity().hasLineOfSight(player) : true) && !Utilities.isPlayerVanished(player);
+		return ((realisticLooking) ? npc.getBukkitEntity().hasLineOfSight(player) : true) && !VanishUtil.isPlayerVanished(player);
 	}
 
 	public void configure( CommandContext args )

@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import au.com.addstar.pandora.modules.AntiAutoFish;
+import au.com.addstar.pandora.modules.AntiChatRepeater;
 import au.com.addstar.pandora.modules.KeywordFilter;
 import au.com.addstar.pandora.modules.QuickshopGPInterop;
 import au.com.addstar.pandora.modules.TrustedHomes;
@@ -38,6 +39,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule(new VanishCitizensIO());
 		registerModule(new AntiAutoFish());
 		registerModule(new KeywordFilter());
+		registerModule(new AntiChatRepeater());
 		// Register additional modules here
 	}
 	

@@ -17,7 +17,7 @@ import org.bukkit.event.Listener;
 import au.com.addstar.pandora.LookCloseSafe;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
-import au.com.addstar.pandora.Utilities;
+import au.com.addstar.pandora.VanishUtil;
 
 public class VanishCitizensIO implements Listener, Module
 {
@@ -63,7 +63,7 @@ public class VanishCitizensIO implements Listener, Module
 			{
 				Player player = (Player)talkable.getEntity();
 				
-				if(!CitizensAPI.getNPCRegistry().isNPC(player) && Utilities.isPlayerVanished(player))
+				if(!CitizensAPI.getNPCRegistry().isNPC(player) && VanishUtil.isPlayerVanished(player))
 					event.setCancelled(true);
 			}
 		}
