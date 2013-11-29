@@ -95,6 +95,9 @@ public class AntiChatRepeater implements Module, Listener
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
 	private void onPlayerChat(AsyncPlayerChatEvent event)
 	{
+		if(event.getPlayer().hasPermission("pandora.chatrepeat.bypass"))
+			return;
+		
 		if(isRepeat(event.getPlayer(), event.getMessage()))
 		{
 			event.setCancelled(true);
@@ -107,7 +110,7 @@ public class AntiChatRepeater implements Module, Listener
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
 	private void onPlayerCommand(PlayerCommandPreprocessEvent event)
 	{
-		if(isCommandAllowed(event.getMessage()))
+		if(event.getPlayer().hasPermission("pandora.chatrepeat.bypass") || isCommandAllowed(event.getMessage()))
 			return;
 		
 		if(isRepeat(event.getPlayer(), event.getMessage()))

@@ -16,6 +16,8 @@ permissions:
     default: op
   pandora.keyword-filter.listen:
     default: op
+  pandora.chatrepeat.bypass:
+    default: op
     
 commands:
   pandora:
