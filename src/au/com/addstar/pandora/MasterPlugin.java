@@ -12,6 +12,7 @@ import au.com.addstar.pandora.modules.AntiAutoFish;
 import au.com.addstar.pandora.modules.AntiChatRepeater;
 import au.com.addstar.pandora.modules.KeywordFilter;
 import au.com.addstar.pandora.modules.QuickshopGPInterop;
+import au.com.addstar.pandora.modules.SignLogger;
 import au.com.addstar.pandora.modules.TrustedHomes;
 import au.com.addstar.pandora.modules.VanishCitizensIO;
 
@@ -40,6 +41,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule(new AntiAutoFish());
 		registerModule(new KeywordFilter());
 		registerModule(new AntiChatRepeater());
+		registerModule(new SignLogger());
 		// Register additional modules here
 	}
 	

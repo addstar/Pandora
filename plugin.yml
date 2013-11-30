@@ -18,6 +18,10 @@ permissions:
     default: op
   pandora.chatrepeat.bypass:
     default: op
+  pandora.signlogger.listen:
+    default: op
+  pandora.signlogger.bypass:
+    default: op
     
 commands:
   pandora:
