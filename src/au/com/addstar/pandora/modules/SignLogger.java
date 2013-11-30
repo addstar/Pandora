@@ -17,10 +17,9 @@ public class SignLogger implements Module, Listener
 	private void onSignChange(SignChangeEvent event)
 	{
 		String locationMessage = String.format("%s(%d,%d,%d)", event.getBlock().getWorld().getName(), event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
-		String message = String.format("[Sign Placement] <%s> %s;%s;%s;%s @ %s", event.getPlayer().getName(), event.getLine(0), event.getLine(1), event.getLine(2), event.getLine(3), locationMessage);
-		
-		System.out.println(message);
+		System.out.println(String.format("[Sign Placement] <%s> %s;%s;%s;%s @ %s", event.getPlayer().getName(), event.getLine(0), event.getLine(1), event.getLine(2), event.getLine(3), locationMessage));
 
+		String message = String.format("[SIGN] %s: %s;%s;%s;%s @%s", event.getPlayer().getName(), event.getLine(0), event.getLine(1), event.getLine(2), event.getLine(3), locationMessage);
 		if(!event.getPlayer().hasPermission("pandora.signlogger.bypass"))
 		{
 			for(Player player : Bukkit.getOnlinePlayers())
