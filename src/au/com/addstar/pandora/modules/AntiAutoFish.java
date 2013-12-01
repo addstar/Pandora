@@ -25,12 +25,6 @@ public class AntiAutoFish implements Module, Listener
 	}
 	
 	@Override
-	public String getName()
-	{
-		return "Anti-AutoFish";
-	}
-	
-	@Override
 	public void onEnable()
 	{
 	}

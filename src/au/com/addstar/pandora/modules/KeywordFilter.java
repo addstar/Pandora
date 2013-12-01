@@ -120,12 +120,6 @@ public class KeywordFilter implements Module, Listener
 		mPlugin = plugin;
 	}
 
-	@Override
-	public String getName()
-	{
-		return "KeywordHighlighter";
-	}
-
 	// This level handles removing recipients
 	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
 	private void onChat(AsyncPlayerChatEvent event)

@@ -140,13 +140,6 @@ public class AntiChatRepeater implements Module, Listener
 		mConfig = new Config(new File(plugin.getDataFolder(), "AntiChatRepeater.yml"));
 	}
 
-	@Override
-	public String getName()
-	{
-		return "AntiChatRepeater";
-	}
-
-	
 	private static class Config extends AutoConfig
 	{
 		Config(File file)

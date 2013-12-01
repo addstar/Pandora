@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -29,16 +29,17 @@ public class PandoraCommand implements CommandExecutor, TabCompleter
 		{
 			sender.sendMessage(String.format(ChatColor.GRAY + "Pandora version %s:", ChatColor.YELLOW + mPlugin.getDescription().getVersion() + ChatColor.GRAY));
 			
-			List<Module> enabled = mPlugin.getEnabledModules();
-			List<Module> disabled = mPlugin.getDisabledModules();
+			Set<String> modules = mPlugin.getAllModules();
 			
-			ArrayList<String> all = new ArrayList<String>(enabled.size() + disabled.size());
-			for(Module mod : enabled)
-				all.add(ChatColor.GREEN + mod.getName());
-			
-			for(Module mod : disabled)
-				all.add(ChatColor.RED + mod.getName());
-			
+			ArrayList<String> all = new ArrayList<String>(modules.size());
+			for(String module : modules)
+			{
+				if(mPlugin.isModuleLoaded(module))
+					all.add(ChatColor.GREEN + module);
+				else
+					all.add(ChatColor.RED + module);
+			}
+
 			Collections.sort(all, new Comparator<String>()
 			{
 				@Override
@@ -48,79 +49,104 @@ public class PandoraCommand implements CommandExecutor, TabCompleter
 				}
 			});
 			
-			String modules = "";
+			String moduleList = "";
 			for(String mod : all)
 			{
-				if(!modules.isEmpty())
-					modules += ", ";
+				if(!moduleList.isEmpty())
+					moduleList += ", ";
 				
-				modules += mod + ChatColor.GRAY;
+				moduleList += mod + ChatColor.GRAY;
 			}
 			
-			sender.sendMessage(modules);
+			sender.sendMessage(moduleList);
 		}
 		else if((args.length == 1 || args.length == 2) && args[0].equalsIgnoreCase("reload"))
 		{
 			if(args.length == 1)
 			{
 				int count = 0;
-				HashSet<Module> allMods = new HashSet<Module>(mPlugin.getEnabledModules());
-				allMods.addAll(mPlugin.getDisabledModules());
-				
-				for(Module mod : allMods)
+				int total = 0;
+				Set<String> modules = mPlugin.getAllModules();
+				for(String module : modules)
 				{
-					if(mPlugin.reloadModule(mod))
+					if(!mPlugin.isModuleLoaded(module))
+						continue;
+					if(mPlugin.reloadModule(module))
 						++count;
+					
+					++total;
 				}
 				
 				sender.sendMessage(ChatColor.GREEN + "Reloaded ALL Pandora modules.");
-				if(count < allMods.size())
-					sender.sendMessage("" + ChatColor.RED + count + " Modules failed. See Console.");
+				if(count < total)
+					sender.sendMessage("" + ChatColor.RED + (total - count) + " Modules failed. See Console.");
 			}
 			else
 			{
-				HashSet<Module> allMods = new HashSet<Module>(mPlugin.getEnabledModules());
-				allMods.addAll(mPlugin.getDisabledModules());
-				for(Module mod : allMods)
-				{
-					if(args[1].equalsIgnoreCase(mod.getName().replace(' ', '_')))
-					{
-						if(mPlugin.reloadModule(mod))
-							sender.sendMessage(ChatColor.GREEN + "Reloaded " + mod.getName());
-						else
-							sender.sendMessage(ChatColor.RED + "Failed to reload " + mod.getName());
-					}
-				}
+				if(mPlugin.reloadModule(args[1]))
+					sender.sendMessage(ChatColor.GREEN + "Reloaded " + args[1]);
+				else
+					sender.sendMessage(ChatColor.RED + "Failed to reload " + args[1]);
+			}
+		}
+		else if(args.length == 2 && args[0].equalsIgnoreCase("disable"))
+		{
+			if(!mPlugin.isModuleLoaded(args[1]))
+				sender.sendMessage(ChatColor.RED + "That module is not loaded.");
+			else
+			{
+				if(mPlugin.disableModule(args[1]))
+					sender.sendMessage(ChatColor.GREEN + args[1] + " was disabled.");
+				else
+					sender.sendMessage(ChatColor.RED + "Unable to disable " + args[1] + ". See console for details.");
+			}
+		}
+		else if(args.length == 2 && args[0].equalsIgnoreCase("enable"))
+		{
+			if(mPlugin.isModuleLoaded(args[1]))
+				sender.sendMessage(ChatColor.RED + "That module is already loaded.");
+			else
+			{
+				if(mPlugin.enableModule(args[1]))
+					sender.sendMessage(ChatColor.GREEN + args[1] + " was enabled.");
+				else
+					sender.sendMessage(ChatColor.RED + "Unable to enable " + args[1] + ". See console for details.");
 			}
 		}
 		return true;
 	}
 	
+	private List<String> matchModules(String module)
+	{
+		ArrayList<String> matching = new ArrayList<String>();
+		for(String name : mPlugin.getAllModules())
+		{
+			if(module.isEmpty() || name.startsWith(module))
+				matching.add(name);
+		}
+		
+		return matching;
+	}
 	@Override
 	public List<String> onTabComplete( CommandSender sender, Command command, String alias, String[] args )
 	{
-		if(args.length == 0 || args.length == 1)
-			return Arrays.asList("reload");
-		else if(args.length == 2 && args[0].equalsIgnoreCase("reload"))
+		if(args.length == 1)
 		{
-			ArrayList<String> modules = new ArrayList<String>();
-			for(Module mod : mPlugin.getEnabledModules())
-			{
-				String name = mod.getName().replace(' ', '_');
-				
-				if(args[1].isEmpty() || name.startsWith(args[1]))
-					modules.add(name);
-			}
-			for(Module mod : mPlugin.getDisabledModules())
-			{
-				String name = mod.getName().replace(' ', '_');
-				
-				if(args[1].isEmpty() || name.startsWith(args[1]))
-					modules.add(name);
-			}
-			
-			return modules;
+			if(args[0].isEmpty())
+				return Arrays.asList("enable", "disable", "reload");
+			if("enable".startsWith(args[0].toLowerCase()))
+				return Arrays.asList("enable");
+			if("disable".startsWith(args[0].toLowerCase()))
+				return Arrays.asList("disable");
+			if("reload".startsWith(args[0].toLowerCase()))
+				return Arrays.asList("reload");
 		}
+		else if(args.length == 2 && args[0].equalsIgnoreCase("reload"))
+			return matchModules(args[1]);
+		else if(args.length == 2 && args[0].equalsIgnoreCase("enable"))
+			return matchModules(args[1]);
+		else if(args.length == 2 && args[0].equalsIgnoreCase("disable"))
+			return matchModules(args[1]);
 		return null;
 	}
 	

@@ -44,11 +44,4 @@ public class SignLogger implements Module, Listener
 
 	@Override
 	public void setPandoraInstance( MasterPlugin plugin ) {}
-
-	@Override
-	public String getName()
-	{
-		return "SignLogger";
-	}
-
 }

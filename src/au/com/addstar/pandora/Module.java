@@ -7,6 +7,4 @@ public interface Module
 	public void onDisable();
 	
 	public void setPandoraInstance(MasterPlugin plugin);
-	
-	public String getName();
 }

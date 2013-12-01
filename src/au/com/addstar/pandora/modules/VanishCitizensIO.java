@@ -24,12 +24,6 @@ public class VanishCitizensIO implements Listener, Module
 	private Field mTalkableField;
 	
 	@Override
-	public String getName()
-	{
-		return "Vanish-Citizens-Interop";
-	}
-	
-	@Override
 	public void onEnable()
 	{
 		if(CitizensAPI.getTraitFactory().getTrait("lookclosesafe") == null)

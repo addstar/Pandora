@@ -24,12 +24,6 @@ public class TrustedHomes implements Module, Listener
 	private List<String> mAllValid;
 	
 	@Override
-	public String getName()
-	{
-		return "TrustedHomes";
-	}
-	
-	@Override
 	public void setPandoraInstance( MasterPlugin plugin ) {}
 	
 	@Override
