@@ -68,12 +68,13 @@ public class AntiChatRepeater implements Module, Listener
 		if(parts.length == 0)
 			return true;
 		
-		Command cmd = Bukkit.getPluginCommand(parts[0].substring(1));
+		String name = parts[0].substring(1);
+		Command cmd = Bukkit.getPluginCommand(name);
 		
-		if(cmd == null)
-			return false;
+		if(cmd != null)
+			name = cmd.getName();
 		
-		if(mConfig.commands.contains(cmd.getName()))
+		if(mConfig.commands.contains(name.toLowerCase()))
 			return mConfig.isWhitelist;
 		else
 			return !mConfig.isWhitelist;
