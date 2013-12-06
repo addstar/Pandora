@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import au.com.addstar.pandora.modules.AntiAutoFish;
 import au.com.addstar.pandora.modules.AntiChatRepeater;
 import au.com.addstar.pandora.modules.KeywordFilter;
+import au.com.addstar.pandora.modules.KickBanner;
 import au.com.addstar.pandora.modules.QuickshopGPInterop;
 import au.com.addstar.pandora.modules.SignLogger;
 import au.com.addstar.pandora.modules.TrustedHomes;
@@ -46,6 +47,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("KeywordHighlighter", KeywordFilter.class);
 		registerModule("AntiChatRepeater", AntiChatRepeater.class, "Essentials");
 		registerModule("SignLogger", SignLogger.class);
+		registerModule("KickBanner", KickBanner.class);
 		//TODO: Register additional modules here
 	}
 	
