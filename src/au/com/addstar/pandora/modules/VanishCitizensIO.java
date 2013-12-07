@@ -1,10 +1,12 @@
 package au.com.addstar.pandora.modules;
 
 import java.lang.reflect.Field;
+import java.util.Iterator;
 import java.util.logging.Logger;
 
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.speech.Talkable;
+import net.citizensnpcs.api.ai.speech.event.SpeechBystanderEvent;
 import net.citizensnpcs.api.ai.speech.event.SpeechEvent;
 import net.citizensnpcs.api.ai.speech.event.SpeechTargetedEvent;
 import net.citizensnpcs.api.trait.TraitInfo;
@@ -60,6 +62,34 @@ public class VanishCitizensIO implements Listener, Module
 				if(!CitizensAPI.getNPCRegistry().isNPC(player) && VanishUtil.isPlayerVanished(player))
 					event.setCancelled(true);
 			}
+		}
+		catch ( Exception e )
+		{
+			throw new RuntimeException(e);
+		}
+	}
+	
+	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
+	private void onNCPTalk(SpeechBystanderEvent event)
+	{
+		try
+		{
+			Iterator<Talkable> it = event.getContext().iterator();
+			
+			while(it.hasNext())
+			{
+				Talkable t = it.next();
+				
+				if(t.getEntity() instanceof Player)
+				{
+					Player player = (Player)t.getEntity();
+					if(!CitizensAPI.getNPCRegistry().isNPC(player) && VanishUtil.isPlayerVanished(player))
+						it.remove();
+				}
+			}
+			
+			if(!event.getContext().hasRecipients())
+				event.setCancelled(true);
 		}
 		catch ( Exception e )
 		{

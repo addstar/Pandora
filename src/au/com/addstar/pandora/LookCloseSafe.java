@@ -7,6 +7,7 @@ import java.util.List;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 
 import net.citizensnpcs.Settings;
@@ -33,7 +34,7 @@ public class LookCloseSafe extends Trait
 
 	private boolean canSee(Player player)
 	{
-		return ((realisticLooking) ? npc.getBukkitEntity().hasLineOfSight(player) : true) && !VanishUtil.isPlayerVanished(player);
+		return (!realisticLooking || ((npc.getEntity() instanceof LivingEntity) ? ((LivingEntity)npc.getEntity()).hasLineOfSight(player) : true)) && !VanishUtil.isPlayerVanished(player);
 	}
 
 	public void configure( CommandContext args )
@@ -45,9 +46,9 @@ public class LookCloseSafe extends Trait
 
 	private void findNewTarget()
 	{
-		List<Entity> nearby = this.npc.getBukkitEntity().getNearbyEntities(range, range, range);
+		List<Entity> nearby = this.npc.getEntity().getNearbyEntities(range, range, range);
 		
-		final Location npcLocation = this.npc.getBukkitEntity().getLocation(NPC_LOCATION);
+		final Location npcLocation = this.npc.getEntity().getLocation(NPC_LOCATION);
 		Collections.sort(nearby, new Comparator<Entity>()
 		{
 			@Override
@@ -73,7 +74,7 @@ public class LookCloseSafe extends Trait
 	{
 		if ( mTarget == null )
 			return true;
-		if (!mTarget.isOnline() || mTarget.getWorld() != npc.getBukkitEntity().getWorld() || mTarget.getLocation().distanceSquared(npc.getBukkitEntity().getLocation()) > range)
+		if (!mTarget.isOnline() || mTarget.getWorld() != npc.getEntity().getWorld() || mTarget.getLocation().distanceSquared(npc.getEntity().getLocation()) > range)
 		{
 			mTarget = null;
 			return true;
@@ -109,7 +110,7 @@ public class LookCloseSafe extends Trait
 
 		
 		if ( mTarget != null && canSee(mTarget))
-			Util.faceEntity(npc.getBukkitEntity(), mTarget);
+			Util.faceEntity(npc.getEntity(), mTarget);
 	}
 
 	public void save( DataKey key )
