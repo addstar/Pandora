@@ -16,6 +16,7 @@ import au.com.addstar.pandora.modules.AntiAutoFish;
 import au.com.addstar.pandora.modules.AntiChatRepeater;
 import au.com.addstar.pandora.modules.KeywordFilter;
 import au.com.addstar.pandora.modules.KickBanner;
+import au.com.addstar.pandora.modules.LWCGPInterop;
 import au.com.addstar.pandora.modules.QuickshopGPInterop;
 import au.com.addstar.pandora.modules.SignLogger;
 import au.com.addstar.pandora.modules.TrustedHomes;
@@ -48,6 +49,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("AntiChatRepeater", AntiChatRepeater.class, "Essentials");
 		registerModule("SignLogger", SignLogger.class);
 		registerModule("KickBanner", KickBanner.class);
+		registerModule("LWC-GP-Interop", LWCGPInterop.class, "LWC", "GriefPrevention");
 		//TODO: Register additional modules here
 	}
 	
