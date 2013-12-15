@@ -1,6 +1,7 @@
 package au.com.addstar.pandora.modules;
 
 import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimBeforeCreateEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimCreatedEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimResizeEvent;
@@ -40,6 +41,9 @@ public class GPWGInterop implements Module, Listener
 	@EventHandler(ignoreCancelled=true)
 	private void onClaim(ClaimResizeEvent event)
 	{
+		if(GriefPrevention.instance.dataStore.getPlayerData(event.getPlayer().getName()).ignoreClaims)
+			return;
+		
 		RegionManager manager = mWorldGuard.getRegionManager(event.getNewGreaterBoundaryCorner().getWorld());
 		
 		if(manager == null)
@@ -58,6 +62,9 @@ public class GPWGInterop implements Module, Listener
 	@EventHandler(ignoreCancelled=true)
 	private void onClaim(ClaimBeforeCreateEvent event)
 	{
+		if(GriefPrevention.instance.dataStore.getPlayerData(event.getPlayer().getName()).ignoreClaims)
+			return;
+		
 		if(hasIntersections(event.getClaim()))
 		{
 			event.setCancelled(true);
