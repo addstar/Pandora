@@ -21,6 +21,7 @@ import au.com.addstar.pandora.modules.KickBanner;
 import au.com.addstar.pandora.modules.LWCGPInterop;
 import au.com.addstar.pandora.modules.QuickshopGPInterop;
 import au.com.addstar.pandora.modules.SignLogger;
+import au.com.addstar.pandora.modules.TpClaim;
 import au.com.addstar.pandora.modules.TrustedHomes;
 import au.com.addstar.pandora.modules.VanishCitizensIO;
 
@@ -54,6 +55,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("AntiPortalTrap", AntiPortalTrap.class);
 		registerModule("LWC-GP-Interop", LWCGPInterop.class, "LWC", "GriefPrevention");
 		registerModule("GP-WorldGuard-Interop", GPWGInterop.class, "GriefPrevention", "WorldGuard");
+		registerModule("TPClaim", TpClaim.class, "GriefPrevention");
 		//TODO: Register additional modules here
 	}
 	

@@ -22,8 +22,13 @@ permissions:
     default: op
   pandora.signlogger.bypass:
     default: op
+  pandora.tpclaim:
+    default: op
     
 commands:
   pandora:
     usage: /<command>
     permission: pandora.command
+  tpclaim:
+    usage: /<command> <player> [<index>|<world>|<world>:<index>]
+    permission: pandora.tpclaim
