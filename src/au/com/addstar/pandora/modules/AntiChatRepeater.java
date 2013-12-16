@@ -3,6 +3,7 @@ package au.com.addstar.pandora.modules;
 import java.io.File;
 import java.util.AbstractMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.WeakHashMap;
@@ -19,6 +20,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.scoreboard.Team;
 
 import com.earth2me.essentials.utils.FormatUtil;
@@ -32,9 +34,13 @@ import au.com.addstar.pandora.Utilities;
 public class AntiChatRepeater implements Module, Listener
 {
 	private WeakHashMap<Player, Entry<String, Long>> mLastChat = new WeakHashMap<Player, Entry<String, Long>>();
+	private WeakHashMap<Player, Integer> mRepeatCount = new WeakHashMap<Player, Integer>();
 	
 	private Config mConfig;
 	private IEssentials mEssentials;
+	private MasterPlugin mPlugin;
+	
+	private BukkitTask mTask = null;
 	
 	private void sendFakeChat(Player player, String message)
 	{
@@ -82,15 +88,63 @@ public class AntiChatRepeater implements Module, Listener
 	
 	private boolean isRepeat(Player player, String message)
 	{
-		if(!mLastChat.containsKey(player))
-			return false;
-		
-		Entry<String, Long> entry = mLastChat.get(player);
-		
-		if(!entry.getKey().equalsIgnoreCase(message))
-			return false;
-		
-		return (System.currentTimeMillis() - entry.getValue()) < mConfig.timeout;
+		synchronized(mLastChat)
+		{
+			if(!mLastChat.containsKey(player))
+				return false;
+			
+			Entry<String, Long> entry = mLastChat.get(player);
+			
+			if(!entry.getKey().equalsIgnoreCase(message))
+				return false;
+			
+			return (System.currentTimeMillis() - entry.getValue()) < mConfig.timeout;
+		}
+	}
+	
+	private void increaseRepeat(Player player)
+	{
+		synchronized(mRepeatCount)
+		{
+			Integer count = mRepeatCount.get(player);
+			
+			if(count == null)
+			{
+				mRepeatCount.put(player, 1);
+				return;
+			}
+			
+			++count;
+			mRepeatCount.put(player, count);
+		}
+	}
+	
+	private void clearRepeat(Player player)
+	{
+		synchronized(mRepeatCount)
+		{
+			Integer count = mRepeatCount.remove(player);
+			
+			if(count != null && count > 1)
+			{
+				String message;
+				synchronized(mLastChat)
+				{
+					message = mLastChat.get(player).getKey();
+				}
+				
+				System.out.println(String.format("%s repeated \"%s\" %d times", player.getName(), message, count));
+				
+			}
+		}
+	}
+	
+	private void setLast(Player player, String message)
+	{
+		synchronized(mLastChat)
+		{
+			mLastChat.put(player, new AbstractMap.SimpleEntry<String, Long>(message, System.currentTimeMillis()));
+		}
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
@@ -102,10 +156,13 @@ public class AntiChatRepeater implements Module, Listener
 		if(isRepeat(event.getPlayer(), event.getMessage()))
 		{
 			event.setCancelled(true);
+			increaseRepeat(event.getPlayer());
 			sendFakeChat(event.getPlayer(), event.getMessage());
 		}
+		else
+			clearRepeat(event.getPlayer());
 		
-		mLastChat.put(event.getPlayer(), new AbstractMap.SimpleEntry<String, Long>(event.getMessage(), System.currentTimeMillis()));
+		setLast(event.getPlayer(), event.getMessage());
 	}
 	
 	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
@@ -115,9 +172,14 @@ public class AntiChatRepeater implements Module, Listener
 			return;
 		
 		if(isRepeat(event.getPlayer(), event.getMessage()))
+		{
+			increaseRepeat(event.getPlayer());
 			event.setCancelled(true);
+		}
+		else
+			clearRepeat(event.getPlayer());
 		
-		mLastChat.put(event.getPlayer(), new AbstractMap.SimpleEntry<String, Long>(event.getMessage(), System.currentTimeMillis()));
+		setLast(event.getPlayer(), event.getMessage());
 	}
 	
 	@Override
@@ -126,10 +188,15 @@ public class AntiChatRepeater implements Module, Listener
 		if(mConfig.load())
 			mConfig.save();
 		
+		mTask = Bukkit.getScheduler().runTaskTimer(mPlugin, new RepeatNotifier(), 20L, 20L);
 	}
 
 	@Override
-	public void onDisable()	{}
+	public void onDisable()	
+	{
+		mTask.cancel();
+		mTask = null;
+	}
 
 	@Override
 	public void setPandoraInstance( MasterPlugin plugin ) 
@@ -139,6 +206,7 @@ public class AntiChatRepeater implements Module, Listener
 			throw new RuntimeException("Cannot load essentials");
 		
 		mConfig = new Config(new File(plugin.getDataFolder(), "AntiChatRepeater.yml"));
+		mPlugin = plugin;
 	}
 
 	private static class Config extends AutoConfig
@@ -167,6 +235,39 @@ public class AntiChatRepeater implements Module, Listener
 			{
 				timeout = 10000;
 				throw new InvalidConfigurationException("Invalid timeout value \"" + timeoutStr + "\"");
+			}
+		}
+	}
+	
+	private class RepeatNotifier implements Runnable
+	{
+		@Override
+		public void run()
+		{
+			synchronized(mRepeatCount)
+			{
+				Iterator<Entry<Player, Integer>> it = mRepeatCount.entrySet().iterator();
+				Entry<String, Long> lastRepeat;
+				
+				while(it.hasNext())
+				{
+					Entry<Player, Integer> player = it.next();
+					
+					if(player.getValue() <= 1)
+						continue;
+					
+					synchronized(mLastChat)
+					{
+						lastRepeat = mLastChat.get(player.getKey());
+					}
+					
+					if((System.currentTimeMillis() - lastRepeat.getValue()) < mConfig.timeout)
+						continue;
+					
+					System.out.println(String.format("%s repeated \"%s\" %d times", player.getKey().getName(), lastRepeat.getKey(), player.getValue()));
+					
+					it.remove();
+				}
 			}
 		}
 	}
