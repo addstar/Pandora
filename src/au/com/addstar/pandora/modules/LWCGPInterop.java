@@ -4,6 +4,7 @@ import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 
+import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 
 import com.griefcraft.lwc.LWC;
@@ -47,14 +48,14 @@ public class LWCGPInterop implements Module, Listener
 			
 			PlayerData pdata = GriefPrevention.instance.dataStore.getPlayerData(event.getPlayer().getName());
 			Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getBlock().getLocation(), true, pdata.lastClaim);
-			
+
 			if(claim != null)
 			{
-				String reason = claim.allowGrantPermission(event.getPlayer());
+				String reason = claim.allowBuild(event.getPlayer());
 				
 				if(reason != null)
 				{
-					event.getPlayer().sendMessage(reason);
+					event.getPlayer().sendMessage(ChatColor.RED + reason);
 					event.setCancelled(true);
 				}
 			}
