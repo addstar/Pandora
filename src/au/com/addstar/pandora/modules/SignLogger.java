@@ -22,9 +22,15 @@ public class SignLogger implements Module, Listener
 		String locationMessage = String.format("%s(%d,%d,%d)", event.getBlock().getWorld().getName(), event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
 		System.out.println(String.format("[Sign Placement] <%s> %s;%s;%s;%s @ %s", event.getPlayer().getName(), event.getLine(0), event.getLine(1), event.getLine(2), event.getLine(3), locationMessage));
 
-		String message = String.format("[SIGN] %s: %s;%s;%s;%s @%s", event.getPlayer().getName(), event.getLine(0), event.getLine(1), event.getLine(2), event.getLine(3), locationMessage);
 		if(!event.getPlayer().hasPermission("pandora.signlogger.bypass"))
 		{
+			String message = String.format("[SIGN] %s: %s;%s;%s;%s @%s", event.getPlayer().getName(), 
+					event.getLine(0) + ChatColor.RESET + ChatColor.GRAY,
+					event.getLine(1) + ChatColor.RESET + ChatColor.GRAY,
+					event.getLine(2) + ChatColor.RESET + ChatColor.GRAY,
+					event.getLine(3) + ChatColor.RESET + ChatColor.GRAY, 
+					locationMessage);
+
 			for(Player player : Bukkit.getOnlinePlayers())
 			{
 				if(player.equals(event.getPlayer()))
