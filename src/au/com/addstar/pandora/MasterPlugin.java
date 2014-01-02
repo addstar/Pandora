@@ -15,6 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import au.com.addstar.pandora.modules.AntiAutoFish;
 import au.com.addstar.pandora.modules.AntiChatRepeater;
 import au.com.addstar.pandora.modules.AntiPortalTrap;
+import au.com.addstar.pandora.modules.FlyCanceller;
 import au.com.addstar.pandora.modules.GPWGInterop;
 import au.com.addstar.pandora.modules.KeywordFilter;
 import au.com.addstar.pandora.modules.KickBanner;
@@ -56,6 +57,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("LWC-GP-Interop", LWCGPInterop.class, "LWC", "GriefPrevention");
 		registerModule("GP-WorldGuard-Interop", GPWGInterop.class, "GriefPrevention", "WorldGuard");
 		registerModule("TPClaim", TpClaim.class, "GriefPrevention");
+		registerModule("FlyCanceller", FlyCanceller.class);
 		//TODO: Register additional modules here
 	}
 	

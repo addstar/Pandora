@@ -24,6 +24,8 @@ permissions:
     default: op
   pandora.tpclaim:
     default: op
+  pandora.flycancel.bypass:
+    default: op
     
 commands:
   pandora:
