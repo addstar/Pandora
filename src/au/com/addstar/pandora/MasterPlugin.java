@@ -59,7 +59,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("GP-WorldGuard-Interop", GPWGInterop.class, "GriefPrevention", "WorldGuard");
 		registerModule("TPClaim", TpClaim.class, "GriefPrevention");
 		registerModule("FlyCanceller", FlyCanceller.class);
-		registerModule("JoinQuitNicknames", JoinQuitNicknames.class);
+		registerModule("JoinQuitNicknames", JoinQuitNicknames.class, "Essentials");
 		//TODO: Register additional modules here
 	}
 	
