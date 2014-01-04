@@ -17,6 +17,7 @@ import au.com.addstar.pandora.modules.AntiChatRepeater;
 import au.com.addstar.pandora.modules.AntiPortalTrap;
 import au.com.addstar.pandora.modules.FlyCanceller;
 import au.com.addstar.pandora.modules.GPWGInterop;
+import au.com.addstar.pandora.modules.JoinQuitNicknames;
 import au.com.addstar.pandora.modules.KeywordFilter;
 import au.com.addstar.pandora.modules.KickBanner;
 import au.com.addstar.pandora.modules.LWCGPInterop;
@@ -58,6 +59,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("GP-WorldGuard-Interop", GPWGInterop.class, "GriefPrevention", "WorldGuard");
 		registerModule("TPClaim", TpClaim.class, "GriefPrevention");
 		registerModule("FlyCanceller", FlyCanceller.class);
+		registerModule("JoinQuitNicknames", JoinQuitNicknames.class);
 		//TODO: Register additional modules here
 	}
 	
