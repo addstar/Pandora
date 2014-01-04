@@ -56,7 +56,7 @@ public class JoinQuitNicknames implements Module, Listener
 				return null;
 			
 			String nickname = ChatColor.stripColor(user.getNickname());
-			if ((!nickname.isEmpty()) && (!p.getName().equals(nickname)))
+			if ((nickname != null) && (!p.getName().equals(nickname)))
 				return origmsg.replaceAll(p.getName(), nickname);
 		}
 		return null;
