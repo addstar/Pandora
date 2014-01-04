@@ -73,12 +73,20 @@ public class TrustedHomes implements Module, Listener
 		
 		if(claim != null)
 		{
-			String reason = claim.allowAccess(event.getPlayer());
-			
-			if(reason != null)
+			if(claim.isAdminClaim())
 			{
 				event.setCancelled(true);
-				event.getPlayer().sendMessage(ChatColor.RED + reason);
+				event.getPlayer().sendMessage(ChatColor.RED + "You cannot set home in an Administrator's claim.");
+			}
+			else
+			{
+				String reason = claim.allowAccess(event.getPlayer());
+	
+				if(reason != null)
+				{
+					event.setCancelled(true);
+					event.getPlayer().sendMessage(ChatColor.RED + reason);
+				}
 			}
 		}
 	}
