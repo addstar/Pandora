@@ -1,9 +1,12 @@
 package au.com.addstar.pandora.modules;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import au.com.addstar.pandora.MasterPlugin;
@@ -13,7 +16,7 @@ public class JoinQuitNicknames implements Module, Listener
 {
 	private boolean ModuleEnabled = false;
 	
-	@EventHandler(ignoreCancelled=true)
+	@EventHandler(ignoreCancelled=true, priority=EventPriority.HIGHEST)
 	private void onPlayerJoin(PlayerJoinEvent event)
 	{
 		if (ModuleEnabled)
@@ -21,7 +24,8 @@ public class JoinQuitNicknames implements Module, Listener
 			Player p = event.getPlayer();
 			if ((p != null) && (!p.getName().equals(p.getDisplayName())))
 			{
-				String msg = event.getJoinMessage().replaceAll(p.getName(), p.getDisplayName());
+				String nickname = ChatColor.stripColor(p.getDisplayName());
+				String msg = event.getJoinMessage().replaceAll(p.getName(), nickname);
 				event.setJoinMessage(msg);
 			}
 		}
@@ -35,12 +39,27 @@ public class JoinQuitNicknames implements Module, Listener
 			Player p = event.getPlayer();
 			if ((p != null) && (!p.getName().equals(p.getDisplayName())))
 			{
-				String msg = event.getQuitMessage().replaceAll(p.getName(), p.getDisplayName());
+				String nickname = ChatColor.stripColor(p.getDisplayName());
+				String msg = event.getQuitMessage().replaceAll(p.getName(), nickname);
 				event.setQuitMessage(msg);
 			}
 		}
 	}
 	
+	@EventHandler(ignoreCancelled=true)
+	private void onPlayerKick(PlayerKickEvent event) {
+		if (ModuleEnabled)
+		{
+			Player p = event.getPlayer();
+			if ((p != null) && (!p.getName().equals(p.getDisplayName())))
+			{
+				String nickname = ChatColor.stripColor(p.getDisplayName());
+				String msg = event.getLeaveMessage().replaceAll(p.getName(), nickname);
+				event.setLeaveMessage(msg);
+			}
+		}
+	}
+
 	@Override
 	public void onEnable()
 	{
