@@ -46,7 +46,7 @@ public class JoinQuitNicknames implements Module, Listener
 			event.setLeaveMessage(msg);
 	}
 	
-	@EventHandler(ignoreCancelled=true, priority=EventPriority.HIGHEST)
+	@EventHandler(ignoreCancelled=true, priority=EventPriority.LOWEST)
 	private void onPlayerDeath(PlayerDeathEvent event) {
 		String msg = getNicknamedMsg(event.getDeathMessage(), event.getEntity());
 		if (msg != null)
@@ -58,6 +58,9 @@ public class JoinQuitNicknames implements Module, Listener
 		if (ModuleEnabled)
 		{
 			if (p == null)
+				return null;
+			
+			if (origmsg == null)
 				return null;
 			
 			User user = mEssentials.getUser(p);
