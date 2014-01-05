@@ -60,7 +60,7 @@ public class JoinQuitNicknames implements Module, Listener
 		if (msg2 != null)
 			msg = msg2;
 		
-		if (msg != null)
+		if ((msg != null) && (!msg.equals(event.getDeathMessage())))
 			event.setDeathMessage(msg);
 	}
 	
