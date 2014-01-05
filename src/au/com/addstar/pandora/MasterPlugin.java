@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -167,6 +168,8 @@ public class MasterPlugin extends JavaPlugin
 		try
 		{
 			instance.onDisable();
+			if(instance instanceof Listener)
+				HandlerList.unregisterAll((Listener)instance);
 		}
 		catch(Throwable e)
 		{
