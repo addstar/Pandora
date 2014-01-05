@@ -6,7 +6,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -42,6 +44,13 @@ public class JoinQuitNicknames implements Module, Listener
 		String msg = getNicknamedMsg(event.getLeaveMessage(), event.getPlayer());
 		if (msg != null)
 			event.setLeaveMessage(msg);
+	}
+	
+	@EventHandler(ignoreCancelled=true, priority=EventPriority.HIGHEST)
+	private void onPlayerDeath(PlayerDeathEvent event) {
+		String msg = getNicknamedMsg(event.getDeathMessage(), event.getEntity());
+		if (msg != null)
+			event.setDeathMessage(msg);
 	}
 	
 	private String getNicknamedMsg(String origmsg, Player p)
