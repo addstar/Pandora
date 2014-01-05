@@ -53,7 +53,7 @@ public class LongCommands implements Module, Listener
 		
 		if(event.getMessage().endsWith(longCommandKey))
 		{
-			existing += " " + event.getMessage().substring(0, event.getMessage().length() - longCommandKey.length());
+			existing += event.getMessage().substring(0, event.getMessage().length() - longCommandKey.length());
 			synchronized(mCommands)
 			{
 				mCommands.put(event.getPlayer(), existing);
