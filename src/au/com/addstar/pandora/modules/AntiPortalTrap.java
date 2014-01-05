@@ -63,6 +63,7 @@ public class AntiPortalTrap implements Module, Listener{
 			Player ply = (Player)event.getEntity();
 			if(portalPlayers.containsKey(ply)){
 				ply.teleport(portalPlayers.get(ply));
+				portalPlayers.remove(ply);
 			}
 		}
 	}
