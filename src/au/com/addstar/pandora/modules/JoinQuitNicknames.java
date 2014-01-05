@@ -48,8 +48,18 @@ public class JoinQuitNicknames implements Module, Listener
 	
 	@EventHandler(ignoreCancelled=true, priority=EventPriority.LOWEST)
 	private void onPlayerDeath(PlayerDeathEvent event) {
-		String msg = getNicknamedMsg(event.getDeathMessage(), event.getEntity());
-		msg = getNicknamedMsg(msg, event.getEntity().getKiller());
+		String msg = event.getDeathMessage();
+		
+		// Handle player (if necessary)
+		String msg1 = getNicknamedMsg(msg, event.getEntity());
+		if (msg1 != null)
+			msg = msg1;
+
+		// Handle killer (if necessary)
+		String msg2 = getNicknamedMsg(msg, event.getEntity().getKiller());
+		if (msg2 != null)
+			msg = msg2;
+		
 		if (msg != null)
 			event.setDeathMessage(msg);
 	}
