@@ -33,7 +33,7 @@ public class LongCommands implements Module, Listener
 		});
 	}
 	
-	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
+	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=false)
 	private void onPlayerChat(AsyncPlayerChatEvent event)
 	{
 		if(!event.getPlayer().hasPermission("pandora.longcommands"))
@@ -93,6 +93,17 @@ public class LongCommands implements Module, Listener
 			event.getPlayer().sendMessage(ChatColor.GOLD + "> " + ChatColor.GRAY + "_");
 			
 			event.setCancelled(true);
+		}
+		else
+		{
+			boolean had = false;
+			synchronized(mCommands)
+			{
+				had = mCommands.remove(event.getPlayer()) != null;
+			}
+			
+			if(had)
+				event.getPlayer().sendMessage(ChatColor.YELLOW + "Long command cancelled!");
 		}
 	}
 	
