@@ -51,7 +51,16 @@ public class LongCommands implements Module, Listener
 
 		event.setCancelled(true);
 		
-		if(event.getMessage().endsWith(longCommandKey))
+		if(event.getMessage().equals("-"))
+		{
+			synchronized(mCommands)
+			{
+				mCommands.remove(event.getPlayer());
+			}
+			
+			event.getPlayer().sendMessage(ChatColor.GOLD + "Long command cancelled.");
+		}
+		else if(event.getMessage().endsWith(longCommandKey))
 		{
 			existing += event.getMessage().substring(0, event.getMessage().length() - longCommandKey.length());
 			synchronized(mCommands)
@@ -103,7 +112,7 @@ public class LongCommands implements Module, Listener
 			}
 			
 			if(had)
-				event.getPlayer().sendMessage(ChatColor.YELLOW + "Long command cancelled!");
+				event.getPlayer().sendMessage(ChatColor.GOLD + "Long command cancelled.");
 		}
 	}
 	
