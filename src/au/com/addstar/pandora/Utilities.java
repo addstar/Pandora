@@ -1,13 +1,19 @@
 package au.com.addstar.pandora;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredListener;
 
 public class Utilities
 {
@@ -172,5 +178,37 @@ public class Utilities
 		default:
 			return false;
 		}
+	}
+	
+	public static void adjustEventHandlerPosition(HandlerList list, Listener listener, String beforePlugin)
+	{
+		Plugin plugin = Bukkit.getPluginManager().getPlugin(beforePlugin);
+		if(plugin == null || !plugin.isEnabled())
+			return;
+		
+		ArrayList<RegisteredListener> theirs = new ArrayList<RegisteredListener>();
+		RegisteredListener mine = null;
+		
+		for(RegisteredListener regListener : list.getRegisteredListeners())
+		{
+			if(regListener.getListener() == listener)
+				mine = regListener;
+			if(regListener.getPlugin().equals(plugin))
+				theirs.add(regListener);
+		}
+		
+		if(mine == null)
+			return;
+		
+		list.unregister(mine);
+		for(RegisteredListener regListener : theirs)
+			list.unregister(regListener);
+		
+		// Register in the order we want them in
+		list.register(mine);
+		list.registerAll(theirs);
+		list.bake();
+		
+		MasterPlugin.getInstance().getLogger().info("NOTE: Listener " + listener + " injected before that of " + beforePlugin + " listener");
 	}
 }

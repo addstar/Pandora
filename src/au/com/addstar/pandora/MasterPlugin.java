@@ -38,6 +38,12 @@ public class MasterPlugin extends JavaPlugin
 	
 	private Config mConfig;
 	
+	private static MasterPlugin mInstance;
+	public static MasterPlugin getInstance()
+	{
+		return mInstance;
+	}
+	
 	public MasterPlugin()
 	{
 		mAvailableModules = new HashMap<Class<? extends Module>, ModuleDefinition>();
@@ -69,6 +75,7 @@ public class MasterPlugin extends JavaPlugin
 	@Override
 	public void onEnable()
 	{
+		mInstance = this;
 		mConfig = new Config(new File(getDataFolder(), "config.yml"));
 		
 		getDataFolder().mkdir();
@@ -103,6 +110,7 @@ public class MasterPlugin extends JavaPlugin
 		mLoadedModules.clear();
 		mAvailableModules.clear();
 		mAvailableModulesByName.clear();
+		mInstance = null;
 	}
 
 	public final boolean isModuleLoaded(String module)

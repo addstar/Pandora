@@ -7,6 +7,8 @@ main: au.com.addstar.pandora.MasterPlugin
 
 softdepend: [Essentials, Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens]
 
+loadbefore: [CommandHelper]
+
 permissions:
   quickshop.allowinclaims:
     default: op

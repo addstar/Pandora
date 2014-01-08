@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
+import au.com.addstar.pandora.Utilities;
 
 public class LongCommands implements Module, Listener
 {
@@ -102,6 +103,7 @@ public class LongCommands implements Module, Listener
 			event.getPlayer().sendMessage(ChatColor.GOLD + "> " + ChatColor.GRAY + "_");
 			
 			event.setCancelled(true);
+			event.setMessage("/");
 		}
 		else
 		{
@@ -118,7 +120,17 @@ public class LongCommands implements Module, Listener
 	
 	
 	@Override
-	public void onEnable() {}
+	public void onEnable() 
+	{
+		Bukkit.getScheduler().runTask(mPlugin, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				Utilities.adjustEventHandlerPosition(PlayerCommandPreprocessEvent.getHandlerList(), LongCommands.this, "CommandHelper");
+			}
+		});
+	}
 
 	@Override
 	public void onDisable() {}
