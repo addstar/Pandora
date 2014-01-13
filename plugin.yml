@@ -28,8 +28,6 @@ permissions:
     default: op
   pandora.flycancel.bypass:
     default: op
-  pandora.longcommands:
-    default: op
     
 commands:
   pandora:
