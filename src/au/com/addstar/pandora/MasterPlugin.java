@@ -22,6 +22,7 @@ import au.com.addstar.pandora.modules.JoinQuitNicknames;
 import au.com.addstar.pandora.modules.KeywordFilter;
 import au.com.addstar.pandora.modules.KickBanner;
 import au.com.addstar.pandora.modules.LWCGPInterop;
+import au.com.addstar.pandora.modules.PVPHandler;
 import au.com.addstar.pandora.modules.QuickshopGPInterop;
 import au.com.addstar.pandora.modules.SignLogger;
 import au.com.addstar.pandora.modules.TpClaim;
@@ -67,6 +68,8 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("TPClaim", TpClaim.class, "GriefPrevention");
 		registerModule("FlyCanceller", FlyCanceller.class);
 		registerModule("JoinQuitNicknames", JoinQuitNicknames.class, "Essentials");
+		registerModule("PVPHandler", PVPHandler.class, "WorldGuard");
+		
 		//TODO: Register additional modules here
 	}
 	
