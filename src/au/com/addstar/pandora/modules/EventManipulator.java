@@ -85,6 +85,7 @@ public class EventManipulator implements Module, Listener
 			if(!config.isConfigurationSection(selectorString))
 			{
 				mPlugin.getLogger().severe("[EventManipulator] Bad selector: " + selectorString);
+				mPlugin.getLogger().severe("[EventManipulator] Selector has no manipulator options");
 				return;
 			}
 			
@@ -93,6 +94,7 @@ public class EventManipulator implements Module, Listener
 			if(!match.matches())
 			{
 				mPlugin.getLogger().severe("[EventManipulator] Bad selector: " + selectorString);
+				mPlugin.getLogger().severe("[EventManipulator] Error in selector");
 				return;
 			}
 			Selector selector;
@@ -161,9 +163,7 @@ public class EventManipulator implements Module, Listener
 			}
 			
 			mPlugin.getLogger().info("[EventManipulator] Manipulated handlers for " + eventClass.getSimpleName());
-			for(RegisteredListener listener : handlers.getRegisteredListeners())
-				mPlugin.getLogger().info(String.format("[%s %s %s] %s", listener.getPlugin().getName(), listener.getPriority(), listener.isIgnoringCancelled(), listener.getListener().getClass().getName()));
-			
+		
 			handlers.bake();
 		}
 	}
@@ -203,7 +203,8 @@ public class EventManipulator implements Module, Listener
 			if(!match.group(4).equals("*"))
 			{
 				priority = EventPriority.valueOf(match.group(4).toUpperCase());
-				throw new IllegalArgumentException("Invalid event priority " + match.group(4));
+				if(priority == null)
+					throw new IllegalArgumentException("Invalid event priority " + match.group(4));
 			}
 			
 			if(!match.group(5).equals("*"))
