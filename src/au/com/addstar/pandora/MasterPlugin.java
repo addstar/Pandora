@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import au.com.addstar.pandora.modules.AntiAutoFish;
 import au.com.addstar.pandora.modules.AntiChatRepeater;
 import au.com.addstar.pandora.modules.AntiPortalTrap;
+import au.com.addstar.pandora.modules.EventManipulator;
 import au.com.addstar.pandora.modules.FlyCanceller;
 import au.com.addstar.pandora.modules.GPWGInterop;
 import au.com.addstar.pandora.modules.JoinQuitNicknames;
@@ -69,6 +70,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("FlyCanceller", FlyCanceller.class);
 		registerModule("JoinQuitNicknames", JoinQuitNicknames.class, "Essentials");
 		registerModule("PVPHandler", PVPHandler.class, "WorldGuard");
+		registerModule("EventManipulator", EventManipulator.class);
 		
 		//TODO: Register additional modules here
 	}

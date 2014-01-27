@@ -1,0 +1,39 @@
+# Here you can specify how events are manipulated
+# General format:
+#
+# <selector>:
+#   move: "dependancy1, dependancy2, ..."
+#   priority: <priority>
+#   ignoresCancel: <true/false>
+# 
+# You must specify at least one of move, priority, or ignoresCancel.
+#
+# Dependancy format:
+# before:PluginName
+# before:PluginName(Priority)
+# after:PluginName
+# after:PluginName(Priority)
+# PluginName can be * to mean all
+# Priority is a normal event priority
+#
+# Selector format:
+# <plugin>[<eventName>,<listenerClassName>,<priority>,<ignorescancel>]
+# <plugin> is plugin name
+# <listenerClassName> can be the name of the class(simple or full) the event is registered to or * to mean any
+# <eventName> is the name of the event to manipulate. This can be the short or full name. Cannot be *
+# <priority> normal event priority, or * for any
+# <ignorescancel> true, false, or * for any
+#
+# Example:
+#   Moves all AsyncPlayerChatEvents in the class with name "AntiChatRepeater" before all other handlers for that event
+# 
+# Pandora[AsyncPlayerChatEvent,AntiChatRepeater,*,*]:
+#   move: "before:*"
+#
+# Example:
+#   Changes the event priority from HIGHEST to LOWEST
+#
+# Pandora[AsyncPlayerChatEvent,AntiChatRepeater,HIGHEST,*]:
+#   priority: LOWEST
+#
+
