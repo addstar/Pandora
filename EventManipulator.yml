@@ -10,9 +10,7 @@
 #
 # Dependancy format:
 # before:PluginName
-# before:PluginName(Priority)
 # after:PluginName
-# after:PluginName(Priority)
 # PluginName can be * to mean all
 # Priority is a normal event priority
 #
