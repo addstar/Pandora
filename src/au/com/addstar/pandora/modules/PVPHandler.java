@@ -111,7 +111,7 @@ public class PVPHandler implements Module, Listener
 				continue;
 			
 			entity.getLocation(playerLoc);
-			if(playerLoc.distanceSquared(blockLoc) < 9)
+			if(playerLoc.distanceSquared(blockLoc) < 25)
 			{
 				player.sendMessage(ChatColor.RED + "PVP is not allowed in this area!");
 				player.sendMessage(ChatColor.GRAY + "You placed " + placeMaterial.toString() + " too close to another player.");
