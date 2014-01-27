@@ -1,5 +1,6 @@
 package au.com.addstar.pandora.modules;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 
@@ -25,6 +26,8 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 
+import au.com.addstar.pandora.AutoConfig;
+import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 
@@ -32,6 +35,12 @@ public class PVPHandler implements Module, Listener
 {
 	private HashSet<PotionEffectType> mBadEffects = new HashSet<PotionEffectType>();
 	private WorldGuardPlugin mWorldGuard;
+	
+	private Config mConfig;
+	
+	private int mLavaRange;
+	private int mFireRange;
+	private int mSearchRadius;
 	
 	public PVPHandler()
 	{
@@ -103,7 +112,11 @@ public class PVPHandler implements Module, Listener
 		if(regions.allows(DefaultFlag.PVP))
 			return false;
 		
-		List<Entity> entities = player.getNearbyEntities(10, 10, 10);
+		List<Entity> entities = player.getNearbyEntities(mSearchRadius, mSearchRadius, mSearchRadius);
+		
+		int dist = mLavaRange;
+		if(placeMaterial == Material.FIRE)
+			dist = mFireRange;
 		
 		for(Entity entity : entities)
 		{
@@ -111,7 +124,7 @@ public class PVPHandler implements Module, Listener
 				continue;
 			
 			entity.getLocation(playerLoc);
-			if(playerLoc.distanceSquared(blockLoc) < 25)
+			if(playerLoc.distanceSquared(blockLoc) < dist)
 			{
 				player.sendMessage(ChatColor.RED + "PVP is not allowed in this area!");
 				player.sendMessage(ChatColor.GRAY + "You placed " + placeMaterial.toString() + " too close to another player.");
@@ -144,6 +157,15 @@ public class PVPHandler implements Module, Listener
 	public void onEnable()
 	{
 		mWorldGuard = (WorldGuardPlugin)Bukkit.getPluginManager().getPlugin("WorldGuard");
+		if(mConfig.load())
+			mConfig.save();
+		else
+			throw new RuntimeException("The config failed to load");
+		
+		mLavaRange = mConfig.lavaRadius * mConfig.lavaRadius;
+		mFireRange = mConfig.fireRadius * mConfig.fireRadius;
+		
+		mSearchRadius = Math.max(mConfig.fireRadius, mConfig.lavaRadius);
 	}
 
 	@Override
@@ -152,6 +174,21 @@ public class PVPHandler implements Module, Listener
 	}
 
 	@Override
-	public void setPandoraInstance( MasterPlugin plugin ) {}
+	public void setPandoraInstance( MasterPlugin plugin ) 
+	{
+		mConfig = new Config(new File(plugin.getDataFolder(), "PVPHandler.yml"));
+	}
 
+	private class Config extends AutoConfig
+	{
+		public Config(File file)
+		{
+			super(file);
+		}
+		
+		@ConfigField
+		public int lavaRadius = 10;
+		@ConfigField
+		public int fireRadius = 5;
+	}
 }
