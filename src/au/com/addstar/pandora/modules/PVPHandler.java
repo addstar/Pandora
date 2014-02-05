@@ -23,6 +23,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.events.DisallowedPVPEvent;
 import com.sk89q.worldguard.protection.flags.DefaultFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 
@@ -151,6 +152,13 @@ public class PVPHandler implements Module, Listener
 			return;
 		
 		event.setCancelled(handleBlockPlace(event.getBlockClicked(), event.getPlayer(), Material.LAVA));
+	}
+	
+	@EventHandler
+	private void onPVPCheck(DisallowedPVPEvent event)
+	{
+		if(event.getDefender().hasMetadata("NPC") || event.getAttacker().hasMetadata("NPC"))
+			event.setCancelled(true);
 	}
 	
 	@Override
