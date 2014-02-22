@@ -3,7 +3,6 @@ package au.com.addstar.pandora.modules;
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.events.ClaimBeforeCreateEvent;
-import me.ryanhamshire.GriefPrevention.events.ClaimCreatedEvent;
 import me.ryanhamshire.GriefPrevention.events.ClaimResizeEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

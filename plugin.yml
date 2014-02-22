@@ -36,3 +36,7 @@ commands:
   tpclaim:
     usage: /<command> <player> [<index>|<world>|<world>:<index>]
     permission: pandora.tpclaim
+  ptimings:
+    usage: /<command> <on|off>
+    description: Turns timings on and off
+    permission: bukkit.command.timings

@@ -1,6 +1,8 @@
 package au.com.addstar.pandora;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -210,5 +212,21 @@ public class Utilities
 		list.bake();
 		
 		MasterPlugin.getInstance().getLogger().info("NOTE: Listener " + listener + " injected before that of " + beforePlugin + " listener");
+	}
+	
+	public static List<String> matchStrings(String str, Collection<String> values)
+	{
+		str = str.toLowerCase();
+		ArrayList<String> matches = new ArrayList<String>();
+		
+		for(String value : values)
+		{
+			if(value.toLowerCase().startsWith(str))
+				matches.add(value);
+		}
+		
+		if(matches.isEmpty())
+			return null;
+		return matches;
 	}
 }

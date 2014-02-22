@@ -26,6 +26,7 @@ import au.com.addstar.pandora.modules.LWCGPInterop;
 import au.com.addstar.pandora.modules.PVPHandler;
 import au.com.addstar.pandora.modules.QuickshopGPInterop;
 import au.com.addstar.pandora.modules.SignLogger;
+import au.com.addstar.pandora.modules.TimingsEnabler;
 import au.com.addstar.pandora.modules.TpClaim;
 import au.com.addstar.pandora.modules.TrustedHomes;
 import au.com.addstar.pandora.modules.VanishCitizensIO;
@@ -71,7 +72,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("JoinQuitNicknames", JoinQuitNicknames.class, "Essentials");
 		registerModule("PVPHandler", PVPHandler.class, "WorldGuard");
 		registerModule("EventManipulator", EventManipulator.class);
-		
+		registerModule("TimingsEnabler", TimingsEnabler.class);
 		//TODO: Register additional modules here
 	}
 	
