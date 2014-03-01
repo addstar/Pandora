@@ -193,6 +193,11 @@ public class CommandBlockHelpers implements Module
                     	sendMessage(sender, "No change");
                     	return true;
                     }
+                    else if(!args[5].equals("replace"))
+                    {
+                    	sendMessage(sender, "Unknown oldBlockHanding value" + args[5]);
+                    	return true;
+                    }
                 }
 
                 
