@@ -40,3 +40,6 @@ commands:
     usage: /<command> <on|off>
     description: Turns timings on and off
     permission: bukkit.command.timings
+  setblock:
+    usage: /setblock <x> <y> <z> <tilename> [datavalue] [oldblockHandling] [dataTag]
+    permission: minecraft.command.setblock
