@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import au.com.addstar.pandora.modules.AntiAutoFish;
 import au.com.addstar.pandora.modules.AntiChatRepeater;
 import au.com.addstar.pandora.modules.AntiPortalTrap;
+import au.com.addstar.pandora.modules.BeaconFix;
 import au.com.addstar.pandora.modules.CommandBlockHelpers;
 import au.com.addstar.pandora.modules.EventManipulator;
 import au.com.addstar.pandora.modules.FlyCanceller;
@@ -75,6 +76,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("EventManipulator", EventManipulator.class);
 		registerModule("TimingsEnabler", TimingsEnabler.class);
 		registerModule("CommandBlockHelpers", CommandBlockHelpers.class);
+		registerModule("BeaconFix", BeaconFix.class, "ProtocolLib");
 		//TODO: Register additional modules here
 	}
 	
