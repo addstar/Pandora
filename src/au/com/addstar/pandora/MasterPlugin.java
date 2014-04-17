@@ -18,6 +18,7 @@ import au.com.addstar.pandora.modules.AntiChatRepeater;
 import au.com.addstar.pandora.modules.AntiPortalEntityTravel;
 import au.com.addstar.pandora.modules.AntiPortalTrap;
 import au.com.addstar.pandora.modules.BeaconFix;
+import au.com.addstar.pandora.modules.BungeeVoter;
 import au.com.addstar.pandora.modules.CommandBlockHelpers;
 import au.com.addstar.pandora.modules.EventManipulator;
 import au.com.addstar.pandora.modules.FlyCanceller;
@@ -79,6 +80,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("CommandBlockHelpers", CommandBlockHelpers.class);
 		registerModule("BeaconFix", BeaconFix.class, "ProtocolLib");
 		registerModule("AntiPortalEntityTravel", AntiPortalEntityTravel.class);
+		registerModule("BungeeVoter", BungeeVoter.class, "Votifier");
 		//TODO: Register additional modules here
 	}
 	

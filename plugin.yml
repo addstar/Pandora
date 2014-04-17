@@ -5,7 +5,7 @@ description: Bukkit plugin with many miscellaneous features specifically created
 
 main: au.com.addstar.pandora.MasterPlugin
 
-softdepend: [Essentials, Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens]
+softdepend: [Essentials, Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier]
 
 loadbefore: [CommandHelper]
 
