@@ -59,7 +59,7 @@ public class PVPHandler implements Module, Listener
 	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
 	private void onSplashPotion(PotionSplashEvent event)
 	{
-		if(!(event.getPotion().getShooter() instanceof Player) || event.getPotion().getShooter().hasMetadata("NPC"))
+		if(!(event.getPotion().getShooter() instanceof Player) || ((Player)event.getPotion().getShooter()).hasMetadata("NPC"))
 			return;
 		
 		boolean bad = false;
