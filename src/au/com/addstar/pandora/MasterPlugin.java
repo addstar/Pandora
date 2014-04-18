@@ -41,7 +41,6 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes", "GriefPrevention", "Essentials");
 		registerModule("Quickshop-Griefprevention-Interop", "au.com.addstar.pandora.modules.QuickshopGPInterop", "GriefPrevention", "QuickShop");
 		registerModule("Vanish-Citizens-Interop", "au.com.addstar.pandora.modules.VanishCitizensIO", "VanishNoPacket", "Citizens");
-		registerModule("Anti-AutoFish", "au.com.addstar.pandora.modules.AntiAutoFish");
 		registerModule("KeywordHighlighter", "au.com.addstar.pandora.modules.KeywordFilter");
 		registerModule("AntiChatRepeater", "au.com.addstar.pandora.modules.AntiChatRepeater", "Essentials");
 		registerModule("SignLogger", "au.com.addstar.pandora.modules.SignLogger");
@@ -54,8 +53,6 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("JoinQuitNicknames", "au.com.addstar.pandora.modules.JoinQuitNicknames", "Essentials");
 		registerModule("PVPHandler", "au.com.addstar.pandora.modules.PVPHandler", "WorldGuard");
 		registerModule("EventManipulator", "au.com.addstar.pandora.modules.EventManipulator");
-		registerModule("TimingsEnabler", "au.com.addstar.pandora.modules.TimingsEnabler");
-		registerModule("CommandBlockHelpers", "au.com.addstar.pandora.modules.CommandBlockHelpers");
 		registerModule("BeaconFix", "au.com.addstar.pandora.modules.BeaconFix", "ProtocolLib");
 		registerModule("AntiPortalEntityTravel", "au.com.addstar.pandora.modules.AntiPortalEntityTravel");
 		registerModule("BungeeVoter", "au.com.addstar.pandora.modules.BungeeVoter", "Votifier");
