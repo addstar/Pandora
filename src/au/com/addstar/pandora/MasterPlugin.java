@@ -13,33 +13,11 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import au.com.addstar.pandora.modules.AntiAutoFish;
-import au.com.addstar.pandora.modules.AntiChatRepeater;
-import au.com.addstar.pandora.modules.AntiPortalEntityTravel;
-import au.com.addstar.pandora.modules.AntiPortalTrap;
-import au.com.addstar.pandora.modules.BeaconFix;
-import au.com.addstar.pandora.modules.BungeeVoter;
-import au.com.addstar.pandora.modules.CommandBlockHelpers;
-import au.com.addstar.pandora.modules.EventManipulator;
-import au.com.addstar.pandora.modules.FlyCanceller;
-import au.com.addstar.pandora.modules.GPWGInterop;
-import au.com.addstar.pandora.modules.JoinQuitNicknames;
-import au.com.addstar.pandora.modules.KeywordFilter;
-import au.com.addstar.pandora.modules.KickBanner;
-import au.com.addstar.pandora.modules.LWCGPInterop;
-import au.com.addstar.pandora.modules.PVPHandler;
-import au.com.addstar.pandora.modules.QuickshopGPInterop;
-import au.com.addstar.pandora.modules.SignLogger;
-import au.com.addstar.pandora.modules.TimingsEnabler;
-import au.com.addstar.pandora.modules.TpClaim;
-import au.com.addstar.pandora.modules.TrustedHomes;
-import au.com.addstar.pandora.modules.VanishCitizensIO;
-
 public class MasterPlugin extends JavaPlugin
 {
 	private HashMap<String, Module> mLoadedModules;
 	
-	private HashMap<Class<? extends Module>, ModuleDefinition> mAvailableModules;
+	private HashMap<String, ModuleDefinition> mAvailableModules;
 	private HashMap<String, ModuleDefinition> mAvailableModulesByName;
 	
 	private Config mConfig;
@@ -52,7 +30,7 @@ public class MasterPlugin extends JavaPlugin
 	
 	public MasterPlugin()
 	{
-		mAvailableModules = new HashMap<Class<? extends Module>, ModuleDefinition>();
+		mAvailableModules = new HashMap<String, ModuleDefinition>();
 		mAvailableModulesByName = new HashMap<String, ModuleDefinition>();
 		
 		mLoadedModules = new HashMap<String, Module>();
@@ -60,27 +38,27 @@ public class MasterPlugin extends JavaPlugin
 	
 	private void registerModules()
 	{
-		registerModule("TrustedHomes", TrustedHomes.class, "GriefPrevention", "Essentials");
-		registerModule("Quickshop-Griefprevention-Interop", QuickshopGPInterop.class, "GriefPrevention", "QuickShop");
-		registerModule("Vanish-Citizens-Interop", VanishCitizensIO.class, "VanishNoPacket", "Citizens");
-		registerModule("Anti-AutoFish", AntiAutoFish.class);
-		registerModule("KeywordHighlighter", KeywordFilter.class);
-		registerModule("AntiChatRepeater", AntiChatRepeater.class, "Essentials");
-		registerModule("SignLogger", SignLogger.class);
-		registerModule("KickBanner", KickBanner.class);
-		registerModule("AntiPortalTrap", AntiPortalTrap.class);
-		registerModule("LWC-GP-Interop", LWCGPInterop.class, "LWC", "GriefPrevention");
-		registerModule("GP-WorldGuard-Interop", GPWGInterop.class, "GriefPrevention", "WorldGuard");
-		registerModule("TPClaim", TpClaim.class, "GriefPrevention");
-		registerModule("FlyCanceller", FlyCanceller.class);
-		registerModule("JoinQuitNicknames", JoinQuitNicknames.class, "Essentials");
-		registerModule("PVPHandler", PVPHandler.class, "WorldGuard");
-		registerModule("EventManipulator", EventManipulator.class);
-		registerModule("TimingsEnabler", TimingsEnabler.class);
-		registerModule("CommandBlockHelpers", CommandBlockHelpers.class);
-		registerModule("BeaconFix", BeaconFix.class, "ProtocolLib");
-		registerModule("AntiPortalEntityTravel", AntiPortalEntityTravel.class);
-		registerModule("BungeeVoter", BungeeVoter.class, "Votifier");
+		registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes", "GriefPrevention", "Essentials");
+		registerModule("Quickshop-Griefprevention-Interop", "au.com.addstar.pandora.modules.QuickshopGPInterop", "GriefPrevention", "QuickShop");
+		registerModule("Vanish-Citizens-Interop", "au.com.addstar.pandora.modules.VanishCitizensIO", "VanishNoPacket", "Citizens");
+		registerModule("Anti-AutoFish", "au.com.addstar.pandora.modules.AntiAutoFish");
+		registerModule("KeywordHighlighter", "au.com.addstar.pandora.modules.KeywordFilter");
+		registerModule("AntiChatRepeater", "au.com.addstar.pandora.modules.AntiChatRepeater", "Essentials");
+		registerModule("SignLogger", "au.com.addstar.pandora.modules.SignLogger");
+		registerModule("KickBanner", "au.com.addstar.pandora.modules.KickBanner");
+		registerModule("AntiPortalTrap", "au.com.addstar.pandora.modules.AntiPortalTrap");
+		registerModule("LWC-GP-Interop", "au.com.addstar.pandora.modules.LWCGPInterop", "LWC", "GriefPrevention");
+		registerModule("GP-WorldGuard-Interop", "au.com.addstar.pandora.modules.GPWGInterop", "GriefPrevention", "WorldGuard");
+		registerModule("TPClaim", "au.com.addstar.pandora.modules.TpClaim", "GriefPrevention");
+		registerModule("FlyCanceller", "au.com.addstar.pandora.modules.FlyCanceller");
+		registerModule("JoinQuitNicknames", "au.com.addstar.pandora.modules.JoinQuitNicknames", "Essentials");
+		registerModule("PVPHandler", "au.com.addstar.pandora.modules.PVPHandler", "WorldGuard");
+		registerModule("EventManipulator", "au.com.addstar.pandora.modules.EventManipulator");
+		registerModule("TimingsEnabler", "au.com.addstar.pandora.modules.TimingsEnabler");
+		registerModule("CommandBlockHelpers", "au.com.addstar.pandora.modules.CommandBlockHelpers");
+		registerModule("BeaconFix", "au.com.addstar.pandora.modules.BeaconFix", "ProtocolLib");
+		registerModule("AntiPortalEntityTravel", "au.com.addstar.pandora.modules.AntiPortalEntityTravel");
+		registerModule("BungeeVoter", "au.com.addstar.pandora.modules.BungeeVoter", "Votifier");
 		//TODO: Register additional modules here
 	}
 	
@@ -209,7 +187,7 @@ public class MasterPlugin extends JavaPlugin
 	 * @param moduleClass Class for the module
 	 * @param dependencies Names of plugins needed for this module to load
 	 */
-	public void registerModule(String name, Class<? extends Module> moduleClass, String... dependencies)
+	public void registerModule(String name, String moduleClass, String... dependencies)
 	{
 		ModuleDefinition def = new ModuleDefinition(name, moduleClass, dependencies);
 		mAvailableModules.put(moduleClass, def);
@@ -261,11 +239,18 @@ public class MasterPlugin extends JavaPlugin
 		return true;
 	}
 	
-	private Module createModule(String name, Class<? extends Module> moduleClass)
+	private Module createModule(String name, String moduleClass)
 	{
 		try
 		{
-			Module module = moduleClass.newInstance();
+			Class<?> rawClazz = Class.forName(moduleClass);
+			if(!Module.class.isAssignableFrom(rawClazz))
+			{
+				getLogger().severe("Module class '" + moduleClass + "' is not an instance of Module!");
+				return null;
+			}
+			
+			Module module = rawClazz.asSubclass(Module.class).newInstance();
 			module.setPandoraInstance(this);
 			
 			try
@@ -297,6 +282,11 @@ public class MasterPlugin extends JavaPlugin
 			getLogger().severe("Failed to instanciate " + name + ". No public default constructor available.");
 			e.printStackTrace();
 		}
+		catch ( ClassNotFoundException e )
+		{
+			getLogger().severe("Failed to instanciate " + name + ". Class not found");
+			e.printStackTrace();
+		}
 		
 		return null;
 	}
@@ -326,9 +316,9 @@ public class MasterPlugin extends JavaPlugin
 	private static class ModuleDefinition
 	{
 		public final String name;
-		public final Class<? extends Module> moduleClass;
+		public final String moduleClass;
 		public final String[] dependencies;
-		public ModuleDefinition(String name, Class<? extends Module> moduleClass, String... dependencies)
+		public ModuleDefinition(String name, String moduleClass, String... dependencies)
 		{
 			this.name = name;
 			this.moduleClass = moduleClass;
