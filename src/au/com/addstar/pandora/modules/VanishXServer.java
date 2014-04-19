@@ -1,5 +1,8 @@
 package au.com.addstar.pandora.modules;
 
+import java.lang.reflect.Field;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 import org.kitteh.vanish.VanishPlugin;
 import org.kitteh.vanish.event.VanishStatusChangeEvent;
 import au.com.addstar.bc.BungeeChat;
+import au.com.addstar.bc.ProxyJoinEvent;
 import au.com.addstar.bc.sync.IMethodCallback;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
@@ -87,6 +91,7 @@ public class VanishXServer implements Module, Listener
 									Bukkit.broadcast(broadcastMessage, "vanish.silentjoin.global");
 									BungeeChat.mirrorChat(broadcastMessage, "VanishNotify");
 									mVanish.getManager().getAnnounceManipulator().addToDelayedAnnounce(player.getName());
+									BungeeChat.getSyncManager().setPlayerProperty(player.getName(), "hasQuitMessage", (byte)0);
 								}
 								else
 									unvanishIfNeeded(player);
@@ -105,12 +110,9 @@ public class VanishXServer implements Module, Listener
 							public void onFinished( Object status )
 							{
 								if(status instanceof Byte)
-								{
-									if(((Byte)status) == 1)
-										mVanish.getManager().getAnnounceManipulator().addToDelayedAnnounce(player.getName());
-									else
-										mVanish.getManager().getAnnounceManipulator().dropDelayedAnnounce(player.getName());
-								}
+									setFakeOnlineStatus(player, ((Byte)status) != 0);
+								else
+									setFakeOnlineStatus(player, false);
 							}
 							
 							@Override
@@ -136,6 +138,13 @@ public class VanishXServer implements Module, Listener
 			}
 		}
 	}
+	
+	@EventHandler(priority=EventPriority.LOW)
+	private void onProxyJoin(ProxyJoinEvent event)
+	{
+		if(event.getPlayer().hasPermission("vanish.silentjoin.global"))
+			event.setJoinMessage(null);
+	}
 
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	private void onVanishChange(VanishStatusChangeEvent event)
@@ -157,11 +166,13 @@ public class VanishXServer implements Module, Listener
 					{
 						// Fake Join
 						BungeeChat.mirrorChat(ChatColor.YELLOW + player.getName() + " joined the game.", "BCast");
+						BungeeChat.getSyncManager().setPlayerProperty(player.getName(), "hasQuitMessage", (byte)1);
 					}
 					else
 					{
 						// Fake Quit
 						BungeeChat.mirrorChat(ChatColor.YELLOW + player.getName() + " left the game.", "BCast");
+						BungeeChat.getSyncManager().setPlayerProperty(player.getName(), "hasQuitMessage", (byte)0);
 					}
 					
 					BungeeChat.getSyncManager().setPlayerProperty(player.getName(), "isFakeJoin", (byte)(finalOnline ? 1 : 0));
@@ -169,5 +180,27 @@ public class VanishXServer implements Module, Listener
 				
 			}
 		});
+	}
+	
+	private Map<String, Boolean> playerOnlineStatus = null;
+	
+	@SuppressWarnings( "unchecked" )
+	private void setFakeOnlineStatus(Player player, boolean state)
+	{
+		if(playerOnlineStatus == null)
+		{
+			try
+			{
+				Field field = mVanish.getManager().getAnnounceManipulator().getClass().getDeclaredField("playerOnlineStatus");
+				field.setAccessible(true);
+				playerOnlineStatus = (Map<String, Boolean>)field.get(mVanish.getManager().getAnnounceManipulator());
+			}
+			catch(Exception e)
+			{
+				throw new RuntimeException(e);
+			}
+		}
+		
+		playerOnlineStatus.put(player.getName(), state);
 	}
 }
