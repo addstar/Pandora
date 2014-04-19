@@ -28,6 +28,8 @@ permissions:
     default: op
   pandora.flycancel.bypass:
     default: op
+  vanish.silentjoin.global:
+    default: false
     
 commands:
   pandora:

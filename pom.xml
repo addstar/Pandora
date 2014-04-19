@@ -144,6 +144,12 @@
     	<artifactId>votifier</artifactId>
     	<version>1.9</version>
     </dependency>
+    
+    <dependency>
+    	<groupId>au.com.addstar</groupId>
+    	<artifactId>BungeeChatBukkit</artifactId>
+    	<version>1.0.0.15</version>
+    </dependency>
   </dependencies>
 
   <build>

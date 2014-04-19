@@ -56,6 +56,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("BeaconFix", "au.com.addstar.pandora.modules.BeaconFix", "ProtocolLib");
 		registerModule("AntiPortalEntityTravel", "au.com.addstar.pandora.modules.AntiPortalEntityTravel");
 		registerModule("BungeeVoter", "au.com.addstar.pandora.modules.BungeeVoter", "Votifier");
+		registerModule("VanishXServer", "au.com.addstar.pandora.modules.VanishXServer", "BungeeChatBukkit", "VanishNoPacket");
 		//TODO: Register additional modules here
 	}
 	
