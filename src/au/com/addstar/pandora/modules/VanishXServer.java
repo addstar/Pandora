@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.Plugin;
 import org.kitteh.vanish.VanishPlugin;
 import org.kitteh.vanish.event.VanishStatusChangeEvent;
+
+import au.com.addstar.bc.AFKChangeEvent;
 import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.bc.ProxyJoinEvent;
 import au.com.addstar.bc.sync.IMethodCallback;
@@ -66,11 +68,20 @@ public class VanishXServer implements Module, Listener
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	private void onPlayerJoin(PlayerJoinEvent event)
 	{
-		if(event.getPlayer().hasPermission("vanish.vanish"))
+		final Player player = event.getPlayer();
+		if(player.hasPermission("vanish.vanish"))
 		{
-			final Player player = event.getPlayer();
 			if(!mVanish.getManager().isVanished(player))
 				mVanish.getManager().toggleVanishQuiet(player, false);
+			
+			Bukkit.getScheduler().runTaskLater(mPlugin, new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					BungeeChat.getSyncManager().setPlayerProperty(player.getName(), "TL:group:vanish", true);
+				}
+			}, 2);
 			
 			if(event.getPlayer().hasPermission("vanish.silentjoin.global"))
 			{
@@ -137,6 +148,18 @@ public class VanishXServer implements Module, Listener
 				}, 2L);
 			}
 		}
+		
+		Bukkit.getScheduler().runTaskLater(mPlugin, new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				if(player.hasPermission("vanish.see"))
+					BungeeChat.getSyncManager().setPlayerProperty(player.getName(), "TL:see:vanish", true);
+				else
+					BungeeChat.getSyncManager().setPlayerProperty(player.getName(), "TL:see:vanish", null);
+			}
+		}, 2L);
 	}
 	
 	@EventHandler(priority=EventPriority.LOW)
@@ -153,6 +176,11 @@ public class VanishXServer implements Module, Listener
 		final boolean isOnline = mVanish.getManager().getAnnounceManipulator().getFakeOnlineStatus(player.getName());
 		
 		BungeeChat.getSyncManager().setPlayerProperty(player.getName(), "isVanished", (byte)(event.isVanishing() ? 1 : 0));
+		if(event.isVanishing())
+			BungeeChat.getSyncManager().setPlayerProperty(player.getName(), "TL:group:vanish", event.isVanishing());
+		else
+			BungeeChat.getSyncManager().setPlayerProperty(player.getName(), "TL:group:vanish", null);
+		
 		Bukkit.getScheduler().runTask(mPlugin, new Runnable()
 		{
 			@Override
@@ -180,6 +208,13 @@ public class VanishXServer implements Module, Listener
 				
 			}
 		});
+	}
+	
+	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
+	private void onAFKChange(AFKChangeEvent event)
+	{
+		if(mVanish.getManager().isVanished(event.getPlayer()))
+			event.setCancelled(true);
 	}
 	
 	private Map<String, Boolean> playerOnlineStatus = null;
