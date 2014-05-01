@@ -31,6 +31,42 @@ permissions:
   vanish.silentjoin.global:
     default: false
     
+  pandora.signs.color:
+    default: false
+  pandora.signs.format.bold:
+    default: false
+  pandora.signs.format.italic:
+    default: false
+  pandora.signs.format.strike:
+    default: false
+  pandora.signs.format.underline:
+    default: false
+  pandora.signs.format.magic:
+    default: false
+  pandora.signs.format.reset:
+    default: false
+  pandora.signs.format.*:
+    default: false
+    children:
+      pandora.signs.format.bold: true
+      pandora.signs.format.italic: true
+      pandora.signs.format.strike: true
+      pandora.signs.format.underline: true
+      pandora.signs.format.magic: true
+      pandora.signs.format.reset: true
+  pandora.signs.format.normal:
+    children:
+      pandora.signs.format.bold: true
+      pandora.signs.format.italic: true
+      pandora.signs.format.strike: true
+      pandora.signs.format.underline: true
+      pandora.signs.format.reset: true
+  pandora.signs.*:
+    default: false
+    children:
+      pandora.signs.color: true
+      pandora.signs.format.*: true
+    
 commands:
   pandora:
     usage: /<command>
