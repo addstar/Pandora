@@ -20,7 +20,7 @@
       </snapshots>
     </repository>
     
-    <!-- Addstar repo -->
+    <!-- Addstar repos -->
     <repository>
       <id>addstar-repo</id>
       <url>http://maven.addstar.com.au/artifactory/ext-release-local</url>
@@ -38,14 +38,20 @@
         <enabled>false</enabled>
       </releases>
     </repository>
-    
-    
-    <!-- Other repositories -->
+
+    <!-- For SnakeYAML (contains many other things too) -->
     <repository>
-      <id>maven-central</id>
-      <url>http://repo1.maven.org/maven2/</url>
+      <id>Sonatype-public</id>
+      <name>SnakeYAML repository</name>
+      <url>http://oss.sonatype.org/content/groups/public/</url>
     </repository>
     
+    <!-- For Vault -->
+    <repository>
+      <id>theyeticave</id>
+      <url>http://nexus.theyeticave.net/content/repositories/pub_releases/</url>
+    </repository>
+
     <repository>
       <id>sk89q-mvn2</id>
       <url>http://maven.sk89q.com/repo</url>
@@ -57,41 +63,41 @@
     </repository>
     
     <repository>
-	  <id>comphenix-rep</id>
-	  <name>Comphenix Repository</name>
-	  <url>http://repo.comphenix.net/content/groups/public</url>
-	</repository>
+      <id>comphenix-rep</id>
+      <name>Comphenix Repository</name>
+      <url>http://repo.comphenix.net/content/groups/public</url>
+    </repository>
     
+    <!-- Maven central -->
+    <repository>
+      <id>maven-central</id>
+      <url>http://repo1.maven.org/maven2/</url>
+    </repository>
   </repositories>
 
   <dependencies>
     <!-- Bukkit -->
-    
-    <!-- CraftBukkit Dependency for experimental features -->
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.7.2-R0.4-SNAPSHOT</version>
+      <version>1.7.9-R0.3-SNAPSHOT</version>
     </dependency>        
     
     <!-- Used for Economy interop -->
     <dependency>
-    	<groupId>net.milkbowl</groupId>
-    	<artifactId>vault</artifactId>
-    	<version>1.2.24</version>
-    </dependency>
-    <dependency>
-    	<groupId>com.sk89q</groupId>
-    	<artifactId>worldedit</artifactId>
-    	<version>5.5.3</version>
-    </dependency>
-    <dependency>
-      <groupId>net.milkbowl</groupId>
-      <artifactId>vault</artifactId>
-      <version>1.2.12</version>
+      <groupId>net.milkbowl.vault</groupId>
+      <artifactId>Vault</artifactId>
+      <version>1.4.1</version>
     </dependency>
 
-    <!-- Used for economy stuff -->
+    <!-- WorldEdit -->
+    <dependency>
+      <groupId>com.sk89q</groupId>
+      <artifactId>worldedit</artifactId>
+      <version>5.6.2</version>
+    </dependency>
+
+    <!-- GriefPrevention -->
     <dependency>
       <groupId>me.ryanhamshire</groupId>
       <artifactId>griefprevention</artifactId>
@@ -105,40 +111,40 @@
       <version>4.4</version>
     </dependency>
     
-    <!-- VanishNP -->
+    <!-- VanishNoPacket -->
     <dependency>
       <groupId>org.kitteh</groupId>
       <artifactId>vanish</artifactId>
       <version>3.18.2</version>
       <type>jar</type>
-	  <scope>compile</scope>
+      <scope>compile</scope>
     </dependency>
     
-    <!--  -->
+    <!-- Citizens -->
     <dependency>
-	  <groupId>net.citizensnpcs</groupId>
-	  <artifactId>citizens</artifactId>
-	  <version>2.0.11</version>
-	  <type>jar</type>
-	  <scope>compile</scope>
-	</dependency>
+      <groupId>net.citizensnpcs</groupId>
+      <artifactId>citizens</artifactId>
+      <version>2.0.13</version>
+      <type>jar</type>
+      <scope>compile</scope>
+    </dependency>
 	
-	<dependency>
-		<groupId>com.earth2me</groupId>
-		<artifactId>essentials</artifactId>
-		<version>2.12.2</version>
+    <dependency>
+      <groupId>com.earth2me</groupId>
+      <artifactId>essentials</artifactId>
+      <version>2.12.2</version>
     </dependency>
     
     <dependency>
-    	<groupId>com.griefcraft</groupId>
-    	<artifactId>lwc</artifactId>
-    	<version>4.4.0</version>
+      <groupId>com.griefcraft</groupId>
+      <artifactId>lwc</artifactId>
+      <version>4.4.0</version>
     </dependency>
     
     <dependency>
       <groupId>com.sk89q</groupId>
       <artifactId>worldguard</artifactId>
-      <version>5.7.3</version>
+      <version>5.8</version>
       <exclusions>
       	<exclusion>
       	  <groupId>com.sk89q</groupId>
@@ -148,10 +154,10 @@
     </dependency>
     
     <dependency>
-	  <groupId>com.comphenix.protocol</groupId>
-	  <artifactId>ProtocolLib</artifactId>
-	  <version>3.2.0</version>
-	</dependency>
+      <groupId>com.comphenix.protocol</groupId>
+      <artifactId>ProtocolLib</artifactId>
+      <version>3.2.0</version>
+    </dependency>
 
     <dependency>
     	<groupId>com.vexsoftware</groupId>
