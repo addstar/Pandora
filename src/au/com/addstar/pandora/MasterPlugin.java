@@ -58,6 +58,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("BungeeVoter", "au.com.addstar.pandora.modules.BungeeVoter", "Votifier");
 		registerModule("SignColour", "au.com.addstar.pandora.modules.SignColour");
 		registerModule("MinigameBCast", "au.com.addstar.pandora.modules.MinigameBroadcaster", "Minigames", "BungeeChatBukkit");
+		registerModule("AntiBuild", "au.com.addstar.pandora.modules.AntiBuild");
 		
 		//TODO: Register additional modules here
 	}
