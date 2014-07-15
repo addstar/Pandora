@@ -194,6 +194,38 @@ public class MasterPlugin extends JavaPlugin
 		mAvailableModulesByName.put(name, def);
 	}
 	
+	/**
+	 * Registers a module with NMS code for loading
+	 * @param name Name of module
+	 * @param moduleClass Class for the module
+	 * @param version The CB version that must be loaded. This should be in the form of "1_7_R4"
+	 * @param dependencies Names of plugins needed for this module to load
+	 */
+	public void registerNMSModule(String name, String moduleClass, String version, String... dependencies)
+	{
+		if(!version.equals(getCBVersion()))
+		{
+			getLogger().severe("[NMS Module] Cannot load " + name + ". Required: " + version + " has: " + getCBVersion());
+			return;
+		}
+		
+		registerModule(name, moduleClass, dependencies);
+	}
+	
+	private String mCBVersion = null;
+	private String getCBVersion()
+	{
+		if(mCBVersion == null)
+		{
+			String name = Bukkit.getServer().getClass().getName();
+			name = name.substring("org.bukkit.craftbukkit.v".length());
+			name = name.substring(0,name.indexOf("."));
+			mCBVersion = name;
+		}
+		
+		return mCBVersion;
+	}
+	
 	private void loadModules()
 	{
 		mLoadedModules.clear();
