@@ -1,18 +1,14 @@
 package au.com.addstar.pandora.modules;
 
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.File;
-import java.io.IOException;
-
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
 import com.pauldavdesign.mineauz.minigames.events.MinigamesBroadcastEvent;
 
+import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
@@ -49,24 +45,7 @@ public class MinigameBroadcaster implements Module, Listener
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	public void onMinigameBroadcast(MinigamesBroadcastEvent event)
 	{
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
-		DataOutputStream out = new DataOutputStream(stream);
-
-		try
-		{
-			out.writeUTF("Mirror");
-			out.writeUTF(mConfig.channel);
-			out.writeUTF(event.getMessageWithPrefix());
-
-			Player[] players = Bukkit.getOnlinePlayers();
-			if (players.length > 0) {
-				players[0].sendPluginMessage(mPlugin, "BungeeChat", stream.toByteArray());
-			}
-		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
+		BungeeChat.mirrorChat(event.getMessageWithPrefix(), mConfig.channel);
 	}
 	
 	private class Config extends AutoConfig
