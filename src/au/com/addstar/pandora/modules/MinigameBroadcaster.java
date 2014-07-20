@@ -4,7 +4,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -52,17 +51,16 @@ public class MinigameBroadcaster implements Module, Listener
 	{
 		ByteArrayOutputStream stream = new ByteArrayOutputStream();
 		DataOutputStream out = new DataOutputStream(stream);
-		
+
 		try
 		{
 			out.writeUTF("Mirror");
 			out.writeUTF(mConfig.channel);
 			out.writeUTF(event.getMessageWithPrefix());
-			
-			Collection<? extends Player> players = Bukkit.getOnlinePlayers();
-			if(players.size() > 0) {
-				Player p = players.iterator().next();
-				p.sendPluginMessage(mPlugin, "BungeeChat", stream.toByteArray());
+
+			Player[] players = Bukkit.getOnlinePlayers();
+			if (players.length > 0) {
+				players[0].sendPluginMessage(mPlugin, "BungeeChat", stream.toByteArray());
 			}
 		}
 		catch(IOException e)

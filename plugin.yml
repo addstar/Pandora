@@ -10,6 +10,9 @@ softdepend: [Essentials, Multiverse-Core, GriefPrevention, QuickShop, VanishNoPa
 loadbefore: [CommandHelper]
 
 permissions:
+  pandora.antibuild.bypass:
+    default: op
+
   quickshop.allowinclaims:
     default: op
   trustedhomes.bypass:
