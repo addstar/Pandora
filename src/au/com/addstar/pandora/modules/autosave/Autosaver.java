@@ -19,6 +19,7 @@ public class Autosaver implements Module
 	
 	private RegionFileFlusher mFlushTask;
 	private ChunkSaveTask mChunkTask;
+	private UserCacheSaveTask mUserCacheTask;
 	
 	@Override
 	public void onEnable()
@@ -28,6 +29,9 @@ public class Autosaver implements Module
 		
 		if(mConfig.writeDataEnabled)
 			mFlushTask = new RegionFileFlusher(this);
+		
+		if(mConfig.userCacheSaveEnabled)
+			mUserCacheTask = new UserCacheSaveTask(this);
 		
 		mChunkTask = new ChunkSaveTask(this);
 	}
@@ -40,6 +44,9 @@ public class Autosaver implements Module
 		
 		if(mChunkTask != null)
 			mChunkTask.stop();
+		
+		if(mUserCacheTask != null)
+			mUserCacheTask.stop();
 	}
 
 	@Override
@@ -79,6 +86,12 @@ public class Autosaver implements Module
 		@ConfigField(comment="The tick interval at which the server actually writes the chunk data to file (20 ticks = 1 second)")
 		public int writeDataInterval = 12000;
 		
+		@ConfigField(comment="Whether Pandora will attempt to save the UserCache\nThis is done on another thread, so don't worry about the thread lagging while this happens")
+		public boolean userCacheSaveEnabled = false;
+		
+		@ConfigField(comment="The tick interval at which the UserCache is saved to file (20 ticks = 1 second)")
+		public int userCacheSaveInterval;
+		
 		@Override
 		protected void onPostLoad() throws InvalidConfigurationException
 		{
@@ -113,6 +126,27 @@ public class Autosaver implements Module
 					timetext = (time / 3600) + " hours";
 				
 				mLogger.info("[Autosaver] will write world data to all region files every " + writeDataInterval + " ticks (" + timetext + ")");
+			}
+			
+			if(userCacheSaveInterval < 400)
+			{
+				userCacheSaveInterval = 400;
+				mLogger.warning("[Autosaver] UserCache save interval is set too low and has been limited to a 400 tick (20 second) interval");
+			}
+			
+			if(userCacheSaveEnabled)
+			{
+				double time = userCacheSaveInterval / 20;
+				
+				String timetext;
+				if (time < 60)
+					timetext = time + " seconds";
+				else if (time < 3600)
+					timetext = (time / 60) + " minutes";
+				else
+					timetext = (time / 3600) + " hours";
+				
+				mLogger.info("[Autosaver] will save the UserCache every " + userCacheSaveInterval + " ticks (" + timetext + ")");
 			}
 		}
 	}
