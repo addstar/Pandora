@@ -60,6 +60,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("MinigameBCast", "au.com.addstar.pandora.modules.MinigameBroadcaster", "Minigames", "BungeeChatBukkit");
 		registerModule("AntiBuild", "au.com.addstar.pandora.modules.AntiBuild");
 		registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver", "1_7_R4");
+		registerModule("ItemDB", "au.com.addstar.pandora.modules.ItemDB", "Monolith");
 		
 		//TODO: Register additional modules here
 	}

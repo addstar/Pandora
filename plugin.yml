@@ -5,7 +5,7 @@ description: Bukkit plugin with many miscellaneous features specifically created
 
 main: au.com.addstar.pandora.MasterPlugin
 
-softdepend: [Essentials, Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier]
+softdepend: [Essentials, Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier, Monolith]
 
 loadbefore: [CommandHelper]
 
@@ -69,6 +69,8 @@ permissions:
     children:
       pandora.signs.color: true
       pandora.signs.format.*: true
+  pandora.itemdb:
+    default: true
     
 commands:
   pandora:
@@ -77,10 +79,6 @@ commands:
   tpclaim:
     usage: /<command> <player> [<index>|<world>|<world>:<index>]
     permission: pandora.tpclaim
-  ptimings:
-    usage: /<command> <on|off>
-    description: Turns timings on and off
-    permission: bukkit.command.timings
-  setblock:
-    usage: /setblock <x> <y> <z> <tilename> [datavalue] [oldblockHandling] [dataTag]
-    permission: minecraft.command.setblock
+  itemdb:
+    usage: /<command> [<item> [<data>]]
+    permission: pandora.itemdb;
