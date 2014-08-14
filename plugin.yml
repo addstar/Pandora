@@ -71,6 +71,15 @@ permissions:
       pandora.signs.format.*: true
   pandora.itemdb:
     default: true
+  pandora.item:
+    default: op
+  pandora.give:
+    default: op
+  pandora.giveall:
+    default: op
+  pandora.giveall.receive:
+    description: Players with this permission can receive items from /giveall.
+    default: true
     
 commands:
   pandora:
@@ -81,4 +90,14 @@ commands:
     permission: pandora.tpclaim
   itemdb:
     usage: /<command> [<item> [<data>]]
-    permission: pandora.itemdb;
+    permission: pandora.itemdb
+  item:
+    usage: /<command> (<minecraftname> [<data> <amount> [<metadata>]]|<item|item:data> [<amount> [<metadata>]])
+    permission: pandora.item
+    aliases: [i]
+  give:
+    usage: /<command> <player> (<minecraftname> [<data> <amount> [<metadata>]]|<item|item:data> [<amount> [<metadata>]])
+    permission: pandora.give
+  giveall:
+    usage: /<command> (<minecraftname> [<data> <amount> [<metadata>]]|<item|item:data> [<amount> [<metadata>]])
+    permission: pandora.giveall

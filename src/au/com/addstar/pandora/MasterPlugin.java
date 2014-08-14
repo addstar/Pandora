@@ -61,6 +61,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("AntiBuild", "au.com.addstar.pandora.modules.AntiBuild");
 		registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver", "1_7_R4");
 		registerModule("ItemDB", "au.com.addstar.pandora.modules.ItemDB", "Monolith");
+		registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving", "Monolith");
 		
 		//TODO: Register additional modules here
 	}
