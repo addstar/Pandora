@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import com.pauldavdesign.mineauz.minigames.events.MinigamesBroadcastEvent;
+import au.com.mineauz.minigames.events.MinigamesBroadcastEvent;
 
 import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.pandora.AutoConfig;
