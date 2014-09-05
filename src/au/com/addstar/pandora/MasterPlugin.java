@@ -62,7 +62,7 @@ public class MasterPlugin extends JavaPlugin
 		registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver", "1_7_R4");
 		registerModule("ItemDB", "au.com.addstar.pandora.modules.ItemDB", "Monolith");
 		registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving", "Monolith");
-		
+		registerModule("PortalTravelSound", "au.com.addstar.pandora.modules.PortalTravelSound");
 		//TODO: Register additional modules here
 	}
 	
