@@ -211,14 +211,20 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		
 		int added = addItem(destination, item);
 
+		String senderName = sender.getName();
+		if(sender instanceof Player)
+			senderName = ((Player)sender).getDisplayName();
+
 		String name = StringTranslator.getName(item);
 		if(name.equals("Unknown"))
 			name = item.getType().name().toLowerCase() + ":" + item.getDurability();
 		
-		if(added > 0)
+		if(added > 0){
 			sender.sendMessage(ChatColor.GOLD + "Giving " + ChatColor.RED + added + ChatColor.GOLD + " of " + ChatColor.RED + name + ChatColor.GOLD + " to " + ChatColor.RED + destination.getDisplayName());
-		else
+			destination.sendMessage(ChatColor.RED + senderName + ChatColor.GOLD + " has given you " + ChatColor.RED + added + ChatColor.GOLD + " of " + ChatColor.RED + name);
+		} else {
 			sender.sendMessage(ChatColor.RED + "Unable to give " + ChatColor.GOLD + name + ChatColor.RED + ". There is no room for it in " + destination.getDisplayName() + "'s inventory");
+		}
 		
 		return true;
 	}
