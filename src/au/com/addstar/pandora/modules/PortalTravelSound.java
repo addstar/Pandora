@@ -2,6 +2,7 @@ package au.com.addstar.pandora.modules;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -33,12 +34,14 @@ public class PortalTravelSound implements Module, Listener
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	private void onPortalTravel( final PlayerPortalEvent event)
 	{
+		final World source = event.getPlayer().getWorld();
 		Bukkit.getScheduler().runTaskLater(mPlugin, new Runnable()
 		{
 			@Override
 			public void run()
 			{
-				event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.PORTAL_TRAVEL, 1, 1);
+				if (source != event.getPlayer().getWorld())
+					event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.PORTAL_TRAVEL, 0.4f, 1);
 			}
 		}, 2);
 	}
