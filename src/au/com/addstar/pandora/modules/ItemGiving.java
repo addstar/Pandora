@@ -214,6 +214,8 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		String senderName = sender.getName();
 		if(sender instanceof Player)
 			senderName = ((Player)sender).getDisplayName();
+		else
+			senderName = "Server";
 
 		String name = StringTranslator.getName(item);
 		if(name.equals("Unknown"))
@@ -239,6 +241,8 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		String senderName = sender.getName();
 		if(sender instanceof Player)
 			senderName = ((Player)sender).getDisplayName();
+		else
+			senderName = "Server";
 		
 		String name = StringTranslator.getName(item);
 		if(name.equals("Unknown"))
