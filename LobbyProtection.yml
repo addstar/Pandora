@@ -1,0 +1,20 @@
+debug: false
+
+#
+# Per world configuration for DamageCause/Action
+#
+#    Possible causes: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
+#
+#    Possible actions: CANCEL, IGNORE, SPAWN, KILL
+#
+# worlds:
+#  hub:
+#    default: cancel
+#    VOID: spawn
+#    LAVA: spawn
+#    DROWNING: spawn
+#    FIRE: spawn
+#  lobby:
+#    default: cancel
+#    VOID: kill
+#

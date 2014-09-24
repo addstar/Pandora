@@ -123,6 +123,9 @@ public class LobbyProtection implements Module, Listener {
 		
 		Debug = mConfig.getBoolean("debug", false);
 		
+		if (mConfig.getConfigurationSection("worlds") == null)
+			return true;
+
 		Set<String> worlds = (Set<String>) mConfig.getConfigurationSection("worlds").getKeys(false);
 		for (String w : worlds) {
 			World world = Bukkit.getWorld(w);
