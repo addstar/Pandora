@@ -14,14 +14,6 @@
       <snapshots><enabled>true</enabled></snapshots>
     </repository>
 
-    <repository>
-      <id>bukkit-maven</id>
-      <url>http://repo.bukkit.org/content/repositories/releases/</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-    </repository>
-    
     <!-- Addstar repos -->
     <repository>
       <id>addstar-repo</id>
@@ -83,17 +75,17 @@
   <dependencies>
     <!-- We use Spigot now, not Bukkit -->
     <dependency>
-    	<groupId>org.spigotmc</groupId>
-    	<artifactId>spigot</artifactId>
-    	<version>1.7.10-R0.1-SNAPSHOT</version>
-    	<exclusions>
+       <groupId>org.spigotmc</groupId>
+       <artifactId>spigot</artifactId>
+       <version>1.7.10-R0.1-SNAPSHOT</version>
+       <exclusions>
           <exclusion>
             <groupId>org.spigotmc</groupId>
             <artifactId>sneaky-throw</artifactId>
           </exclusion>
         </exclusions>
     </dependency>
-    
+
     <!-- Used for Economy interop -->
     <dependency>
       <groupId>net.milkbowl.vault</groupId>
@@ -173,6 +165,12 @@
       <groupId>au.com.addstar</groupId>
       <artifactId>Monolith</artifactId>
       <version>1.1.0-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.spigotmc</groupId>
+          <artifactId>spigot</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     
     <dependency>
@@ -198,7 +196,7 @@
     <dependency>
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib</artifactId>
-      <version>3.2.0</version>
+      <version>3.4.0</version>
     </dependency>
 
     <dependency>
@@ -247,8 +245,8 @@
           <artifactId>craftbukkit</artifactId>
         </exclusion>
         <exclusion>
-          <groupId>net.milkbowl</groupId>
-          <artifactId>vault</artifactId>
+          <groupId>net.milkbowl.vault</groupId>
+          <artifactId>Vault</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
