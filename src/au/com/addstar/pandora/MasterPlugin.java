@@ -62,6 +62,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("ItemDB", "au.com.addstar.pandora.modules.ItemDB", "Monolith");
 		registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving", "Monolith");
 		registerModule("PortalTravelSound", "au.com.addstar.pandora.modules.PortalTravelSound");
+		registerModule("LobbyProtection", "au.com.addstar.pandora.modules.LobbyProtection");
 		//TODO: Register additional modules here
 	}
 	
