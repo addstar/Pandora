@@ -262,6 +262,7 @@
           <include>plugin.yml</include>
           <include>keywords.txt</include>
           <include>EventManipulator.yml</include>
+          <include>LobbyProtection.yml</include>
         </includes>
       </resource>
       <resource>
