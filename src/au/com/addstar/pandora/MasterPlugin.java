@@ -55,7 +55,6 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("EventManipulator", "au.com.addstar.pandora.modules.EventManipulator");
 		registerModule("BeaconFix", "au.com.addstar.pandora.modules.BeaconFix", "ProtocolLib");
 		registerModule("AntiPortalEntityTravel", "au.com.addstar.pandora.modules.AntiPortalEntityTravel");
-		registerModule("BungeeVoter", "au.com.addstar.pandora.modules.BungeeVoter", "Votifier");
 		registerModule("SignColour", "au.com.addstar.pandora.modules.SignColour");
 		registerModule("MinigameBCast", "au.com.addstar.pandora.modules.MinigameBroadcaster", "Minigames", "BungeeChatBukkit");
 		registerModule("AntiBuild", "au.com.addstar.pandora.modules.AntiBuild");
