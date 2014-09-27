@@ -46,7 +46,6 @@ public class SurvivalGamesBroadcaster implements Module, Listener
 	public void onSurvivalGamesWin(PlayerWinEvent event)
 	{
 		BungeeChat.mirrorChat(event.getMessage(), mConfig.channel);
-		event.setMessage(null);
 	}
 	
 	private class Config extends AutoConfig
