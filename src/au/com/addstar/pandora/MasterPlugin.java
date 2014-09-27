@@ -63,6 +63,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving", "Monolith");
 		registerModule("PortalTravelSound", "au.com.addstar.pandora.modules.PortalTravelSound");
 		registerModule("LobbyProtection", "au.com.addstar.pandora.modules.LobbyProtection");
+		registerModule("SurvivalGamesBCast", "au.com.addstar.pandora.modules.SurvivalGamesBroadcaster", "SurvivalGames", "BungeeChatBukkit");
 		//TODO: Register additional modules here
 	}
 	
