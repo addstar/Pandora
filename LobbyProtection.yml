@@ -3,12 +3,23 @@ debug: false
 #
 # Per world configuration for DamageCause/Action
 #
-#    Possible causes: http://jd.bukkit.org/dev/apidocs/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
+#    [Damage causes]:
+#       - default: action for any cause not specifically listed
+#       - Any valid bukkit damage cause (http://jd.bukkit.org/dev/apidocs/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html)
 #
-#    Possible actions: CANCEL, IGNORE, SPAWN, KILL
+#    [Actions]:
+#       - CANCEL
+#       - IGNORE
+#       - SPAWN
+#       - KILL
+#
+#    lockinv: => This prevents any player-interaction of inventory (drop, drag, move, etc)
+#       - false (default)
+#       - true
 #
 # worlds:
 #  hub:
+#    lockinv: true
 #    default: cancel
 #    VOID: spawn
 #    LAVA: spawn

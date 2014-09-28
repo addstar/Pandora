@@ -15,6 +15,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.util.Vector;
 
 import au.com.addstar.pandora.MasterPlugin;
@@ -38,6 +41,7 @@ public class LobbyProtection implements Module, Listener {
 	public class ProtOpts {
 		ProtAction defaultOpt = ProtAction.IGNORE;
 		HashMap<EntityDamageEvent.DamageCause, ProtAction> causeAction = new HashMap<EntityDamageEvent.DamageCause, ProtAction>();
+		boolean inventoryLock = false;
 	}
 
 	@Override
@@ -134,7 +138,12 @@ public class LobbyProtection implements Module, Listener {
 				continue;
 			}
 			
-			ProtOpts opts = new ProtOpts(); 
+			ProtOpts opts = new ProtOpts();
+
+			// Prevent inventory interaction (lock inventory)
+			opts.inventoryLock = mConfig.getBoolean("worlds." + w + ".lockinv", false);
+
+			// Get cause/action params
 			Set<String> causes = (Set<String>) mConfig.getConfigurationSection("worlds." + w).getKeys(false);
 			for (String c : causes) {
 				String a = mConfig.getString("worlds." + w + "." + c).toUpperCase();
@@ -161,8 +170,8 @@ public class LobbyProtection implements Module, Listener {
 					}
 					opts.causeAction.put(cause, action);
 				}
-				protworlds.put(world, opts);
 			}
+			protworlds.put(world, opts);
 		}
 
 		if (Debug) {
@@ -170,6 +179,7 @@ public class LobbyProtection implements Module, Listener {
 			for (Map.Entry<World, ProtOpts> entry : protworlds.entrySet()) {
 				System.out.println("World: " + entry.getKey().getName());
 				ProtOpts opts = entry.getValue();
+				System.out.println("  lockinv: " + opts.inventoryLock);
 				System.out.println("  default: " + opts.defaultOpt);
 				for (Map.Entry<EntityDamageEvent.DamageCause, ProtAction> opt : opts.causeAction.entrySet()) {
 					ProtAction action = opt.getValue();
@@ -183,4 +193,35 @@ public class LobbyProtection implements Module, Listener {
 		return false;
 	}
 
+	@EventHandler
+	public void onInventoryDrag(InventoryDragEvent e) {
+		if ((e.getInventory().getType() != InventoryType.PLAYER) && (e.getInventory().getType() != InventoryType.CRAFTING))
+			return;
+
+		if (protworlds.isEmpty() || !protworlds.containsKey(e.getWhoClicked().getWorld()))
+			return;
+
+		Player p = (Player) e.getWhoClicked();
+		ProtOpts opts = protworlds.get(e.getWhoClicked().getWorld());
+		if (!p.hasPermission("pandora.invlock.bypass") && (opts != null) && (opts.inventoryLock)) {
+			if (Debug) mPlugin.getLogger().info("[LobbyProtection] Cancelling InventoryDragEvent for " + e.getWhoClicked().getName());
+			e.setCancelled(true);
+		}
+	}
+
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent e) {
+		if ((e.getInventory().getType() != InventoryType.PLAYER) && (e.getInventory().getType() != InventoryType.CRAFTING))
+			return;
+
+		if (protworlds.isEmpty() || !protworlds.containsKey(e.getWhoClicked().getWorld()))
+			return;
+
+		Player p = (Player) e.getWhoClicked();
+		ProtOpts opts = protworlds.get(e.getWhoClicked().getWorld());
+		if (!p.hasPermission("pandora.invlock.bypass") && (opts != null) && (opts.inventoryLock)) {
+			if (Debug) mPlugin.getLogger().info("[LobbyProtection] Cancelling InventoryClickEvent for " + e.getWhoClicked().getName());
+			e.setCancelled(true);
+		}
+	}
 }
