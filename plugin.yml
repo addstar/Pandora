@@ -80,6 +80,8 @@ permissions:
   pandora.giveall.receive:
     description: Players with this permission can receive items from /giveall.
     default: true
+  pandora.list:
+    default: true
     
 commands:
   pandora:
@@ -101,3 +103,7 @@ commands:
   giveall:
     usage: /<command> (<minecraftname> [<data> <amount> [<metadata>]]|<item|item:data> [<amount> [<metadata>]])
     permission: pandora.giveall
+  list:
+    usage: /<command>
+    permission: pandora.list
+    aliases: [who, playerlist, online, plist]

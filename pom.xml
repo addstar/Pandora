@@ -270,6 +270,7 @@
           <include>keywords.txt</include>
           <include>EventManipulator.yml</include>
           <include>LobbyProtection.yml</include>
+          <include>PlayerListGroups.yml</include>
         </includes>
       </resource>
       <resource>
