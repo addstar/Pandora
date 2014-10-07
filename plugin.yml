@@ -5,7 +5,7 @@ description: Bukkit plugin with many miscellaneous features specifically created
 
 main: au.com.addstar.pandora.MasterPlugin
 
-softdepend: [Essentials, Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier, Monolith]
+softdepend: [Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier, Monolith]
 
 loadbefore: [CommandHelper]
 
@@ -18,8 +18,6 @@ permissions:
   trustedhomes.bypass:
     default: op
   pandora.command:
-    default: op
-  pandora.keyword-filter.listen:
     default: op
   pandora.chatrepeat.bypass:
     default: op

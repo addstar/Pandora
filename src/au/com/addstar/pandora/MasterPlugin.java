@@ -38,11 +38,10 @@ public class MasterPlugin extends JavaPlugin
 	
 	private void registerModules()
 	{
-		registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes", "GriefPrevention", "Essentials");
+		registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes", "GriefPrevention");
 		registerModule("Quickshop-Griefprevention-Interop", "au.com.addstar.pandora.modules.QuickshopGPInterop", "GriefPrevention", "QuickShop");
 		registerModule("Vanish-Citizens-Interop", "au.com.addstar.pandora.modules.VanishCitizensIO", "VanishNoPacket", "Citizens");
-		registerModule("KeywordHighlighter", "au.com.addstar.pandora.modules.KeywordFilter");
-		registerModule("AntiChatRepeater", "au.com.addstar.pandora.modules.AntiChatRepeater", "Essentials");
+		registerModule("AntiChatRepeater", "au.com.addstar.pandora.modules.AntiChatRepeater");
 		registerModule("SignLogger", "au.com.addstar.pandora.modules.SignLogger");
 		registerModule("KickBanner", "au.com.addstar.pandora.modules.KickBanner");
 		registerModule("AntiPortalTrap", "au.com.addstar.pandora.modules.AntiPortalTrap");
@@ -50,7 +49,6 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("GP-WorldGuard-Interop", "au.com.addstar.pandora.modules.GPWGInterop", "GriefPrevention", "WorldGuard");
 		registerModule("TPClaim", "au.com.addstar.pandora.modules.TpClaim", "GriefPrevention");
 		registerModule("FlyCanceller", "au.com.addstar.pandora.modules.FlyCanceller");
-		registerModule("JoinQuitNicknames", "au.com.addstar.pandora.modules.JoinQuitNicknames", "Essentials");
 		registerModule("PVPHandler", "au.com.addstar.pandora.modules.PVPHandler", "WorldGuard");
 		registerModule("EventManipulator", "au.com.addstar.pandora.modules.EventManipulator");
 		registerModule("BeaconFix", "au.com.addstar.pandora.modules.BeaconFix", "ProtocolLib");
