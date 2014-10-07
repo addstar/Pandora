@@ -4,12 +4,8 @@ import java.io.File;
 import java.util.AbstractMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.WeakHashMap;
-
-import net.ess3.api.IEssentials;
-import net.ess3.api.IUser;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -21,10 +17,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.scoreboard.Team;
-
-import com.earth2me.essentials.utils.FormatUtil;
-
 import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
@@ -37,34 +29,13 @@ public class AntiChatRepeater implements Module, Listener
 	private WeakHashMap<Player, Integer> mRepeatCount = new WeakHashMap<Player, Integer>();
 	
 	private Config mConfig;
-	private IEssentials mEssentials;
 	private MasterPlugin mPlugin;
 	
 	private BukkitTask mTask = null;
 	
-	private void sendFakeChat(Player player, String message)
+	private void sendFakeChat(Player player, String message, String format)
 	{
-		IUser user = mEssentials.getUser(player);
-		
-		if(user == null)
-			return;
-		
-		message = FormatUtil.formatMessage(user, "essentials.chat", message);
-		
-		String group = user.getGroup();
-        String world = player.getName();
-        Team team = player.getScoreboard().getPlayerTeam(user.getBase());
-
-        String format = mEssentials.getSettings().getChatFormat(group);
-        format = format.replace("{0}", group);
-        format = format.replace("{1}", world);
-        format = format.replace("{2}", world.substring(0, 1).toUpperCase(Locale.ENGLISH));
-        format = format.replace("{3}", team == null ? "" : team.getPrefix());
-        format = format.replace("{4}", team == null ? "" : team.getSuffix());
-        format = format.replace("{5}", team == null ? "" : team.getDisplayName());
-        
-        message = String.format(format, player.getDisplayName(), message);
-        
+		message = String.format(format, player.getDisplayName(), message);
         player.sendMessage(message);
 	}
 	
@@ -147,7 +118,7 @@ public class AntiChatRepeater implements Module, Listener
 		}
 	}
 	
-	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled = true)
+	@EventHandler(priority=EventPriority.LOW, ignoreCancelled = true)
 	private void onPlayerChat(AsyncPlayerChatEvent event)
 	{
 		if(event.getPlayer().hasPermission("pandora.chatrepeat.bypass"))
@@ -157,7 +128,7 @@ public class AntiChatRepeater implements Module, Listener
 		{
 			event.setCancelled(true);
 			increaseRepeat(event.getPlayer());
-			sendFakeChat(event.getPlayer(), event.getMessage());
+			sendFakeChat(event.getPlayer(), event.getMessage(), event.getFormat());
 		}
 		else
 			clearRepeat(event.getPlayer());
@@ -201,10 +172,6 @@ public class AntiChatRepeater implements Module, Listener
 	@Override
 	public void setPandoraInstance( MasterPlugin plugin ) 
 	{
-		mEssentials = (IEssentials)Bukkit.getPluginManager().getPlugin("Essentials");
-		if(mEssentials == null)
-			throw new RuntimeException("Cannot load essentials");
-		
 		mConfig = new Config(new File(plugin.getDataFolder(), "AntiChatRepeater.yml"));
 		mPlugin = plugin;
 	}
