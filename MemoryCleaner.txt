@@ -1,0 +1,20 @@
+# This file allows you to configure targets that are cleaned up
+# The format of this file is as such:
+# [<type1>]
+# <path1>
+# <path2>
+# <path...>
+# <pathN>
+# [<type2>]
+# <path1>
+# <path2>
+# <path...>
+# <pathN>
+# 
+# The valid types are: Player
+# Paths must take the format of:
+# <pluginName>:<field>(,<field>)*
+
+# Example:
+# [Player]
+# VoxelSniper:sniperManager,sniperInstances

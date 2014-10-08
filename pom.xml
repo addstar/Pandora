@@ -265,6 +265,7 @@
           <include>EventManipulator.yml</include>
           <include>LobbyProtection.yml</include>
           <include>PlayerListGroups.yml</include>
+          <include>MemoryCleaner.txt</include>
         </includes>
       </resource>
       <resource>
