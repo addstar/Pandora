@@ -9,12 +9,15 @@ import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -23,6 +26,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.permissions.Permissible;
 
 import com.google.common.collect.HashMultimap;
 
@@ -86,6 +90,7 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 		
 		mVisualGroups = new ArrayList<PlayerListing.Group>(mGroups.values());
 		mVisualGroups.add(new Group("Players", null, null));
+		mVisualGroups.add(new Group("Console", null, null));
 	}
 
 	@Override
@@ -114,23 +119,16 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 		}
 		
 		if (playerGroup != null)
-		{
-			final Group fGroup = playerGroup; 
-			Bukkit.getScheduler().runTaskLater(mPlugin, new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					BungeeChat.getSyncManager().setPlayerProperty(event.getPlayer().getUniqueId(), "AS:group", fGroup.name.toLowerCase());
-				}
-			}, 2L);
-		}
+			BungeeChat.getSyncManager().setPlayerProperty(event.getPlayer().getUniqueId(), "AS:group", playerGroup.name.toLowerCase());
 	}
 
 	private boolean isVanished(CommandSender player, Map<String, Object> visibility)
 	{
 		// Is the player vanished
-		Object obj = visibility.get(PlayerManager.getUniqueId(player).toString());
+		UUID id = PlayerManager.getUniqueId(player);
+		if (id == null)
+			return false;
+		Object obj = visibility.get(id.toString());
 		if (obj instanceof Boolean && (Boolean)obj)
 			return true;
 		return false;
@@ -142,6 +140,11 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 		if (obj instanceof String)
 			return (String)obj;
 		return null;
+	}
+	
+	private boolean isConsole(Permissible sender)
+	{
+		return (sender instanceof ConsoleCommandSender);
 	}
 	
 	@Override
@@ -190,10 +193,12 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 	{
 		int playerCount = 0;
 		int hiddenCount = 0;
-		boolean seeHidden = sender.hasPermission("vanish.see");
+		
+		boolean seeHidden = sender.hasPermission("pandora.list.see.hidden");
+		boolean seeConsole = sender.hasPermission("pandora.list.see.console");
 		
 		Collection<CommandSender> allPlayers = BungeeChat.getPlayerManager().getPlayers();
-		
+
 		// Group players, total count, and hide hidden players
 		HashMultimap<String, CommandSender> grouped = HashMultimap.create();
 		for (CommandSender player : allPlayers)
@@ -218,6 +223,22 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 			else
 				group = "players";
 			grouped.put(group, player);
+		}
+		
+		if (seeConsole)
+		{
+			Set<Permissible> holders = Bukkit.getPluginManager().getPermissionSubscriptions(Server.BROADCAST_CHANNEL_USERS);
+			for(Permissible holder : holders)
+			{
+				if (!isConsole(holder))
+					continue;
+				
+				// Dont want to see the normal console here
+				if (Bukkit.getConsoleSender() == holder)
+					continue;
+				
+				grouped.put("console", (CommandSender)holder);
+			}
 		}
 		
 		StringBuilder builder = new StringBuilder();
@@ -271,6 +292,12 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 				{
 					builder.append(ChatColor.GRAY);
 					builder.append("[HIDDEN]");
+					builder.append(ChatColor.WHITE);
+				}
+				if (isConsole(player))
+				{
+					builder.append(ChatColor.GRAY);
+					builder.append("[CONSOLE]");
 					builder.append(ChatColor.WHITE);
 				}
 				

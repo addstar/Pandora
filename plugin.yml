@@ -80,6 +80,10 @@ permissions:
     default: true
   pandora.list:
     default: true
+  pandora.list.see.console:
+    default: op
+  pandora.list.see.hidden:
+    default: op
     
 commands:
   pandora:
