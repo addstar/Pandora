@@ -64,6 +64,8 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("SurvivalGamesBCast", "au.com.addstar.pandora.modules.SurvivalGamesBroadcaster", "SurvivalGames", "BungeeChatBukkit");
 		registerModule("PlayerList", "au.com.addstar.pandora.modules.PlayerListing", "BungeeChatBukkit");
 		registerModule("MemoryCleaner", "au.com.addstar.pandora.modules.MemoryCleaner");
+		registerModule("AngryPigmen", "au.com.addstar.pandora.modules.AngryPigmen");
+		
 		//TODO: Register additional modules here
 	}
 	
