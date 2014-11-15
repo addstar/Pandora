@@ -32,6 +32,7 @@ public class ClaimSelect implements Module, CommandExecutor
 	public void setPandoraInstance( MasterPlugin plugin )
 	{
 		mPlugin = plugin;
+		plugin.getCommand("ClaimSelect").setExecutor(this);
 	}
 
 	@Override
