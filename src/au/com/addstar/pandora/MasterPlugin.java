@@ -65,6 +65,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("PlayerList", "au.com.addstar.pandora.modules.PlayerListing", "BungeeChatBukkit");
 		registerModule("MemoryCleaner", "au.com.addstar.pandora.modules.MemoryCleaner");
 		registerModule("AngryPigmen", "au.com.addstar.pandora.modules.AngryPigmen");
+		registerModule("ClaimSelect", "au.com.addstar.pandora.modules.ClaimSelect", "GriefPrevention", "WorldEdit");
 		
 		//TODO: Register additional modules here
 	}

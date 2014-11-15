@@ -27,6 +27,8 @@ permissions:
     default: op
   pandora.tpclaim:
     default: op
+  pandora.claimselect:
+    default: op
   pandora.flycancel.bypass:
     default: op
   vanish.silentjoin.global:
@@ -92,6 +94,9 @@ commands:
   tpclaim:
     usage: /<command> <player> [<index>|<world>|<world>:<index>]
     permission: pandora.tpclaim
+  claimselect:
+    usage: /<command>
+    permission: pandora.claimselect
   itemdb:
     usage: /<command> [<item> [<data>]]
     permission: pandora.itemdb
