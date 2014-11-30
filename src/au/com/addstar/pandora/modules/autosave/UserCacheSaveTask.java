@@ -1,6 +1,6 @@
 package au.com.addstar.pandora.modules.autosave;
 
-import net.minecraft.server.v1_7_R4.MinecraftServer;
+import net.minecraft.server.v1_8_R1.MinecraftServer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
