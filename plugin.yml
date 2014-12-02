@@ -86,6 +86,8 @@ permissions:
     default: op
   pandora.list.see.hidden:
     default: op
+  pandora.spawner.change:
+    default: op
     
 commands:
   pandora:

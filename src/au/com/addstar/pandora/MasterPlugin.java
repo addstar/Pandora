@@ -66,6 +66,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("MemoryCleaner", "au.com.addstar.pandora.modules.MemoryCleaner");
 		registerModule("AngryPigmen", "au.com.addstar.pandora.modules.AngryPigmen");
 		registerModule("ClaimSelect", "au.com.addstar.pandora.modules.ClaimSelect", "GriefPrevention", "WorldEdit");
+		registerModule("AntiSpawnerChange", "au.com.addstar.pandora.modules.AntiSpawnerChange");
 		
 		//TODO: Register additional modules here
 	}
