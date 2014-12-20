@@ -68,6 +68,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("ClaimSelect", "au.com.addstar.pandora.modules.ClaimSelect", "GriefPrevention", "WorldEdit");
 		registerModule("AntiSpawnerChange", "au.com.addstar.pandora.modules.AntiSpawnerChange");
 		registerModule("ExtendedGP", "au.com.addstar.pandora.modules.GPExtendedProtection", "GriefPrevention");
+		registerModule("SantasHelper", "au.com.addstar.pandora.modules.SantasHelper");
 		
 		//TODO: Register additional modules here
 	}

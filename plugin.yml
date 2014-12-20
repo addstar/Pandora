@@ -88,6 +88,8 @@ permissions:
     default: op
   pandora.spawner.change:
     default: op
+  pandora.santahelper:
+    default: op
     
 commands:
   pandora:
@@ -116,3 +118,6 @@ commands:
     usage: /<command>
     permission: pandora.list
     aliases: [who, playerlist, online, plist]
+  santahelper:
+    usage: /<command> <world>
+    permission: pandora.santahelper
