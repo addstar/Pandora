@@ -7,6 +7,7 @@ import me.ryanhamshire.GriefPrevention.Configuration.WorldConfig;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -55,6 +56,9 @@ public class GPExtendedProtection implements Module, Listener
 	private void onDestroyArmourStand(EntityDamageByEntityEvent event)
 	{
 		if (!GriefPrevention.instance.claimsEnabledForWorld(event.getEntity().getWorld()))
+			return;
+		
+		if (!(event.getEntity() instanceof ArmorStand))
 			return;
 		
 		Claim cached = null;
