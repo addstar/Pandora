@@ -131,6 +131,7 @@ public class GPExtendedProtection implements Module, Listener
 			{
 				Claim cached = GriefPrevention.instance.dataStore.getPlayerData(player.getName()).lastClaim;
 				Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getClickedBlock().getLocation(), false, cached);
+				if (claim == null) return;
 				
 				String reason = claim.allowBuild(player);
 				if (reason != null)
