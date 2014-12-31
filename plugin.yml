@@ -90,6 +90,8 @@ permissions:
     default: op
   pandora.santahelper:
     default: op
+  pandora.sparkler:
+    default: op
     
 commands:
   pandora:
@@ -121,3 +123,6 @@ commands:
   santahelper:
     usage: /<command> <world>
     permission: pandora.santahelper
+  sparkler:
+    usage: /<command> <ALL|player> [fire|smoke|colour]
+    permission: pandora.sparkler

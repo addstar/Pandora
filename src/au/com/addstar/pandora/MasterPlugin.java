@@ -69,6 +69,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("AntiSpawnerChange", "au.com.addstar.pandora.modules.AntiSpawnerChange");
 		registerModule("ExtendedGP", "au.com.addstar.pandora.modules.GPExtendedProtection", "GriefPrevention");
 		registerModule("SantasHelper", "au.com.addstar.pandora.modules.SantasHelper");
+		registerModule("Sparklers", "au.com.addstar.pandora.modules.Sparklers");
 		
 		//TODO: Register additional modules here
 	}
