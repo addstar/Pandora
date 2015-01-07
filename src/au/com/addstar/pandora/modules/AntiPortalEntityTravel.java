@@ -26,10 +26,11 @@ public class AntiPortalEntityTravel implements Module, Listener {
 	}
 	
 	@EventHandler
-	private void playerEnterPortal(EntityPortalEvent event) {
+	private void entityEnterPortal(EntityPortalEvent event) {
 		Location l = event.getFrom();
 		if (!(event.getEntityType().isAlive())) {
 			System.out.println("Blocked portal entity travel at: " + l.getWorld().getName() + " " + l.getBlockX() + " " + l.getBlockY() + " " + l.getBlockZ());
+			event.getEntity().remove();
 			event.setCancelled(true);
 		}
 	}
