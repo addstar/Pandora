@@ -38,7 +38,7 @@ public class MasterPlugin extends JavaPlugin
 	
 	private void registerModules()
 	{
-		registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes", "GriefPrevention");
+		registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes", "GriefPrevention", "geSuitHomes");
 		registerModule("Quickshop-Griefprevention-Interop", "au.com.addstar.pandora.modules.QuickshopGPInterop", "GriefPrevention", "QuickShop");
 		registerModule("Vanish-Citizens-Interop", "au.com.addstar.pandora.modules.VanishCitizensIO", "VanishNoPacket", "Citizens");
 		registerModule("AntiChatRepeater", "au.com.addstar.pandora.modules.AntiChatRepeater");
@@ -46,7 +46,6 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("KickBanner", "au.com.addstar.pandora.modules.KickBanner");
 		registerModule("AntiPortalTrap", "au.com.addstar.pandora.modules.AntiPortalTrap");
 		registerModule("LWC-GP-Interop", "au.com.addstar.pandora.modules.LWCGPInterop", "LWC", "GriefPrevention");
-		registerModule("GP-WorldGuard-Interop", "au.com.addstar.pandora.modules.GPWGInterop", "GriefPrevention", "WorldGuard");
 		registerModule("TPClaim", "au.com.addstar.pandora.modules.TpClaim", "GriefPrevention");
 		registerModule("FlyCanceller", "au.com.addstar.pandora.modules.FlyCanceller");
 		registerModule("PVPHandler", "au.com.addstar.pandora.modules.PVPHandler", "WorldGuard");
@@ -67,8 +66,6 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("AngryPigmen", "au.com.addstar.pandora.modules.AngryPigmen");
 		registerModule("ClaimSelect", "au.com.addstar.pandora.modules.ClaimSelect", "GriefPrevention", "WorldEdit");
 		registerModule("AntiSpawnerChange", "au.com.addstar.pandora.modules.AntiSpawnerChange");
-		registerModule("ExtendedGP", "au.com.addstar.pandora.modules.GPExtendedProtection", "GriefPrevention");
-		registerModule("SantasHelper", "au.com.addstar.pandora.modules.SantasHelper");
 		registerModule("Sparklers", "au.com.addstar.pandora.modules.Sparklers");
 		
 		//TODO: Register additional modules here

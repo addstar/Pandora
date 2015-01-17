@@ -46,12 +46,12 @@ public class LWCGPInterop implements Module, Listener
 			if(!mIsEnabled)
 				return;
 			
-			PlayerData pdata = GriefPrevention.instance.dataStore.getPlayerData(event.getPlayer().getName());
+			PlayerData pdata = GriefPrevention.instance.dataStore.getPlayerData(event.getPlayer().getUniqueId());
 			Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getBlock().getLocation(), true, pdata.lastClaim);
 
 			if(claim != null)
 			{
-				String reason = claim.allowBuild(event.getPlayer());
+				String reason = claim.allowBuild(event.getPlayer(), event.getBlock().getType());
 				
 				if(reason != null)
 				{

@@ -45,7 +45,7 @@ public class ClaimSelect implements Module, CommandExecutor
 		}
 
 		Player player = (Player) sender;
-		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false);
+		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(player.getLocation(), false, null);
 		if (claim != null) {
 			// Claim is found
 			Location loc1 = claim.getLesserBoundaryCorner();

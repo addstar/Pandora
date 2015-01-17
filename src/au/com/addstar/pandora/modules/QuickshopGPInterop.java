@@ -5,6 +5,7 @@ import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import me.ryanhamshire.GriefPrevention.PlayerData;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -21,12 +22,12 @@ public class QuickshopGPInterop implements Module, Listener
 		if(event.getPlayer().hasPermission("quickshop.allowinclaims"))
 			return;
 		
-		PlayerData pdata = GriefPrevention.instance.dataStore.getPlayerData(event.getPlayer().getName());
+		PlayerData pdata = GriefPrevention.instance.dataStore.getPlayerData(event.getPlayer().getUniqueId());
 		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getShop().getLocation(), true, pdata.lastClaim);
 		
 		if(claim != null)
 		{
-			String reason = claim.allowBuild(event.getPlayer());
+			String reason = claim.allowBuild(event.getPlayer(), Material.CHEST);
 			
 			if(reason != null)
 			{

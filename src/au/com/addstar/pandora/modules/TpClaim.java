@@ -18,6 +18,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import au.com.addstar.pandora.Utilities;
@@ -69,7 +73,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 			}
 		}
 		
-		Vector<Claim> claims = GriefPrevention.instance.dataStore.getPlayerData(player.getName()).claims;
+		List<Claim> claims = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId()).getClaims();
 		
 		World world = null;
 		int index = -1;
@@ -128,7 +132,18 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		}
 		
 		if(world != null)
-			claims = GriefPrevention.instance.dataStore.getPlayerData(player.getName()).getWorldClaims(world);
+		{
+			sender.sendMessage(ChatColor.RED + "Looking at claims by world has been disabled due to lack of API support");
+			final World fWorld = world;
+			claims = Lists.newArrayList(Iterables.filter(claims, new Predicate<Claim>()
+			{
+				@Override
+				public boolean apply( Claim claim )
+				{
+					return (claim.getLesserBoundaryCorner().getWorld().equals(fWorld));
+				}
+			}));
+		}
 		
 		if(claims.isEmpty())
 		{

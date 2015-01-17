@@ -68,7 +68,7 @@ public class TrustedHomes implements Module, Listener
 		if(event.getPlayer().hasPermission("trustedhomes.bypass"))
 			return;
 		
-		PlayerData pdata = GriefPrevention.instance.dataStore.getPlayerData(event.getPlayer().getName());
+		PlayerData pdata = GriefPrevention.instance.dataStore.getPlayerData(event.getPlayer().getUniqueId());
 		Claim claim = GriefPrevention.instance.dataStore.getClaimAt(event.getPlayer().getLocation(), true, pdata.lastClaim);
 		
 		if(claim != null)

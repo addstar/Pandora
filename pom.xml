@@ -115,7 +115,7 @@
     <dependency>
       <groupId>me.ryanhamshire</groupId>
       <artifactId>griefprevention</artifactId>
-      <version>7.8</version>
+      <version>10.5.3</version>
     </dependency>
     
     <!-- QuickShop -->
