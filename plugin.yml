@@ -92,6 +92,10 @@ permissions:
     default: op
   pandora.sparkler:
     default: op
+  pandora.pvphandler.bypass:
+    default: op
+  pandora.pvphandler.ignore:
+    default: op
     
 commands:
   pandora:

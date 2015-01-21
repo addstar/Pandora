@@ -73,6 +73,10 @@ public class PVPHandler implements Module, Listener
 			return;
 		
 		Player thrower = (Player)event.getPotion().getShooter();
+		
+		if (thrower.hasPermission("pandora.pvphandler.bypass"))
+			return;
+		
 		boolean warned = false;
 		
 		RegionManager manager = mWorldGuard.getRegionManager(event.getPotion().getWorld());
@@ -85,6 +89,9 @@ public class PVPHandler implements Module, Listener
 				continue;
 			
 			if(ent.equals(thrower))
+				continue;
+			
+			if(((Player)ent).hasPermission("pandora.pvphandler.ignore"))
 				continue;
 			
 			ApplicableRegionSet regions = manager.getApplicableRegions(ent.getLocation());
@@ -106,6 +113,9 @@ public class PVPHandler implements Module, Listener
 		if(manager == null)
 			return false;
 		
+		if (player.hasPermission("pandora.pvphandler.bypass"))
+			return false;
+		
 		Location playerLoc = new Location(null, 0, 0, 0);
 		Location blockLoc = block.getLocation();
 		
@@ -122,6 +132,9 @@ public class PVPHandler implements Module, Listener
 		for(Entity entity : entities)
 		{
 			if(!(entity instanceof Player) || entity.hasMetadata("NPC"))
+				continue;
+			
+			if (((Player)entity).hasPermission("pandora.pvphandler.ignore"))
 				continue;
 			
 			entity.getLocation(playerLoc);
