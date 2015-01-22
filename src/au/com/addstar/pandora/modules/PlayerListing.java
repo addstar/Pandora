@@ -119,7 +119,17 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 		}
 		
 		if (playerGroup != null)
-			BungeeChat.getSyncManager().setPlayerProperty(event.getPlayer().getUniqueId(), "AS:group", playerGroup.name.toLowerCase());
+		{
+			final Group finalGroup = playerGroup;
+			Bukkit.getScheduler().runTaskLater(mPlugin, new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					BungeeChat.getSyncManager().setPlayerProperty(event.getPlayer().getUniqueId(), "AS:group", finalGroup.name.toLowerCase());
+				}
+			}, 2);
+		}
 	}
 
 	private boolean isVanished(CommandSender player, Map<String, Object> visibility)
