@@ -17,6 +17,25 @@ debug: false
 #       - false (default)
 #       - true
 #
+#    clearinv: => This clears the inventory of the player on spawn
+#       - false (default)
+#       - true
+#
+#    cleararmour: => This clears the armour parts of the inventory on spawn
+#       - false (default)
+#       - true
+#
+#    inventory: => Allows you to specify the contents of the inventory. If clearinv is false, blanks will be ignored, others will be overridden.
+#                  Item format should be the same as in any of the item giving commands (/i, /give, /giveall)
+#       hotbar: [] 9 slots, from left to right. Use - to skip an item
+#       held: => The index of the hotbar slot that it selected
+#       main: [] 27 slots, from left to right, top to bottom. Use - to skip an item. Use -- to skip a row
+#       helmet:
+#       leggings:
+#       chestplate:
+#       boots:
+#
+#
 # worlds:
 #  hub:
 #    lockinv: true
@@ -25,6 +44,10 @@ debug: false
 #    LAVA: spawn
 #    DROWNING: spawn
 #    FIRE: spawn
+#    clearinv: true
+#    inventory:
+#      held: 3
+#      hotbar: [-,-,-,"compass 1 name:&a&lRight_click_to_open_the_menu!"]
 #  lobby:
 #    default: cancel
 #    VOID: kill

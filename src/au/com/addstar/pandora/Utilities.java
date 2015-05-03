@@ -14,8 +14,13 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
+
+import au.com.addstar.monolith.ItemMetaBuilder;
+import au.com.addstar.monolith.lookup.Lookup;
+import au.com.addstar.monolith.lookup.MaterialDefinition;
 
 public class Utilities
 {
@@ -228,5 +233,139 @@ public class Utilities
 		if(matches.isEmpty())
 			return null;
 		return matches;
+	}
+	
+	@SuppressWarnings( "deprecation" )
+    public static MaterialDefinition getMaterial(String name)
+	{
+		// Bukkit name
+		Material mat = Material.getMaterial(name.toUpperCase());
+		if (mat != null)
+			return new MaterialDefinition(mat, (short)-1);
+		
+		// Id
+		try
+		{
+			short id = Short.parseShort(name);
+			mat = Material.getMaterial(id);
+		}
+		catch(NumberFormatException e)
+		{
+		}
+		
+		if(mat != null)
+			return new MaterialDefinition(mat, (short)-1);
+
+		// ItemDB
+		return Lookup.findItemByName(name);
+	}
+	
+	public static ItemStack getItem(String[] args, int start) throws IllegalArgumentException
+	{
+		MaterialDefinition def = null;
+		Material mat = Lookup.findByMinecraftName(args[start]);
+		int index = start;
+		if(mat != null && args[index].contains(":"))
+		{
+			if(args.length != 1)
+			{
+				if(args.length < 3)
+					throw new IllegalArgumentException("When using minecraft ids, you must specify both the data value, and amount too");
+				
+				short data = 0;
+				try
+				{
+					data = Short.parseShort(args[index+1]);
+					if(data < 0)
+						throw new IllegalArgumentException("Data value for " + args[index] + " cannot be less than 0");
+				}
+				catch(NumberFormatException e)
+				{
+					throw new IllegalArgumentException("Data value after " + args[index]);
+				}
+				
+				index += 2;
+				
+				def = new MaterialDefinition(mat, data);
+			}
+			else
+			{
+				def = new MaterialDefinition(mat, (short)0);
+				index = 1;
+			}
+		}
+		else
+		{
+			String dataStr = null;
+			if (args[index].contains(":"))
+			{
+				String name = args[index].split(":")[0];
+				dataStr = args[index].split(":")[1];
+				
+				def = getMaterial(name);
+			}
+			else
+				def = getMaterial(args[index]);
+			
+			if (def == null)
+				throw new IllegalArgumentException("Unknown material " + args[index]);
+			
+			if (def.getData() < 0)
+			{
+				int data = 0;
+				if (dataStr != null)
+				{
+					try
+					{
+						data = Integer.parseInt(dataStr);
+						if (data < 0)
+							throw new IllegalArgumentException("Data value cannot be less than 0");
+					}
+					catch(NumberFormatException e)
+					{
+						throw new IllegalArgumentException("Unable to parse data value " + dataStr);
+					}
+				}
+				
+				def = new MaterialDefinition(def.getMaterial(), (short)data);
+			}
+			
+			index++;
+		}
+		
+		// Parse amount
+		int amount = def.getMaterial().getMaxStackSize();
+		if(args.length > index)
+		{
+			try
+			{
+				amount = Integer.parseInt(args[index]);
+				if (amount < 0)
+					throw new IllegalArgumentException("Amount value cannot be less than 0");
+			}
+			catch(NumberFormatException e)
+			{
+				throw new IllegalArgumentException("Unable to parse amount value " + args[index]);
+			}
+			
+			++index;
+		}
+		
+		ItemStack item = def.asItemStack(amount);
+		
+		// Parse Meta
+		if (args.length > index)
+		{
+			ItemMetaBuilder builder = new ItemMetaBuilder(item);
+			for(int i = index; i < args.length; ++i)
+			{
+				String definition = args[i].replace('_', ' ');
+				builder.accept(definition);
+			}
+			
+			item.setItemMeta(builder.build());
+		}
+		
+		return item;
 	}
 }

@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,12 +12,10 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import au.com.addstar.monolith.ItemMetaBuilder;
 import au.com.addstar.monolith.StringTranslator;
-import au.com.addstar.monolith.lookup.Lookup;
-import au.com.addstar.monolith.lookup.MaterialDefinition;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
+import au.com.addstar.pandora.Utilities;
 
 public class ItemGiving implements Module, CommandExecutor, TabCompleter
 {
@@ -51,115 +48,6 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 	    return null;
     }
 	
-	private ItemStack getItem(String[] args, int start)
-	{
-		MaterialDefinition def = null;
-		Material mat = Lookup.findByMinecraftName(args[start]);
-		int index = start;
-		if(mat != null && args[index].contains(":"))
-		{
-			if(args.length != 1)
-			{
-				if(args.length < 3)
-					throw new IllegalArgumentException("When using minecraft ids, you must specify both the data value, and amount too");
-				
-				short data = 0;
-				try
-				{
-					data = Short.parseShort(args[index+1]);
-					if(data < 0)
-						throw new IllegalArgumentException("Data value for " + args[index] + " cannot be less than 0");
-				}
-				catch(NumberFormatException e)
-				{
-					throw new IllegalArgumentException("Data value after " + args[index]);
-				}
-				
-				index += 2;
-				
-				def = new MaterialDefinition(mat, data);
-			}
-			else
-			{
-				def = new MaterialDefinition(mat, (short)0);
-				index = 1;
-			}
-		}
-		else
-		{
-			String dataStr = null;
-			if (args[index].contains(":"))
-			{
-				String name = args[index].split(":")[0];
-				dataStr = args[index].split(":")[1];
-				
-				def = getMaterial(name);
-			}
-			else
-				def = getMaterial(args[index]);
-			
-			if (def == null)
-				throw new IllegalArgumentException("Unknown material " + args[index]);
-			
-			if (def.getData() < 0)
-			{
-				int data = 0;
-				if (dataStr != null)
-				{
-					try
-					{
-						data = Integer.parseInt(dataStr);
-						if (data < 0)
-							throw new IllegalArgumentException("Data value cannot be less than 0");
-					}
-					catch(NumberFormatException e)
-					{
-						throw new IllegalArgumentException("Unable to parse data value " + dataStr);
-					}
-				}
-				
-				def = new MaterialDefinition(def.getMaterial(), (short)data);
-			}
-			
-			index++;
-		}
-		
-		// Parse amount
-		int amount = def.getMaterial().getMaxStackSize();
-		if(args.length > index)
-		{
-			try
-			{
-				amount = Integer.parseInt(args[index]);
-				if (amount < 0)
-					throw new IllegalArgumentException("Amount value cannot be less than 0");
-			}
-			catch(NumberFormatException e)
-			{
-				throw new IllegalArgumentException("Unable to parse amount value " + args[index]);
-			}
-			
-			++index;
-		}
-		
-		ItemStack item = def.asItemStack(amount);
-		
-		// Parse Meta
-		if (args.length > index)
-		{
-			ItemMetaBuilder builder = new ItemMetaBuilder(item);
-			for(int i = index; i < args.length; ++i)
-			{
-				String definition = args[i].replace('_', ' ');
-				builder.accept(definition);
-			}
-			
-			item.setItemMeta(builder.build());
-		}
-		
-		return item;
-	}
-	
 	private int addItem(Player player, ItemStack item)
 	{
 		int added = item.getAmount();
@@ -181,7 +69,7 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		if(!(sender instanceof Player))
 			return false;
 		
-		ItemStack item = getItem(args, 0);
+		ItemStack item = Utilities.getItem(args, 0);
 		
 		Player player = (Player)sender;
 		int added = addItem(player, item);
@@ -207,7 +95,7 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		if(destination == null)
 			throw new IllegalArgumentException("Unknown player " + args[0]);
 		
-		ItemStack item = getItem(args, 1);
+		ItemStack item = Utilities.getItem(args, 1);
 		
 		int added = addItem(destination, item);
 
@@ -236,7 +124,7 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		if(args.length < 1)
 			return false;
 		
-		ItemStack item = getItem(args, 0);
+		ItemStack item = Utilities.getItem(args, 0);
 		
 		String senderName = sender.getName();
 		if(sender instanceof Player)
@@ -283,30 +171,4 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 			return true;
 		}
     }
-	
-	@SuppressWarnings( "deprecation" )
-    private MaterialDefinition getMaterial(String name)
-	{
-		// Bukkit name
-		Material mat = Material.getMaterial(name.toUpperCase());
-		if (mat != null)
-			return new MaterialDefinition(mat, (short)-1);
-		
-		// Id
-		try
-		{
-			short id = Short.parseShort(name);
-			mat = Material.getMaterial(id);
-		}
-		catch(NumberFormatException e)
-		{
-		}
-		
-		if(mat != null)
-			return new MaterialDefinition(mat, (short)-1);
-
-		// ItemDB
-		return Lookup.findItemByName(name);
-	}
-
 }
