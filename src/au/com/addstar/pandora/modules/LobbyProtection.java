@@ -83,30 +83,34 @@ public class LobbyProtection implements Module, Listener {
 		if (opts.heldSlot >= 0 && opts.heldSlot < 9)
 			player.getInventory().setHeldItemSlot(opts.heldSlot);
 		
-		for (int slot = 0; slot < opts.inventory.length; ++slot) {
-			ItemStack item = opts.inventory[slot];
-			if (item != null) {
-				player.getInventory().setItem(slot, item.clone());
+		if (opts.inventory != null) {
+			for (int slot = 0; slot < opts.inventory.length; ++slot) {
+				ItemStack item = opts.inventory[slot];
+				if (item != null) {
+					player.getInventory().setItem(slot, item.clone());
+				}
 			}
 		}
 		
-		for (int slot = 0; slot < opts.armour.length; ++slot) {
-			ItemStack item = opts.armour[slot];
-			if (item != null) {
-				item = item.clone();
-				switch (slot) {
-				case 0: // helmet
-					player.getEquipment().setHelmet(item);
-					break;
-				case 1: // chestplate
-					player.getEquipment().setChestplate(item);
-					break;
-				case 2: // leggings
-					player.getEquipment().setLeggings(item);
-					break;
-				case 3: // boots
-					player.getEquipment().setBoots(item);
-					break;
+		if (opts.armour != null) {
+			for (int slot = 0; slot < opts.armour.length; ++slot) {
+				ItemStack item = opts.armour[slot];
+				if (item != null) {
+					item = item.clone();
+					switch (slot) {
+					case 0: // helmet
+						player.getEquipment().setHelmet(item);
+						break;
+					case 1: // chestplate
+						player.getEquipment().setChestplate(item);
+						break;
+					case 2: // leggings
+						player.getEquipment().setLeggings(item);
+						break;
+					case 3: // boots
+						player.getEquipment().setBoots(item);
+						break;
+					}
 				}
 			}
 		}
