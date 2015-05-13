@@ -27,6 +27,8 @@ permissions:
     default: op
   pandora.tpclaim:
     default: op
+  pandora.tpclaim.worlds:
+    default: op
   pandora.claimselect:
     default: op
   pandora.flycancel.bypass:
