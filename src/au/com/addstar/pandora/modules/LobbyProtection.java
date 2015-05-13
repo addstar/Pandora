@@ -125,7 +125,7 @@ public class LobbyProtection implements Module, Listener {
 		applyInventoryOptions(e.getPlayer(), opts);
 	}
 	
-	@EventHandler(priority=EventPriority.LOW, ignoreCancelled=true)
+	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
 	public void onPlayerChangeWorld(PlayerChangedWorldEvent e)	{
 		ProtOpts opts = protworlds.get(e.getPlayer().getWorld());
 		if (opts == null)
@@ -134,7 +134,7 @@ public class LobbyProtection implements Module, Listener {
 		applyInventoryOptions(e.getPlayer(), opts);
 	}
 	
-	@EventHandler(priority=EventPriority.LOW, ignoreCancelled=true)
+	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
 	public void onPlayerSpawn(PlayerRespawnEvent e)	{
 		ProtOpts opts = protworlds.get(e.getPlayer().getWorld());
 		if (opts == null)
