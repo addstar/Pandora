@@ -205,7 +205,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 				sender.sendMessage(ChatColor.YELLOW + "Displaying claims for " + player.getName() + " in " + world.getName() + ":");
 			
 			sender.sendMessage(ChatColor.WHITE + ChatColor.ITALIC.toString() + " Your level of access is displayed in the square brackets []");
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&f&o Use &e/%s %s <number> &f&oto teleport to one of the claims.\n&7&o <number>&f&o should be replaced with the number to the left of the claim you wish to teleport to.", label, args[0])));
+			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&f&o Use &e/%s %s <number> &f&oto teleport to a claim.\n&7&o <number>&f&o is the number to the left of the claim to teleport to.", label, args[0])));
 			
 			// Display claims
 			for(int i = 0; i < claims.size(); ++i)
