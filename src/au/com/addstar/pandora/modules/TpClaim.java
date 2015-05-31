@@ -61,50 +61,63 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		Player psender = (Player)sender;
 		
 		boolean canSpecifyWorld = sender.hasPermission("pandora.tpclaim.worlds");
-
-		if(args.length != 1 && args.length != 2)
+		
+		// Check syntax error
+		if(args.length > 2)
 		{
 			if (canSpecifyWorld)
-				return false;
+			{
+				sender.sendMessage("/" + label + " <player> [<index>|<world>|<world>:<index>]");
+				sender.sendMessage("or");
+				sender.sendMessage("/" + label + " [<index>|<world>|<world>:<index>]");
+				return true;
+			}
 			else
 			{
 				sender.sendMessage("/" + label + " <player> [<index>]");
+				sender.sendMessage("or");
+				sender.sendMessage("/" + label + " [<index>]");
 				return true;
 			}
 		}
 		
-		OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
-		if(!player.hasPlayedBefore())
-		{
-			player = Bukkit.getPlayer(args[0]);
-			if(player == null)
-			{
-				sender.sendMessage(ChatColor.RED + "No player by that name exists.");
-				return true;
-			}
-		}
-		
-		List<Claim> claims = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId()).getClaims();
-		
+		// Determine the index / world and player
 		World world = (canSpecifyWorld ? null : psender.getWorld());
+		OfflinePlayer player = psender;
 		int index = -1;
 		
-		if(args.length == 2)
+		// In the case of one argument, it could either be the player name, index, world, or world index pair
+		// Find out which
+		boolean hasIndex = false;
+		if (args.length == 1)
+		{
+			if (args[0].matches("^[0-9]+$") && args[0].length() < 4) // MC usernames have a minimum length of 4 chars
+				hasIndex = true;
+			else if (args[0].contains(":"))
+				hasIndex = true;
+			else if (Bukkit.getWorld(args[0]) != null)
+				hasIndex = true;
+		}
+		else if (args.length == 2)
+			hasIndex = true;
+		
+		// Parse index information
+		if(hasIndex)
 		{
 			if (canSpecifyWorld)
 			{
-				if(args[1].contains(":"))
+				if(args[args.length-1].contains(":"))
 				{
-					world = Bukkit.getWorld(args[1].split(":")[0]);
+					world = Bukkit.getWorld(args[args.length-1].split(":")[0]);
 					if(world == null)
 					{
-						sender.sendMessage(ChatColor.RED + args[1].split(":")[0] + " is not a valid world.");
+						sender.sendMessage(ChatColor.RED + args[args.length-1].split(":")[0] + " is not a valid world.");
 						return true;
 					}
 					
 					try
 					{
-						index = Integer.parseInt(args[1].split(":")[1]);
+						index = Integer.parseInt(args[args.length-1].split(":")[1]);
 						
 						if(index <= 0)
 						{
@@ -114,19 +127,19 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 					}
 					catch(NumberFormatException e)
 					{
-						sender.sendMessage(ChatColor.RED + args[1].split(":")[1] + " is not a valid index.");
+						sender.sendMessage(ChatColor.RED + args[args.length-1].split(":")[1] + " is not a valid index.");
 						return true;
 					}
 				}
 				else
 				{
-					world = Bukkit.getWorld(args[1]);
+					world = Bukkit.getWorld(args[args.length-1]);
 					
 					if(world == null)
 					{
 						try
 						{
-							index = Integer.parseInt(args[1]);
+							index = Integer.parseInt(args[args.length-1]);
 							
 							if(index <= 0)
 							{
@@ -136,7 +149,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 						}
 						catch(NumberFormatException e)
 						{
-							sender.sendMessage(ChatColor.RED + args[1] + " is not a valid index or world.");
+							sender.sendMessage(ChatColor.RED + args[args.length-1] + " is not a valid index or world.");
 							return true;
 						}
 					}
@@ -146,7 +159,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 			{
 				try
 				{
-					index = Integer.parseInt(args[1]);
+					index = Integer.parseInt(args[args.length-1]);
 					
 					if(index <= 0)
 					{
@@ -156,13 +169,30 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 				}
 				catch(NumberFormatException e)
 				{
-					sender.sendMessage(ChatColor.RED + args[1] + " is not a valid index.");
+					sender.sendMessage(ChatColor.RED + args[args.length-1] + " is not a valid index.");
 					return true;
 				}
 			}
-			
 		}
 		
+		// Parse player
+		if (args.length == 2 || (args.length == 1 && !hasIndex))
+		{
+			player = Bukkit.getOfflinePlayer(args[0]);
+			if(!player.hasPlayedBefore())
+			{
+				player = Bukkit.getPlayer(args[0]);
+				if(player == null)
+				{
+					sender.sendMessage(ChatColor.RED + "No player by that name exists.");
+					return true;
+				}
+			}
+		}
+		
+		List<Claim> claims = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId()).getClaims();
+		
+		// Limit by world
 		if(world != null)
 		{
 			final World fWorld = world;
@@ -178,16 +208,29 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		
 		if(claims.isEmpty())
 		{
-			if(world == null || !canSpecifyWorld)
-				sender.sendMessage(ChatColor.RED + player.getName() + " has no claims.");
+			if (player.equals(sender))
+			{
+				if(world == null || !canSpecifyWorld)
+					sender.sendMessage(ChatColor.RED + "You have no claims.");
+				else
+					sender.sendMessage(ChatColor.RED + "You have no claims in " + world.getName() + ".");
+			}
 			else
-				sender.sendMessage(ChatColor.RED + player.getName() + " has no claims in " + world.getName() + ".");
+			{
+				if(world == null || !canSpecifyWorld)
+					sender.sendMessage(ChatColor.RED + player.getName() + " has no claims.");
+				else
+					sender.sendMessage(ChatColor.RED + player.getName() + " has no claims in " + world.getName() + ".");
+			}
 			return true;
 		}
 		
 		if(index > claims.size())
 		{
-			sender.sendMessage(ChatColor.RED + "There are only " + claims.size() + " claims.");
+			if (player.equals(sender))
+				sender.sendMessage(ChatColor.RED + "You only have " + claims.size() + " claims.");
+			else
+				sender.sendMessage(ChatColor.RED + player.getName() + " only has " + claims.size() + " claims.");
 			return true;
 		}
 		
@@ -197,15 +240,29 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 			return true;
 		}
 		
+		// Display all claims
 		if(index == -1)
 		{
-			if(world == null || !canSpecifyWorld)
-				sender.sendMessage(ChatColor.YELLOW + "Displaying claims for " + player.getName() + ":");
+			if (player.equals(sender))
+			{
+				if(world == null || !canSpecifyWorld)
+					sender.sendMessage(ChatColor.YELLOW + "Displaying your claims:");
+				else
+					sender.sendMessage(ChatColor.YELLOW + "Displaying your claims in " + world.getName() + ":");
+			}
 			else
-				sender.sendMessage(ChatColor.YELLOW + "Displaying claims for " + player.getName() + " in " + world.getName() + ":");
+			{
+				if(world == null || !canSpecifyWorld)
+					sender.sendMessage(ChatColor.YELLOW + "Displaying claims for " + player.getName() + ":");
+				else
+					sender.sendMessage(ChatColor.YELLOW + "Displaying claims for " + player.getName() + " in " + world.getName() + ":");
+			}
 			
 			sender.sendMessage(ChatColor.WHITE + ChatColor.ITALIC.toString() + " Your level of access is displayed in the square brackets []");
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&f&o Use &e/%s %s <number> &f&oto teleport to a claim.\n&7&o <number>&f&o is the number to the left of the claim to teleport to.", label, args[0])));
+			if (player.equals(sender))
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&f&o Use &e/%s <number> &f&oto teleport to a claim.\n&7&o <number>&f&o is the number to the left of the claim to teleport to.", label)));
+			else
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&f&o Use &e/%s %s <number> &f&oto teleport to a claim.\n&7&o <number>&f&o is the number to the left of the claim to teleport to.", label, args[0])));
 			
 			// Display claims
 			for(int i = 0; i < claims.size(); ++i)
