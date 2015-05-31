@@ -47,6 +47,13 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		center = center.getWorld().getHighestBlockAt(center).getLocation();
 		if(!Utilities.safeTeleport(player, center))
 			player.sendMessage(ChatColor.RED + "There is nowhere safe to teleport you");
+		else
+		{
+			if (player.getUniqueId().equals(claim.ownerID))
+				player.sendMessage(ChatColor.GREEN + "You have been teleported to your claim");
+			else
+				player.sendMessage(ChatColor.GREEN + "You have been teleported to " + claim.getOwnerName() + "'s claim");
+		}
 	}
 	
 	@Override
