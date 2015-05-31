@@ -283,7 +283,6 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 				
 				boolean access = claim.allowAccess(psender) == null;
 				boolean trust = claim.allowBuild(psender, Material.STONE) == null;
-				boolean farmtrust = claim.allowBuild(psender, Material.CROPS) == null;
 				boolean containers = claim.allowContainers(psender) == null;
 				boolean manage = claim.allowGrantPermission(psender) == null;
 				
@@ -291,8 +290,6 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 					level = ChatColor.GREEN + "Full";
 				else if (trust)
 					level = ChatColor.YELLOW + "Trusted";
-				else if (farmtrust)
-					level = ChatColor.YELLOW + "Farm Trust";
 				else if (access || containers)
 					level = ChatColor.GOLD + "Limited";
 
