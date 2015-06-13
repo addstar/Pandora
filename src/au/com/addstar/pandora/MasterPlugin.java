@@ -55,7 +55,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("SignColour", "au.com.addstar.pandora.modules.SignColour");
 		registerModule("MinigameBCast", "au.com.addstar.pandora.modules.MinigameBroadcaster", "Minigames", "BungeeChatBukkit");
 		registerModule("AntiBuild", "au.com.addstar.pandora.modules.AntiBuild");
-		registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver", "1_8_R2");
+		registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver", "1_8_R3");
 		registerModule("ItemDB", "au.com.addstar.pandora.modules.ItemDB", "Monolith");
 		registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving", "Monolith");
 		registerModule("PortalTravelSound", "au.com.addstar.pandora.modules.PortalTravelSound");
