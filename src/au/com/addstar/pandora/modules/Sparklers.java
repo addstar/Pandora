@@ -50,7 +50,10 @@ public class Sparklers implements Module, Listener, CommandExecutor
 	{
 		Fire,
 		Smoke,
-		Colour
+		Colour,
+		Ender,
+		Purple,
+		Emerald
 	}
 	
 	public static class Sparkler
@@ -123,8 +126,7 @@ public class Sparklers implements Module, Listener, CommandExecutor
 				{
 					if (held.getAmount() > 1)
 					{
-						ItemStack item = makeSparkler(sparkler.effect);
-						item.setAmount(held.getAmount()-1);
+						ItemStack item = makeSparkler(sparkler.effect, held.getAmount()-1);
 						player.setItemInHand(item);
 					}
 					else
@@ -151,6 +153,15 @@ public class Sparklers implements Module, Listener, CommandExecutor
 			case Smoke:
 				world.playParticleEffect(temp, ParticleEffect.FIREWORKS_SPARK, 0.03f, 3, new Vector(0.15f, 0.4f, 0.15f));
 				break;
+			case Ender:
+				world.playParticleEffect(temp, ParticleEffect.PORTAL, 0.2f, 6, new Vector(0.15f, 0.4f, 0.15f));
+				break;
+			case Purple:
+				world.playParticleEffect(temp, ParticleEffect.MAGIC_WITCH, 0.0f, 3, new Vector(0.15f, 0.4f, 0.15f));
+				break;
+			case Emerald:
+				world.playParticleEffect(temp, ParticleEffect.VILLAGER_HAPPY, 0.6f, 3, new Vector(0.15f, 0.4f, 0.15f));
+				break;
 			}
 			
 			if ((System.currentTimeMillis() / 60) % 2 == 0)
@@ -161,12 +172,13 @@ public class Sparklers implements Module, Listener, CommandExecutor
 	@Override
 	public boolean onCommand( CommandSender sender, Command cmd, String label, String[] args )
 	{
-		if (args.length != 1 && args.length != 2)
+		if (args.length == 0 || args.length > 3)
 			return false;
 		
 		SparklerEffect effect = SparklerEffect.Fire;
+		int count = 1;
 		
-		if (args.length == 2)
+		if (args.length >= 2)
 		{
 			effect = null;
 			for(SparklerEffect e : SparklerEffect.values())
@@ -183,13 +195,31 @@ public class Sparklers implements Module, Listener, CommandExecutor
 				sender.sendMessage(ChatColor.RED + "Invalid effect. Valid effects are: " + StringUtils.join(Lists.transform(Arrays.asList(SparklerEffect.values()), Functions.toStringFunction()), ' '));
 				return true;
 			}
+			
+			if (args.length == 3)
+			{
+				try
+				{
+					count = Integer.parseInt(args[2]);
+					if (count <= 0)
+					{
+						sender.sendMessage(ChatColor.RED + "Invalid stack size. Must be 1 or more");
+						return true;
+					}
+				}
+				catch (NumberFormatException e)
+				{
+					sender.sendMessage(ChatColor.RED + "Invalid stack size. Must be 1 or more");
+					return true;
+				}
+			}
 		}
 		
 		if (args[0].equalsIgnoreCase("all"))
 		{
 			for (Player player : Bukkit.getOnlinePlayers())
 			{
-				if (player.getInventory().addItem(makeSparkler(effect)).isEmpty())
+				if (player.getInventory().addItem(makeSparkler(effect, count)).isEmpty())
 					player.sendMessage(ChatColor.GOLD + "You have been given a sparkler");
 				else
 					player.sendMessage(ChatColor.RED + "You would have been given a sparkler but your inventory was full");
@@ -204,7 +234,7 @@ public class Sparklers implements Module, Listener, CommandExecutor
 				sender.sendMessage(ChatColor.RED + "That player does not exist. Use 'ALL' to give to all");
 			else
 			{
-				if (player.getInventory().addItem(makeSparkler(effect)).isEmpty())
+				if (player.getInventory().addItem(makeSparkler(effect, count)).isEmpty())
 				{
 					sender.sendMessage(ChatColor.GOLD + "You gave " + player.getDisplayName() + " a sparkler");
 					player.sendMessage(ChatColor.GOLD + "You have been given a sparkler by " + ChatColor.RED + sender.getName());
@@ -328,9 +358,9 @@ public class Sparklers implements Module, Listener, CommandExecutor
 		return meta.getDisplayName().equals(mUsedItemName);
 	}
 	
-	public ItemStack makeSparkler(SparklerEffect effect)
+	public ItemStack makeSparkler(SparklerEffect effect, int count)
 	{
-		ItemStack item = new ItemStack(Material.LEVER, 1);
+		ItemStack item = new ItemStack(Material.LEVER, count);
 		
 		item.addUnsafeEnchantment(Enchantment.ARROW_FIRE, 1);
 		ItemMeta meta = item.getItemMeta();
