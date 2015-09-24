@@ -2,6 +2,7 @@ package au.com.addstar.pandora.modules;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
 
@@ -24,6 +25,7 @@ import com.google.common.collect.Lists;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import au.com.addstar.pandora.Utilities;
+import au.com.addstar.pandora.modules.gp.GPClaimData;
 
 public class TpClaim implements Module, CommandExecutor, TabCompleter
 {
@@ -38,14 +40,24 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 	{
 		plugin.getCommand("tpClaim").setExecutor(this);
 		plugin.getCommand("tpClaim").setTabCompleter(this);
+		
+		plugin.getCommand("claimslist").setExecutor(this);
+		plugin.getCommand("claimslist").setTabCompleter(this);
 	}
 
-	private void doTeleport(Player player, Claim claim)
+	private void doTeleport(Player player, Claim claim, GPClaimData data)
 	{
-		Location center = claim.getLesserBoundaryCorner().toVector().add(claim.getGreaterBoundaryCorner().toVector()).multiply(0.5).toLocation(claim.getLesserBoundaryCorner().getWorld());
+		Location location;
+		if (data.getTeleport() != null)
+			location = data.getTeleport();
+		else
+		{
+			Location center = claim.getLesserBoundaryCorner().toVector().add(claim.getGreaterBoundaryCorner().toVector()).multiply(0.5).toLocation(claim.getLesserBoundaryCorner().getWorld());
+			
+			location = center.getWorld().getHighestBlockAt(center).getLocation();
+		}
 		
-		center = center.getWorld().getHighestBlockAt(center).getLocation();
-		if(!Utilities.safeTeleport(player, center))
+		if(!Utilities.safeTeleport(player, location))
 			player.sendMessage(ChatColor.RED + "There is nowhere safe to teleport you");
 		else
 		{
@@ -58,6 +70,16 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 	
 	@Override
 	public boolean onCommand( CommandSender sender, Command command, String label, String[] args )
+	{
+		if (command.getName().equals("tpclaim"))
+			return onTPClaim(sender, label, args);
+		else if (command.getName().equals("claimslist"))
+			return onClaimsList(sender, label, args);
+		else
+			return false;
+	}
+	
+	private boolean onTPClaim(CommandSender sender, String label, String[] args)
 	{
 		if(!(sender instanceof Player))
 		{
@@ -74,16 +96,16 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		{
 			if (canSpecifyWorld)
 			{
-				sender.sendMessage("/" + label + " <player> [<index>|<world>|<world>:<index>]");
+				sender.sendMessage("/" + label + " <player> [<index>|<name>|<world>|<world>:<index>]");
 				sender.sendMessage("or");
-				sender.sendMessage("/" + label + " [<index>|<world>|<world>:<index>]");
+				sender.sendMessage("/" + label + " [<index>|<name>|<world>|<world>:<index>]");
 				return true;
 			}
 			else
 			{
-				sender.sendMessage("/" + label + " <player> [<index>]");
+				sender.sendMessage("/" + label + " <player> [<index>|<name>]");
 				sender.sendMessage("or");
-				sender.sendMessage("/" + label + " [<index>]");
+				sender.sendMessage("/" + label + " [<index>|<name>]");
 				return true;
 			}
 		}
@@ -92,6 +114,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		World world = (canSpecifyWorld ? null : psender.getWorld());
 		OfflinePlayer player = psender;
 		int index = -1;
+		String claimName = null;
 		
 		// In the case of one argument, it could either be the player name, index, world, or world index pair
 		// Find out which
@@ -141,6 +164,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 				else
 				{
 					world = Bukkit.getWorld(args[args.length-1]);
+					claimName = args[args.length-1];
 					
 					if(world == null)
 					{
@@ -156,8 +180,6 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 						}
 						catch(NumberFormatException e)
 						{
-							sender.sendMessage(ChatColor.RED + args[args.length-1] + " is not a valid index or world.");
-							return true;
 						}
 					}
 				}
@@ -176,8 +198,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 				}
 				catch(NumberFormatException e)
 				{
-					sender.sendMessage(ChatColor.RED + args[args.length-1] + " is not a valid index.");
-					return true;
+					claimName = args[args.length-1];
 				}
 			}
 		}
@@ -191,13 +212,36 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 				player = Bukkit.getPlayer(args[0]);
 				if(player == null)
 				{
-					sender.sendMessage(ChatColor.RED + "No player by that name exists.");
-					return true;
+					if (args.length != 1)
+					{
+						sender.sendMessage(ChatColor.RED + "No player by that name exists.");
+						return true;
+					}
+					else
+					{
+						player = psender;
+						claimName = args[0];
+					}
 				}
 			}
 		}
 		
 		List<Claim> claims = GriefPrevention.instance.dataStore.getPlayerData(player.getUniqueId()).getClaims();
+		
+		// For players that can specify a world, I want teleport to named claim to override world listing
+		if (canSpecifyWorld && world != null && claimName != null && index == -1)
+		{
+			List<GPClaimData> data = GPExtended.getClaimManager().getData(claims);
+			for (GPClaimData d : data)
+			{
+				if (d.getName() != null && d.getName().equalsIgnoreCase(claimName))
+				{
+					// Override the world
+					world = null;
+					break;
+				}
+			}
+		}
 		
 		// Limit by world
 		if(world != null)
@@ -212,6 +256,8 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 				}
 			}));
 		}
+		
+		List<GPClaimData> data = GPExtended.getClaimManager().getData(claims);
 		
 		if(claims.isEmpty())
 		{
@@ -241,9 +287,28 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 			return true;
 		}
 		
+		// Handle named claims now
+		if (claimName != null)
+		{
+			for (GPClaimData claimData : data)
+			{
+				if (claimData.getName() != null && claimName.equalsIgnoreCase(claimData.getName()))
+				{
+					doTeleport(psender, claimData.getClaim(), claimData);
+					return true;
+				}
+			}
+			
+			if (player.equals(sender))
+				sender.sendMessage(ChatColor.RED + "You do not have a claim named '" + claimName + "'");
+			else
+				sender.sendMessage(ChatColor.RED + player.getName() + " does not have a claim named '" + claimName + "'");
+			return true;
+		}
+		
 		if(claims.size() == 1)
 		{
-			doTeleport(psender, claims.get(0));
+			doTeleport(psender, claims.get(0), data.get(0));
 			return true;
 		}
 		
@@ -272,15 +337,138 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&f&o Use &e/%s %s <number> &f&oto teleport to a claim.\n&7&o <number>&f&o is the number to the left of the claim to teleport to.", label, args[0])));
 			
 			// Display claims
-			for(int i = 0; i < claims.size(); ++i)
+			displayClaims(sender, claims, data, player, world, canSpecifyWorld);
+		}
+		else
+		{
+			Claim claim = claims.get(index - 1);
+			doTeleport(psender, claim, data.get(index - 1));
+		}
+		
+		return true;
+	}
+	
+	private boolean onClaimsList(CommandSender sender, String label, String[] args)
+	{
+		boolean canSpecifyWorld = sender.hasPermission("pandora.tpclaim.worlds");
+		
+		// Syntax check
+		if (canSpecifyWorld && args.length > 2)
+		{
+			sender.sendMessage("/" + label + " [<player> [<world>]]");
+			return true;
+		}
+		else if (!canSpecifyWorld && args.length > 1)
+		{
+			sender.sendMessage("/" + label + " [<player>]");
+			return true;
+		}
+		
+		OfflinePlayer target;
+		World world = null;
+		
+		// Sender check and get player
+		if (args.length == 0)
+		{
+			if (!(sender instanceof Player))
 			{
-				Claim claim = claims.get(i);
-				
-				Location center = claim.getLesserBoundaryCorner().toVector().add(claim.getGreaterBoundaryCorner().toVector()).multiply(0.5).toLocation(claim.getLesserBoundaryCorner().getWorld());
-				
+				sender.sendMessage(ChatColor.RED + "You need to be in game to list your claims");
+				return true;
+			}
+			
+			target = (Player)sender;
+			
+			if (!canSpecifyWorld)
+				world = ((Player)sender).getWorld();
+		}
+		else
+		{
+			target = Bukkit.getOfflinePlayer(args[0]);
+			if(!target.hasPlayedBefore())
+			{
+				target = Bukkit.getPlayer(args[0]);
+				if(target == null)
+				{
+					sender.sendMessage(ChatColor.RED + "No player by that name exists.");
+					return true;
+				}
+			}
+		}
+		
+		// World
+		if (args.length == 2) // Will have to have canSpecifyWorld at this point
+		{
+			world = Bukkit.getWorld(args[1]);
+			
+			if (world == null)
+			{
+				sender.sendMessage(ChatColor.RED + args[1] + " is not a valid world.");
+				return true;
+			}
+		}
+		
+		// Get all claims
+		List<Claim> claims = GriefPrevention.instance.dataStore.getPlayerData(target.getUniqueId()).getClaims();
+		
+		// Limit by world
+		if (world != null)
+		{
+			final World fWorld = world;
+			claims = Lists.newArrayList(Iterables.filter(claims, new Predicate<Claim>()
+			{
+				@Override
+				public boolean apply( Claim claim )
+				{
+					return (claim.getLesserBoundaryCorner().getWorld().equals(fWorld));
+				}
+			}));
+		}
+		
+		List<GPClaimData> data = GPExtended.getClaimManager().getData(claims);
+		
+		// Display
+		displayClaims(sender, claims, data, target, world, canSpecifyWorld);
+		return true;
+	}
+	
+	private void displayClaims(CommandSender sender, List<Claim> claims, List<GPClaimData> data, OfflinePlayer target, World world, boolean canSpecifyWorld)
+	{
+		if (target.equals(sender))
+		{
+			if (world == null || !canSpecifyWorld)
+				sender.sendMessage(ChatColor.YELLOW + "Displaying your claims:");
+			else
+				sender.sendMessage(ChatColor.YELLOW + "Displaying your claims in " + world.getName() + ":");
+		}
+		else
+		{
+			if (world == null || !canSpecifyWorld)
+				sender.sendMessage(ChatColor.YELLOW + "Displaying claims for " + target.getName() + ":");
+			else
+				sender.sendMessage(ChatColor.YELLOW + "Displaying claims for " + target.getName() + " in " + world.getName() + ":");
+		}
+		
+		if (sender instanceof Player)
+			sender.sendMessage(ChatColor.WHITE + ChatColor.ITALIC.toString() + " Your level of access is displayed in the square brackets []");
+		
+		if (target.equals(sender))
+			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&f&o Use &e/tpclaim <number> &f&oor &e<name> &f&oto teleport to a claim.\n&7&o <number>&f&o is the number to the left of the claim to teleport to.")));
+		else
+			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&f&o Use &e/tpclaim %s <number> &f&oor &e<name> &f&oto teleport to a claim.\n&7&o <number>&f&o is the number to the left of the claim to teleport to.", target.getName())));
+		
+		// Display claims
+		for (int i = 0; i < claims.size(); ++i)
+		{
+			Claim claim = claims.get(i);
+			GPClaimData d = data.get(i);
+			
+			Location center = claim.getLesserBoundaryCorner().toVector().add(claim.getGreaterBoundaryCorner().toVector()).multiply(0.5).toLocation(claim.getLesserBoundaryCorner().getWorld());
+			
+			if (sender instanceof Player)
+			{
 				// Access level
 				String level = ChatColor.RED + "None";
-				
+				Player psender = (Player)sender;
 				boolean access = claim.allowAccess(psender) == null;
 				boolean trust = claim.allowBuild(psender, Material.STONE) == null;
 				boolean containers = claim.allowContainers(psender) == null;
@@ -292,20 +480,40 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 					level = ChatColor.YELLOW + "Trusted";
 				else if (access || containers)
 					level = ChatColor.GOLD + "Limited";
-
-				if(world == null)
-					sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&6%d&7: %s, %d, %d, %d&7 Area: %d &7[%s&7]", i+1, center.getWorld().getName(), center.getBlockX(), center.getBlockY(), center.getBlockZ(), claim.getArea(), level)));
+	
+				if (d.getName() != null)
+				{
+					if(world == null)
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&6%d %s&7: %s, %d, %d, %d&7 Area: %d &7[%s&7]", i+1, d.getName(), center.getWorld().getName(), center.getBlockX(), center.getBlockY(), center.getBlockZ(), claim.getArea(), level)));
+					else
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&6%d %s&7: %d, %d, %d&7 Area: %d &7[%s&7]", i+1, d.getName(), center.getBlockX(), center.getBlockY(), center.getBlockZ(), claim.getArea(), level)));
+				}
 				else
-					sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&6%d&7: %d, %d, %d&7 Area: %d &7[%s&7]", i+1, center.getBlockX(), center.getBlockY(), center.getBlockZ(), claim.getArea(), level)));
+				{
+					if(world == null)
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&6%d&7: %s, %d, %d, %d&7 Area: %d &7[%s&7]", i+1, center.getWorld().getName(), center.getBlockX(), center.getBlockY(), center.getBlockZ(), claim.getArea(), level)));
+					else
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&6%d&7: %d, %d, %d&7 Area: %d &7[%s&7]", i+1, center.getBlockX(), center.getBlockY(), center.getBlockZ(), claim.getArea(), level)));
+				}
+			}
+			else
+			{
+				if (d.getName() != null)
+				{
+					if(world == null)
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&6%d %s&7: %s, %d, %d, %d&7 Area: %d", i+1, d.getName(), center.getWorld().getName(), center.getBlockX(), center.getBlockY(), center.getBlockZ(), claim.getArea())));
+					else
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&6%d %s&7: %d, %d, %d&7 Area: %d", i+1, d.getName(), center.getBlockX(), center.getBlockY(), center.getBlockZ(), claim.getArea())));
+				}
+				else
+				{
+					if(world == null)
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&6%d&7: %s, %d, %d, %d&7 Area: %d", i+1, center.getWorld().getName(), center.getBlockX(), center.getBlockY(), center.getBlockZ(), claim.getArea())));
+					else
+						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&6%d&7: %d, %d, %d&7 Area: %d", i+1, center.getBlockX(), center.getBlockY(), center.getBlockZ(), claim.getArea())));
+				}
 			}
 		}
-		else
-		{
-			Claim claim = claims.get(index - 1);
-			doTeleport(psender, claim);
-		}
-		
-		return true;
 	}
 	
 	@Override

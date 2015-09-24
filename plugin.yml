@@ -29,6 +29,8 @@ permissions:
     default: op
   pandora.tpclaim.worlds:
     default: op
+  pandora.claimslist:
+    default: op
   pandora.claimselect:
     default: op
   pandora.flycancel.bypass:
@@ -98,6 +100,8 @@ permissions:
     default: op
   pandora.pvphandler.ignore:
     default: op
+  pandora.gpset:
+    default: op
     
 commands:
   pandora:
@@ -106,10 +110,14 @@ commands:
   tpclaim:
     usage: /<command> <player> [<index>|<world>|<world>:<index>]
     permission: pandora.tpclaim
+  claimslist:
+    usage: /<command> [<player> [<world>]]
+    permission: pandora.claimslist
+    aliases: [listclaims]
   claimselect:
     usage: /<command>
     permission: pandora.claimselect
-  itemdb:
+    itemdb:
     usage: /<command> [<item> [<data>]]
     permission: pandora.itemdb
   item:
@@ -132,3 +140,6 @@ commands:
   sparkler:
     usage: /<command> <ALL|player> [fire|smoke|colour]
     permission: pandora.sparkler
+  gpset:
+    usage: /<command> <name <name>|teleport>
+    permission: pandora.gpset
