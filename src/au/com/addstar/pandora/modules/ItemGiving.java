@@ -2,6 +2,7 @@ package au.com.addstar.pandora.modules;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -12,6 +13,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import com.google.common.collect.Sets;
 
 import au.com.addstar.monolith.StringTranslator;
 import au.com.addstar.pandora.MasterPlugin;
@@ -161,16 +164,41 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		if(args.length < 2)
 			return false;
 		
-		World world = Bukkit.getWorld(args[0]);
-		if (world == null && sender instanceof Player)
+		String[] worldNames = args[0].split(",");
+		Set<World> goodWorlds = Sets.newHashSet();
+		Set<World> badWorlds = Sets.newHashSet();
+		
+		for (String worldName : worldNames)
 		{
-			if (args[0].equalsIgnoreCase("this"))
-				world = ((Player)sender).getWorld();
+			boolean bad = false;
+			if (worldName.startsWith("-"))
+			{
+				bad = true;
+				worldName = worldName.substring(1);
+			}
+			
+			World world = Bukkit.getWorld(worldName);
+			if (world == null && sender instanceof Player)
+			{
+				if (worldName.equalsIgnoreCase("this"))
+					world = ((Player)sender).getWorld();
+			}
+			
+			if (world == null)
+			{
+				sender.sendMessage(ChatColor.RED + "Unknown world " + worldName + ". Ignoring");
+				continue;
+			}
+			
+			if (bad)
+				badWorlds.add(world);
+			else
+				goodWorlds.add(world);
 		}
 		
-		if (world == null)
+		if (goodWorlds.isEmpty() && badWorlds.isEmpty())
 		{
-			sender.sendMessage(ChatColor.RED + "Unknown world " + args[0]);
+			sender.sendMessage(ChatColor.RED + "Unknown world(s) " + args[0]);
 			return true;
 		}
 		
@@ -185,15 +213,26 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		String name = StringTranslator.getName(item);
 		if(name.equals("Unknown"))
 			name = item.getType().name().toLowerCase() + ":" + item.getDurability();
-		sender.sendMessage(ChatColor.GOLD + "Giving " + ChatColor.RED + item.getAmount() + ChatColor.GOLD + " of " + ChatColor.RED + name + ChatColor.GOLD + " to " + ChatColor.RED + "everyone" + ChatColor.GOLD + " in " + ChatColor.RED + world.getName());
+		sender.sendMessage(ChatColor.GOLD + "Giving " + ChatColor.RED + item.getAmount() + ChatColor.GOLD + " of " + ChatColor.RED + name + ChatColor.GOLD + " to " + ChatColor.RED + "everyone" + ChatColor.GOLD + " in specified worlds");
 		
 		for(Player player : Bukkit.getOnlinePlayers())
 		{
 			if(!player.hasPermission("pandora.giveall.receive"))
 				continue;
-			
-			if(player.getWorld() != world)
-				continue;
+
+			if (goodWorlds.isEmpty()) // Blacklist only
+			{
+				if (badWorlds.contains(player.getWorld()))
+					continue;
+			}
+			else
+			{
+				if (!goodWorlds.contains(player.getWorld())) // whitelist
+					continue;
+				
+				if (badWorlds.contains(player.getWorld())) // With blacklist
+					continue;
+			}
 			
 			int added = addItem(player, item.clone());
 			if(added == 0)
