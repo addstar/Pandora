@@ -84,6 +84,8 @@ permissions:
   pandora.giveall.receive:
     description: Players with this permission can receive items from /giveall.
     default: true
+  pandora.giveallworld:
+    default: op
   pandora.list:
     default: true
   pandora.list.see.console:
@@ -117,7 +119,7 @@ commands:
   claimselect:
     usage: /<command>
     permission: pandora.claimselect
-    itemdb:
+  itemdb:
     usage: /<command> [<item> [<data>]]
     permission: pandora.itemdb
   item:
@@ -130,6 +132,9 @@ commands:
   giveall:
     usage: /<command> (<minecraftname> [<data> <amount> [<metadata>]]|<item|item:data> [<amount> [<metadata>]])
     permission: pandora.giveall
+  giveallworld:
+    usage: /<command> <world> (<minecraftname> [<data> <amount> [<metadata>]]|<item|item:data> [<amount> [<metadata>]])
+    permission: pandora.giveallworld
   list:
     usage: /<command>
     permission: pandora.list

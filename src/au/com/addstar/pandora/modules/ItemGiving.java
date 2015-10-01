@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -40,6 +41,9 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		
 		plugin.getCommand("giveall").setExecutor(this);
 		plugin.getCommand("giveall").setTabCompleter(this);
+		
+		plugin.getCommand("giveallworld").setExecutor(this);
+		plugin.getCommand("giveallworld").setTabCompleter(this);
 	}
 
 	@Override
@@ -152,6 +156,55 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		return true;
 	}
 	
+	private boolean onGiveAllWorld(CommandSender sender, String[] args)
+	{
+		if(args.length < 2)
+			return false;
+		
+		World world = Bukkit.getWorld(args[0]);
+		if (world == null && sender instanceof Player)
+		{
+			if (args[0].equalsIgnoreCase("this"))
+				world = ((Player)sender).getWorld();
+		}
+		
+		if (world == null)
+		{
+			sender.sendMessage(ChatColor.RED + "Unknown world " + args[0]);
+			return true;
+		}
+		
+		ItemStack item = Utilities.getItem(args, 1);
+		
+		String senderName = sender.getName();
+		if(sender instanceof Player)
+			senderName = ((Player)sender).getDisplayName();
+		else
+			senderName = "Server";
+		
+		String name = StringTranslator.getName(item);
+		if(name.equals("Unknown"))
+			name = item.getType().name().toLowerCase() + ":" + item.getDurability();
+		sender.sendMessage(ChatColor.GOLD + "Giving " + ChatColor.RED + item.getAmount() + ChatColor.GOLD + " of " + ChatColor.RED + name + ChatColor.GOLD + " to " + ChatColor.RED + "everyone" + ChatColor.GOLD + " in " + ChatColor.RED + world.getName());
+		
+		for(Player player : Bukkit.getOnlinePlayers())
+		{
+			if(!player.hasPermission("pandora.giveall.receive"))
+				continue;
+			
+			if(player.getWorld() != world)
+				continue;
+			
+			int added = addItem(player, item.clone());
+			if(added == 0)
+				sender.sendMessage(ChatColor.RED + player.getDisplayName() + "'s inventory was full");
+			else
+				player.sendMessage(ChatColor.RED + senderName + ChatColor.GOLD + " has given everyone " + ChatColor.RED + item.getAmount() + ChatColor.GOLD + " of " + ChatColor.RED + name);
+		}
+		
+		return true;
+	}
+	
 	@Override
     public boolean onCommand( CommandSender sender, Command command, String label, String[] args )
     {
@@ -163,6 +216,8 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 				return onGive(sender, args);
 			else if(command.getName().equals("giveall"))
 				return onGiveAll(sender, args);
+			else if(command.getName().equals("giveallworld"))
+				return onGiveAllWorld(sender, args);
 			return false;
 		}
 		catch(IllegalArgumentException e)
