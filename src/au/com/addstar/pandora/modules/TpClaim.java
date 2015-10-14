@@ -299,11 +299,14 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 				}
 			}
 			
-			if (player.equals(sender))
-				sender.sendMessage(ChatColor.RED + "You do not have a claim named '" + claimName + "'");
-			else
-				sender.sendMessage(ChatColor.RED + player.getName() + " does not have a claim named '" + claimName + "'");
-			return true;
+			if (index == -1) 
+			{
+				if (player.equals(sender))
+					sender.sendMessage(ChatColor.RED + "You do not have a claim named '" + claimName + "'");
+				else
+					sender.sendMessage(ChatColor.RED + player.getName() + " does not have a claim named '" + claimName + "'");
+				return true;
+			}
 		}
 		
 		if(claims.size() == 1)
