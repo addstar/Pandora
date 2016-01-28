@@ -68,6 +68,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("AntiSpawnerChange", "au.com.addstar.pandora.modules.AntiSpawnerChange");
 		registerModule("Sparklers", "au.com.addstar.pandora.modules.Sparklers");
 		registerModule("GPExtended", "au.com.addstar.pandora.modules.GPExtended", "GriefPrevention");
+		registerModule("MinigameLocks", "au.com.addstar.pandora.modules.MinigameLocks", "Minigames");
 		
 		//TODO: Register additional modules here
 	}

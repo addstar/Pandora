@@ -1,0 +1,24 @@
+#
+# Configuration file for MinigameLocks
+# This file controls which blocks are lockable by players in the specific Minigames
+# Block values are:
+#   autolock = Lock the block to the player when it is placed
+#   false    = Do not automatically lock the block, but it can be locked manually with /mgl lock
+#
+
+#debug: true
+#
+#minigames:
+#  Minigame1:
+#    FURNACE: autolock
+#    CHEST: autolock
+#    STONE: false
+#    BEACON: false
+#  Minigame2:
+#    STONE: autolock
+#    COBBLESTONE: false
+#    BADBLOCK: autolock
+#  Minigame3:
+#    FURNACE: autolock
+#    HOPPER: false
+#    TRAPPED_CHEST: false

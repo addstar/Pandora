@@ -5,7 +5,7 @@ description: Bukkit plugin with many miscellaneous features specifically created
 
 main: au.com.addstar.pandora.MasterPlugin
 
-softdepend: [Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier, Monolith]
+softdepend: [Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier, Monolith, Minigames]
 
 loadbefore: [CommandHelper]
 
@@ -148,3 +148,6 @@ commands:
   gpset:
     usage: /<command> <name <name>|teleport>
     permission: pandora.gpset
+  mgl:
+    usage: /<command> <action>
+    permission: pandora.minigamelocks.admin

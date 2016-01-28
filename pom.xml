@@ -273,6 +273,7 @@
           <include>PlayerListGroups.yml</include>
           <include>MemoryCleaner.txt</include>
           <include>AntiBuild.yml</include>
+          <include>MinigameLocks.yml</include>
         </includes>
       </resource>
       <resource>
