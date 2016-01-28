@@ -272,6 +272,7 @@
           <include>LobbyProtection.yml</include>
           <include>PlayerListGroups.yml</include>
           <include>MemoryCleaner.txt</include>
+          <include>AntiBuild.yml</include>
         </includes>
       </resource>
       <resource>
