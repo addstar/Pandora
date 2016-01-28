@@ -70,7 +70,6 @@ public class AntiBuild implements Module, Listener {
 				Set<String> worlds = (Set<String>) mConfig.getConfigurationSection("worlds").getKeys(false);
 				System.out.println("Loading world configs...");
 				for (String wname : worlds) {
-					// Grab all the settings for this minigame
 					System.out.println("World: " + wname);
 					World world = Bukkit.getWorld(wname);
 					if (world != null) {
