@@ -6,7 +6,7 @@
 #   false    = Do not automatically lock the block, but it can be locked manually with /mgl lock
 #
 
-#debug: true
+#debug: 0
 #
 #minigames:
 #  Minigame1:

@@ -41,7 +41,7 @@ import au.com.mineauz.minigames.minigame.Minigame;
 
 public class MinigameLocks implements Module, Listener, CommandExecutor
 {
-	private boolean Debug = false;
+	private int Debug = 0;
 	private MasterPlugin mPlugin;
 	private File mFile;
 	private FileConfiguration mConfig;
@@ -111,6 +111,12 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 		return false;
 	}
 
+	public void DebugMsg(int level, String msg) {
+		if (level >= Debug) {
+			System.out.println("[MinigameLocks] " + msg);
+		}
+	}
+
 	public class Lockable {
 		Material material;
 		UUID owner;
@@ -137,7 +143,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 			if (mFile.exists())
 				mConfig.load(mFile);
 
-			Debug = mConfig.getBoolean("debug", false);
+			Debug = mConfig.getInt("debug", 0);
 
 			// Reset all the data (in case we're reloading)
 			LockableMaterials.clear();
@@ -175,7 +181,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 					}
 				}
 
-				if (Debug) {
+				if (Debug > 0) {
 					System.out.println("==============================================");
 					for (Map.Entry<Minigame, HashMap<Material, Boolean>> entry : Lockables.entrySet()) {
 						Minigame m = entry.getKey();
@@ -211,6 +217,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 				return false;
 			}
 		} else {
+			// No lock in this location
 			return true;
 		}
 	}
@@ -238,12 +245,15 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 		Lockable lock = new Lockable(newloc, b.getType(), p.getUniqueId(), mg);
 		lock.ownername = (p.getCustomName() != null) ? p.getCustomName() : p.getName();
 		Locks.put(newloc, lock);
+		DebugMsg(2, "Adding locked " + NiceItemName(b.getType()) + " owned by \"" + p.getName() + "\" " +
+				"(" + newloc.getWorld() + " @ " + newloc.getBlockX() + ", " + newloc.getBlockY() + ", " + newloc.getBlockZ() + ")");
 		p.sendMessage(ChatColor.GREEN + "You have created a locked " + NiceItemName(b.getType()));
 		return true;
 	}
 
 	// Clear all the locks for a given minigame
 	public void ClearMinigameLocks(Minigame mg) {
+		DebugMsg(2, "Clearing locks for \"" + mg.getName(true) + "\"");
 		for(Iterator<Map.Entry<Location, Lockable>> it = Locks.entrySet().iterator(); it.hasNext(); ) {
 			Map.Entry<Location, Lockable> entry = it.next();
 			if (entry.getValue().minigame.equals(mg)) {
@@ -255,6 +265,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 
 	// Clear all the locks for a given player
 	public void ClearPlayerLocks(MinigamePlayer mgp) {
+		DebugMsg(2, "Clearing player locks for \"" + mgp.getName() + "\"");
 		if (mgp != null) {
 			for(Iterator<Map.Entry<Location, Lockable>> it = Locks.entrySet().iterator(); it.hasNext(); ) {
 				Map.Entry<Location, Lockable> entry = it.next();
@@ -300,11 +311,14 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 		MinigamePlayer mgp = Minigames.plugin.pdata.getMinigamePlayer(event.getPlayer());
 		if ((mgp != null) && (mgp.isInMinigame())) {
 			Minigame mg = mgp.getMinigame();
+			if (mg == null) DebugMsg(2, "[onBlockPlace] Player \"" + event.getPlayer().getName() + "\" not in a Minigame");
 			if (DisabledMinigames.containsKey(mg)) return;	// ignore locks if game is disabled
 
 			if (CanLock(mg, event.getBlock().getType())) {
 				AddLock(mg, event.getBlock(), event.getPlayer());
 			}
+		} else {
+			DebugMsg(1, "[onBlockPlace] WARNING: MinigamePlayer not found for \"" + event.getPlayer().getName() + "\"");
 		}
 	}
 
@@ -319,9 +333,18 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 		if (lock == null) return;									// block is not locked 
 		if (DisabledMinigames.containsKey(lock.minigame)) return;	// ignore locks if game is disabled
 
+		Location loc = lock.location;
 		if (!HasBlockAccess(lock, event.getPlayer())) {
 			event.getPlayer().sendMessage(ChatColor.RED  + "That is locked by " + lock.ownername);
 			event.setCancelled(true);
+			DebugMsg(3, "Denying \"" + event.getPlayer().getName() + "\" to break " + NiceItemName(event.getBlock().getType()) +
+					" owned by \"" + lock.ownername + "\" " +
+					"(" + loc.getWorld() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+		} else {
+			// Player has access to this locked block
+			DebugMsg(3, "Allowing \"" + event.getPlayer().getName() + "\" to break " + NiceItemName(event.getBlock().getType()) +
+					" owned by \"" + lock.ownername + "\" " +
+					"(" + loc.getWorld() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 		}
 	}
 
@@ -345,9 +368,19 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 		if (lock == null) return;									// block is not locked 
 		if (DisabledMinigames.containsKey(lock.minigame)) return;	// ignore locks if game is disabled
 
+		Location loc = lock.location;
 		if (!HasBlockAccess(lock, event.getPlayer())) {
+			// Player does not have access
 			event.getPlayer().sendMessage(ChatColor.RED  + "That is locked by " + lock.ownername);
 			event.setCancelled(true);
+			DebugMsg(3, "Denying \"" + event.getPlayer().getName() + "\" to access " + NiceItemName(b.getType()) +
+					" owned by \"" + lock.ownername + "\" " +
+					"(" + loc.getWorld() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+		} else {
+			// Player has access to this locked block
+			DebugMsg(3, "Allowing \"" + event.getPlayer().getName() + "\" to access " + NiceItemName(b.getType()) +
+					" owned by \"" + lock.ownername + "\" " +
+					"(" + loc.getWorld() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 		}
 	}
 
