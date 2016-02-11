@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -325,8 +326,17 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	}
 
 	// Don't allow players to interact with locked things they don't own
-	@EventHandler(ignoreCancelled=true)
+	@EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		// Right clicking crafting table (create personal workbench for each player)
+		Block b = event.getClickedBlock();
+		if ((event.getAction() == Action.RIGHT_CLICK_BLOCK) && (b != null) && (b.getType() == Material.WORKBENCH)) {
+			Player p = event.getPlayer();
+			p.openWorkbench(p.getLocation(), true);
+			event.setCancelled(true);
+			return;
+		}
+
 		// Early exit if there are no locks at all or this isnt a lockable type
 		if (Locks.isEmpty()) return;
 		if (!LockableMaterials.contains(event.getClickedBlock().getType())) return; 
