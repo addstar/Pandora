@@ -246,7 +246,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 		lock.ownername = (p.getCustomName() != null) ? p.getCustomName() : p.getName();
 		Locks.put(newloc, lock);
 		DebugMsg(2, "Adding locked " + NiceItemName(b.getType()) + " owned by \"" + p.getName() + "\" " +
-				"(" + newloc.getWorld() + " @ " + newloc.getBlockX() + ", " + newloc.getBlockY() + ", " + newloc.getBlockZ() + ")");
+				"(" + newloc.getWorld().getName() + " @ " + newloc.getBlockX() + ", " + newloc.getBlockY() + ", " + newloc.getBlockZ() + ")");
 		p.sendMessage(ChatColor.GREEN + "You have created a locked " + NiceItemName(b.getType()));
 		return true;
 	}
@@ -265,8 +265,8 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 
 	// Clear all the locks for a given player
 	public void ClearPlayerLocks(MinigamePlayer mgp) {
-		DebugMsg(2, "Clearing player locks for \"" + mgp.getName() + "\"");
 		if (mgp != null) {
+			DebugMsg(2, "Clearing player locks for \"" + mgp.getName() + "\"");
 			for(Iterator<Map.Entry<Location, Lockable>> it = Locks.entrySet().iterator(); it.hasNext(); ) {
 				Map.Entry<Location, Lockable> entry = it.next();
 				if (entry.getValue().owner.equals(mgp.getUUID())) {
@@ -339,12 +339,12 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 			event.setCancelled(true);
 			DebugMsg(3, "Denying \"" + event.getPlayer().getName() + "\" to break " + NiceItemName(event.getBlock().getType()) +
 					" owned by \"" + lock.ownername + "\" " +
-					"(" + loc.getWorld() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+					"(" + loc.getWorld().getName() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 		} else {
 			// Player has access to this locked block
 			DebugMsg(3, "Allowing \"" + event.getPlayer().getName() + "\" to break " + NiceItemName(event.getBlock().getType()) +
 					" owned by \"" + lock.ownername + "\" " +
-					"(" + loc.getWorld() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+					"(" + loc.getWorld().getName() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 		}
 	}
 
@@ -375,12 +375,12 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 			event.setCancelled(true);
 			DebugMsg(3, "Denying \"" + event.getPlayer().getName() + "\" to access " + NiceItemName(b.getType()) +
 					" owned by \"" + lock.ownername + "\" " +
-					"(" + loc.getWorld() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+					"(" + loc.getWorld().getName() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 		} else {
 			// Player has access to this locked block
 			DebugMsg(3, "Allowing \"" + event.getPlayer().getName() + "\" to access " + NiceItemName(b.getType()) +
 					" owned by \"" + lock.ownername + "\" " +
-					"(" + loc.getWorld() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
+					"(" + loc.getWorld().getName() + " @ " + loc.getBlockX() + ", " + loc.getBlockY() + ", " + loc.getBlockZ() + ")");
 		}
 	}
 
@@ -389,7 +389,12 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	public void onPlayerQuitMinigame(QuitMinigameEvent event) {
 		// Early exit if there are no locks at all
 		if (Locks.isEmpty()) return;
-		ClearPlayerLocks(Minigames.plugin.pdata.getMinigamePlayer(event.getPlayer()));
+		MinigamePlayer mgp = Minigames.plugin.pdata.getMinigamePlayer(event.getPlayer());
+		if (mgp != null) {
+			ClearPlayerLocks(mgp);
+		} else {
+			DebugMsg(1, "[onPlayerQuitMinigame] WARNING: Player \"" + event.getPlayer().getName() + "\" has no MinigamePlayer!");
+		}
 	}
 
 	// Clear locks of a player when they disconnect
@@ -397,6 +402,11 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	public void onPlayerDisconnect(PlayerQuitEvent event) {
 		// Early exit if there are no locks at all
 		if (Locks.isEmpty()) return;
-		ClearPlayerLocks(Minigames.plugin.pdata.getMinigamePlayer(event.getPlayer()));
+		MinigamePlayer mgp = Minigames.plugin.pdata.getMinigamePlayer(event.getPlayer());
+		if (mgp != null) {
+			ClearPlayerLocks(mgp);
+		} else {
+			DebugMsg(1, "[onPlayerDisconnect] WARNING: Player \"" + event.getPlayer().getName() + "\" has no MinigamePlayer!");
+		}
 	}
 }
