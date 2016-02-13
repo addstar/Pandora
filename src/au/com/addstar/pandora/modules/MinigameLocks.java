@@ -398,7 +398,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	}
 
 	// Clear locks of a player when they disconnect
-	@EventHandler(ignoreCancelled=true)
+	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
 	public void onPlayerDisconnect(PlayerQuitEvent event) {
 		// Early exit if there are no locks at all
 		if (Locks.isEmpty()) return;
