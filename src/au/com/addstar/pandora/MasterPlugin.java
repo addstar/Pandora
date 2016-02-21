@@ -38,7 +38,8 @@ public class MasterPlugin extends JavaPlugin
 	
 	private void registerModules()
 	{
-		registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes", "GriefPrevention", "geSuitHomes");
+		// TrustedHomes also depends on geSuitHomes; explicit dependency removed due to the Redis refactor of geSuit
+		registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes", "GriefPrevention");
 		registerModule("Quickshop-Griefprevention-Interop", "au.com.addstar.pandora.modules.QuickshopGPInterop", "GriefPrevention", "QuickShop");
 		registerModule("Vanish-Citizens-Interop", "au.com.addstar.pandora.modules.VanishCitizensIO", "VanishNoPacket", "Citizens");
 		registerModule("AntiChatRepeater", "au.com.addstar.pandora.modules.AntiChatRepeater");
