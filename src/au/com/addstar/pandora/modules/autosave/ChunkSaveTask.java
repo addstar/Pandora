@@ -6,8 +6,8 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R3.CraftChunk;
-import org.bukkit.craftbukkit.v1_8_R3.CraftWorld;
+import org.bukkit.craftbukkit.v1_9_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_9_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitTask;
 
 public class ChunkSaveTask implements Runnable
@@ -125,7 +125,7 @@ public class ChunkSaveTask implements Runnable
 		
 		private void saveChunk(Chunk chunk)
 		{
-			((CraftWorld)chunk.getWorld()).getHandle().chunkProviderServer.saveChunk(((CraftChunk)chunk).getHandle());
+			((CraftWorld)chunk.getWorld()).getHandle().getChunkProviderServer().saveChunk(((CraftChunk)chunk).getHandle());
 		}
 	}
 }

@@ -121,16 +121,16 @@ public class Sparklers implements Module, Listener, CommandExecutor
 			Sparkler sparkler = entry.getValue();
 			if (System.currentTimeMillis() >= sparkler.endTime)
 			{
-				ItemStack held = player.getItemInHand();
+				ItemStack held = player.getInventory().getItemInMainHand();
 				if (isSparkler(held))
 				{
 					if (held.getAmount() > 1)
 					{
 						ItemStack item = makeSparkler(sparkler.effect, held.getAmount()-1);
-						player.setItemInHand(item);
+						player.getInventory().setItemInMainHand(item);
 					}
 					else
-						player.setItemInHand(null);
+						player.getInventory().setItemInMainHand(null);
 				}
 				it.remove();
 			}
@@ -165,7 +165,7 @@ public class Sparklers implements Module, Listener, CommandExecutor
 			}
 			
 			if ((System.currentTimeMillis() / 60) % 2 == 0)
-				player.getWorld().playSound(temp, Sound.FIZZ, 0.4f, 1f);
+				player.getWorld().playSound(temp, Sound.BLOCK_FIRE_EXTINGUISH, 0.4f, 1f);
 		}
 	}
 	

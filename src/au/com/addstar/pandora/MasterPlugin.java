@@ -59,7 +59,6 @@ public class MasterPlugin extends JavaPlugin
 		registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver", "1_8_R3");
 		registerModule("ItemDB", "au.com.addstar.pandora.modules.ItemDB", "Monolith");
 		registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving", "Monolith");
-		registerModule("PortalTravelSound", "au.com.addstar.pandora.modules.PortalTravelSound");
 		registerModule("LobbyProtection", "au.com.addstar.pandora.modules.LobbyProtection");
 		registerModule("SurvivalGamesBCast", "au.com.addstar.pandora.modules.SurvivalGamesBroadcaster", "SurvivalGames", "BungeeChatBukkit");
 		registerModule("PlayerList", "au.com.addstar.pandora.modules.PlayerListing", "BungeeChatBukkit");

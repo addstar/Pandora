@@ -1,8 +1,7 @@
 package au.com.addstar.pandora.modules.autosave;
 
-import net.minecraft.server.v1_8_R3.MinecraftServer;
-
 import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_9_R1.CraftServer;
 import org.bukkit.scheduler.BukkitTask;
 
 public class UserCacheSaveTask implements Runnable
@@ -41,7 +40,7 @@ public class UserCacheSaveTask implements Runnable
 		{
 			try
 			{
-				MinecraftServer.getServer().getUserCache().c();
+				((CraftServer)Bukkit.getServer()).getServer().getUserCache().c();
 			}
 			finally
 			{
