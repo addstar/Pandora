@@ -11,7 +11,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,13 +31,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
-import org.bukkit.util.Vector;
 
 import com.google.common.base.Functions;
 import com.google.common.collect.Lists;
 
-import au.com.addstar.monolith.MonoWorld;
-import au.com.addstar.monolith.ParticleEffect;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 
@@ -135,7 +134,7 @@ public class Sparklers implements Module, Listener, CommandExecutor
 				it.remove();
 			}
 
-			MonoWorld world = MonoWorld.getWorld(player.getWorld());
+			World world = player.getWorld();
 			
 			// Get the front location
 			player.getLocation(temp);
@@ -145,22 +144,22 @@ public class Sparklers implements Module, Listener, CommandExecutor
 			switch(sparkler.effect)
 			{
 			case Colour:
-				world.playParticleEffect(temp, ParticleEffect.REDSTONE, 3f, 3, new Vector(0.15f, 0.4f, 0.15f));
+				world.spawnParticle(Particle.REDSTONE, temp, 3, 0.15, 0.4, 0.15, 3);
 				break;
 			case Fire:
-				world.playParticleEffect(temp, ParticleEffect.FLAME, 0.03f, 3, new Vector(0.15f, 0.4f, 0.15f));
+				world.spawnParticle(Particle.FLAME, temp, 3, 0.15, 0.4, 0.15, 0.03);
 				break;
 			case Smoke:
-				world.playParticleEffect(temp, ParticleEffect.FIREWORKS_SPARK, 0.03f, 3, new Vector(0.15f, 0.4f, 0.15f));
+				world.spawnParticle(Particle.FIREWORKS_SPARK, temp, 3, 0.15, 0.4, 0.15, 0.03);
 				break;
 			case Ender:
-				world.playParticleEffect(temp, ParticleEffect.PORTAL, 0.2f, 6, new Vector(0.15f, 0.4f, 0.15f));
+				world.spawnParticle(Particle.PORTAL, temp, 6, 0.15, 0.4, 0.15, 0.2);
 				break;
 			case Purple:
-				world.playParticleEffect(temp, ParticleEffect.MAGIC_WITCH, 0.0f, 3, new Vector(0.15f, 0.4f, 0.15f));
+				world.spawnParticle(Particle.SPELL_WITCH, temp, 3, 0.15, 0.4, 0.15, 0.0);
 				break;
 			case Emerald:
-				world.playParticleEffect(temp, ParticleEffect.VILLAGER_HAPPY, 0.6f, 3, new Vector(0.15f, 0.4f, 0.15f));
+				world.spawnParticle(Particle.VILLAGER_HAPPY, temp, 3, 0.15, 0.4, 0.15, 0.6);
 				break;
 			}
 			
