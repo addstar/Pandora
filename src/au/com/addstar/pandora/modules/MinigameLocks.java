@@ -253,6 +253,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 
 	// Clear all the locks for a given minigame
 	public void ClearMinigameLocks(Minigame mg) {
+		if (!Lockables.containsKey(mg)) return;
 		DebugMsg(2, "Clearing locks for \"" + mg.getName(true) + "\"");
 		for(Iterator<Map.Entry<Location, Lockable>> it = Locks.entrySet().iterator(); it.hasNext(); ) {
 			Map.Entry<Location, Lockable> entry = it.next();
