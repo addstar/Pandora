@@ -22,7 +22,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.Team.OptionStatus;
 
 import com.comphenix.protocol.PacketType;
 import com.comphenix.protocol.ProtocolLibrary;
@@ -45,14 +44,12 @@ public class UndesiredMovementBlocker implements Module, Listener, PacketListene
 	private Cache<Integer, FishHook> hooks;
 	
 	private Map<Player, Scoreboard> knownScoreboards;
-	private Map<Player, OptionStatus> pushStatus;
 	
 	@Override
 	public void onEnable() {
 		hooks = CacheBuilder.newBuilder().expireAfterAccess(1, TimeUnit.SECONDS).build();
 		
 		knownScoreboards = Maps.newHashMap();
-		pushStatus = Maps.newHashMap();
 		
 		ProtocolLibrary.getProtocolManager().addPacketListener(this);
 	}
@@ -70,7 +67,6 @@ public class UndesiredMovementBlocker implements Module, Listener, PacketListene
 	@EventHandler
 	private void onPlayerLeave(PlayerQuitEvent event) {
 		knownScoreboards.remove(event.getPlayer());
-		pushStatus.remove(event.getPlayer());
 	}
 	
 	@EventHandler
