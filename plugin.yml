@@ -104,6 +104,15 @@ permissions:
     default: op
   pandora.gpset:
     default: op
+  pandora.movement.nohook:
+    description: Players with this permission will not be able to be hooked with a fishing rod
+    default: true
+  pandora.movement.nopush:
+    description: Players with this permission will not be able to be pushed by other players bumping them
+    default: true
+  pandora.movement.override.hook:
+    description: Players with this permission will be able to hook players with a fishing rod regardless
+    default: false
     
 commands:
   pandora:
