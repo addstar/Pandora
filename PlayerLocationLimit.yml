@@ -1,0 +1,17 @@
+#
+# Configuration file for PlayerLocationLimit
+# This file contains the player location limits (minimum Y level + maximum Y level)
+#
+
+#debug: true
+#
+#worlds:
+#  World1:
+#    minY: 0
+#    maxY: 100
+#  World2:
+#    minY: 65
+#    maxY: 150
+#  World3:
+#    minY: 20
+#    maxY: 65
