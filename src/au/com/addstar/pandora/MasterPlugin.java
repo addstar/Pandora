@@ -70,6 +70,8 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("GPExtended", "au.com.addstar.pandora.modules.GPExtended", "GriefPrevention");
 		registerModule("MinigameLocks", "au.com.addstar.pandora.modules.MinigameLocks", "Minigames");
 		registerNMSModule("UndesiredMovementBlocker", "au.com.addstar.pandora.modules.UndesiredMovementBlocker", "1_9_R1", "ProtocolLib");
+		registerModule("PlayerLocationLimit", "au.com.addstar.pandora.modules.PlayerLocationLimit");
+		registerModule("BlockhuntBroadcaster", "au.com.addstar.pandora.modules.BlockhuntBroadcaster", "BlockHunt", "BungeeChatBukkit");
 		
 		//TODO: Register additional modules here
 	}
