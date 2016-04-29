@@ -2,6 +2,8 @@ package au.com.addstar.pandora.modules;
 
 import java.io.File;
 
+import nl.Steffion.BlockHunt.Arena;
+import nl.Steffion.BlockHunt.Arena.ArenaState;
 import nl.Steffion.BlockHunt.Events.EndArenaEvent;
 
 import org.bukkit.Bukkit;
@@ -47,6 +49,13 @@ public class BlockhuntBroadcaster implements Module, Listener
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	public void onBHEndArenaEvent(EndArenaEvent event)
 	{
+		// If game ended due to players leaving.. Don't broadcast!
+		// (only broadcast when the game ends normally)
+		if (event.getArena().playersInArena.size() < event.getArena().minPlayers) return;
+
+		// Only broadcast if the event was triggered while arena was "in game"
+		if (!event.getArena().gameState.equals(ArenaState.INGAME)) return;
+
 		String msg;
 		if (event.getLosers().size() == 0) {
 			// Seekers win
