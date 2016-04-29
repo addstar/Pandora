@@ -114,8 +114,8 @@
     <!-- GriefPrevention -->
     <dependency>
       <groupId>me.ryanhamshire</groupId>
-      <artifactId>griefprevention</artifactId>
-      <version>10.5.3</version>
+      <artifactId>GriefPrevention</artifactId>
+      <version>14.2</version>
     </dependency>
     
     <!-- QuickShop -->
@@ -160,6 +160,13 @@
           <artifactId>bukkit</artifactId>
         </exclusion>
       </exclusions>
+    </dependency>
+
+    <!-- BlockHunt -->
+    <dependency>
+        <groupId>nl.Steffion</groupId>
+        <artifactId>BlockHunt</artifactId>
+        <version>0.2.1</version>
     </dependency>
 
     <dependency>
@@ -274,6 +281,7 @@
           <include>MemoryCleaner.txt</include>
           <include>AntiBuild.yml</include>
           <include>MinigameLocks.yml</include>
+          <include>PlayerLocationLimit.yml</include>
         </includes>
       </resource>
       <resource>
