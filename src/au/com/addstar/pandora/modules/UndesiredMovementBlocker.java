@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_9_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.Player;
@@ -36,8 +36,8 @@ import com.google.common.collect.Maps;
 
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
-import net.minecraft.server.v1_9_R1.DataWatcher;
-import net.minecraft.server.v1_9_R1.EntityFishingHook;
+import net.minecraft.server.v1_9_R2.DataWatcher;
+import net.minecraft.server.v1_9_R2.EntityFishingHook;
 
 public class UndesiredMovementBlocker implements Module, Listener, PacketListener {
 	private Plugin plugin;
