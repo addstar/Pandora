@@ -1,17 +1,17 @@
 package au.com.addstar.pandora;
 
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.configuration.InvalidConfigurationException;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class MasterPlugin extends JavaPlugin
 {
@@ -58,6 +58,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("AntiBuild", "au.com.addstar.pandora.modules.AntiBuild");
 		registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver", "1_9_R1");
 		registerModule("ItemDB", "au.com.addstar.pandora.modules.ItemDB", "Monolith");
+		registerModule("ItemMetaReporter", "au.com.addstar.pandora.modules.ItemMetaReporter");
 		registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving", "Monolith");
 		registerModule("LobbyProtection", "au.com.addstar.pandora.modules.LobbyProtection");
 		registerModule("SurvivalGamesBCast", "au.com.addstar.pandora.modules.SurvivalGamesBroadcaster", "SurvivalGames", "BungeeChatBukkit");

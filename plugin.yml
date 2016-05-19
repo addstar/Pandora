@@ -135,6 +135,9 @@ commands:
     usage: /<command> (<minecraftname> [<data> <amount> [<metadata>]]|<item|item:data> [<amount> [<metadata>]])
     permission: pandora.item
     aliases: [i]
+  itemmeta:
+    usage: /<command>
+    permission: pandora.itemmeta
   give:
     usage: /<command> <player> (<minecraftname> [<data> <amount> [<metadata>]]|<item|item:data> [<amount> [<metadata>]])
     permission: pandora.give
