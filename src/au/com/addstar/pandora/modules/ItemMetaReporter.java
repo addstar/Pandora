@@ -37,7 +37,7 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
         }
         Player sender = (Player) commandSender;
 
-        ItemStack item = sender.getItemInHand();
+        ItemStack item = sender.getInventory().getItemInMainHand();
         MaterialDefinition def = MaterialDefinition.from(item);
         sender.sendMessage(ChatColor.GOLD +"Item Name: " +ChatColor.RED+ StringTranslator.getName(item)+ ChatColor.RED + def.getMaterial().getId() + ":" + def.getData());;
         sender.sendMessage(ChatColor.GOLD +"Item Type: "+ ChatColor.RED + item.getType().toString());
