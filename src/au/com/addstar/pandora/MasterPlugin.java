@@ -72,6 +72,7 @@ public class MasterPlugin extends JavaPlugin
 		registerNMSModule("UndesiredMovementBlocker", "au.com.addstar.pandora.modules.UndesiredMovementBlocker", "1_9_R1", "ProtocolLib");
 		registerModule("PlayerLocationLimit", "au.com.addstar.pandora.modules.PlayerLocationLimit");
 		registerModule("BlockhuntBroadcaster", "au.com.addstar.pandora.modules.BlockhuntBroadcaster", "BlockHunt", "BungeeChatBukkit");
+		registerModule("BookMonitor", "au.com.addstar.pandora.modules.BookMonitor", "Monolith");
 		
 		//TODO: Register additional modules here
 	}

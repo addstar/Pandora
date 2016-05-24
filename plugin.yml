@@ -113,7 +113,13 @@ permissions:
   pandora.movement.override.hook:
     description: Players with this permission will be able to hook players with a fishing rod regardless
     default: false
-    
+  pandora.booklogger.offline
+     description: Save book reports to file
+     default: true
+  pandora.booklogger.offline.report:
+    description: This will allow offline reports to be loaded and reported in game.
+    default: false
+
 commands:
   pandora:
     usage: /<command>
