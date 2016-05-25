@@ -74,7 +74,7 @@ public class Sparklers implements Module, Listener, CommandExecutor
 	
 	public Sparklers()
 	{
-		mActive = new HashMap<Player, Sparkler>();
+		mActive = new HashMap<>();
 	}
 	
 	@Override
@@ -82,14 +82,7 @@ public class Sparklers implements Module, Listener, CommandExecutor
 	{
 		mPlugin.getCommand("sparkler").setExecutor(this);
 		
-		mTask = Bukkit.getScheduler().runTaskTimer(mPlugin, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				doSparklers();
-			}
-		}, 2, 2);
+		mTask = Bukkit.getScheduler().runTaskTimer(mPlugin, () -> doSparklers(), 2, 2);
 	}
 
 	@Override
@@ -342,7 +335,7 @@ public class Sparklers implements Module, Listener, CommandExecutor
 	public void setUsed(ItemStack item)
 	{
 		ItemMeta meta = item.getItemMeta();
-		meta.setLore(Collections.<String>emptyList());
+		meta.setLore(Collections.emptyList());
 		
 		meta.setDisplayName(mUsedItemName);
 		item.setItemMeta(meta);

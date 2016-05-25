@@ -32,14 +32,17 @@ import java.util.Set;
 public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+        Player sender;
         if(!(commandSender instanceof Player)) {
             commandSender.sendMessage("&cPlayer only command.");
+            return false;
+        }else{
+            sender = (Player) commandSender;
         }
-        Player sender = (Player) commandSender;
 
         ItemStack item = sender.getInventory().getItemInMainHand();
         MaterialDefinition def = MaterialDefinition.from(item);
-        sender.sendMessage(ChatColor.GOLD +"Item Name: " +ChatColor.RED+ StringTranslator.getName(item)+ ChatColor.RED + def.getMaterial().getId() + ":" + def.getData());;
+        sender.sendMessage(ChatColor.GOLD +"Item Name: " +ChatColor.RED+ StringTranslator.getName(item)+ ChatColor.RED + def.getMaterial().getId() + ":" + def.getData());
         sender.sendMessage(ChatColor.GOLD +"Item Type: "+ ChatColor.RED + item.getType().toString());
         MaterialData mdata = item.getData();
         String mcName = Lookup.findMinecraftNameByItem(item.getType());
@@ -66,8 +69,10 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
                     msg.append("  Custom Potion - could not be cast to a real potion.");
                 }
             }
+            if(potion.getEffects() != null){
             for(PotionEffect e : potion.getEffects()) {
                 msg.append( "  Subtype: ").append(e.getType().toString()).append(" Strength: ").append(e.getAmplifier()).append(" Duration: ").append(e.getDuration());
+            }
             }
             sender.sendMessage(ChatColor.GOLD + msg.toString());
 

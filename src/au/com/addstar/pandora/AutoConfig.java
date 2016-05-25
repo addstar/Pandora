@@ -23,14 +23,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 /**
- * AutoConfiguration System<br/><br/>
+ * AutoConfiguration System
  * 
- * Allows for simple config file creation and handling.<br/>
- * Any class that extends this class can specify its fields to be config values using {@link ConfigField}<br/>
+ * Allows for simple config file creation and handling.
+ * Any class that extends this class can specify its fields to be config values using {@link ConfigField}
  * 
- * You should specify a default value for each field<br/><br/>
+ * You should specify a default value for each field
  * 
- * Valid primitive field types are:<br/>
+ * Valid primitive field types are:
  * <ul>
  *  <li>Short</li>
  *  <li>Integer</li>
@@ -41,7 +41,7 @@ import org.bukkit.inventory.ItemStack;
  *  <li>String</li>
  * </ul>
  * 
- * Valid Complex field types are:<br/>
+ * Valid Complex field types are:
  * <ul>
  *  <li>Array of any primitive type</li>
  *  <li>List of any primitive type</li>
@@ -61,7 +61,7 @@ public abstract class AutoConfig
 	protected AutoConfig(File file)
 	{
 		mFile = file;
-		mCategoryComments = new HashMap<String, String>();
+		mCategoryComments = new HashMap<>();
 	}
 	
 	protected void setCategoryComment(String category, String comment)
@@ -74,12 +74,12 @@ public abstract class AutoConfig
 	 * performing validation and translation
 	 * @throws InvalidConfigurationException Thrown if a field has an invalid value
 	 */
-	protected void onPostLoad() throws InvalidConfigurationException {};
+	protected void onPostLoad() throws InvalidConfigurationException {}
 	
 	/**
 	 * This should be used to update/convert any data in fields for saving
 	 */
-	protected void onPreSave(){};
+	protected void onPreSave(){}
 	
 	private <T> Set<T> newSet(Class<? extends Set<T>> setClass, Collection<T> data) throws InvalidConfigurationException
 	{
@@ -144,11 +144,11 @@ public abstract class AutoConfig
 				
 				field.setAccessible(true);
 				
-				String path = (configField.category().isEmpty() ? "" : configField.category() + ".") + optionName; //$NON-NLS-1$ //$NON-NLS-2$
+				String path = (configField.category().isEmpty() ? "" : configField.category() + ".") + optionName;   //$NON-NLS-2$
 				if(!yml.contains(path))
 				{
 					if(field.get(this) == null)
-						throw new InvalidConfigurationException(path + " is required to be set! Info:\n" + configField.comment()); //$NON-NLS-1$
+						throw new InvalidConfigurationException(path + " is required to be set! Info:\n" + configField.comment());  
 				}
 				else
 				{
@@ -186,12 +186,12 @@ public abstract class AutoConfig
 							field.set(this, yml.getStringList(path).toArray(new String[0]));
 						}
 						else
-							throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + " for AutoConfiguration"); //$NON-NLS-1$ //$NON-NLS-2$
+							throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + " for AutoConfiguration");   //$NON-NLS-2$
 					}
 					else if(List.class.isAssignableFrom(field.getType()))
 					{
 						if(field.getGenericType() == null)
-							throw new IllegalArgumentException("Cannot use type List without specifying generic type for AutoConfiguration"); //$NON-NLS-1$
+							throw new IllegalArgumentException("Cannot use type List without specifying generic type for AutoConfiguration");  
 						
 						Type type = ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0];
 						
@@ -210,7 +210,7 @@ public abstract class AutoConfig
 						else if(type.equals(String.class))
 							field.set(this, newList((Class<? extends List<String>>)field.getType(), yml.getStringList(path)));
 						else
-							throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + "<" + type.toString() + "> for AutoConfiguration"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-2$
+							throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + "<" + type.toString() + "> for AutoConfiguration");   //$NON-NLS-2$ //$NON-NLS-2$
 					}
 					else if(Set.class.isAssignableFrom(field.getType()))
 					{
@@ -234,7 +234,7 @@ public abstract class AutoConfig
 						else if(type.equals(String.class))
 							field.set(this, newSet((Class<? extends Set<String>>)field.getType(), yml.getStringList(path)));
 						else
-							throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + "<" + type.toString() + "> for AutoConfiguration"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-2$
+							throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + "<" + type.toString() + "> for AutoConfiguration");   //$NON-NLS-2$ //$NON-NLS-2$
 					}
 					else
 					{
@@ -270,7 +270,7 @@ public abstract class AutoConfig
 						else if(field.getType().equals(String.class))
 							field.set(this, yml.getString(path));
 						else
-							throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + " for AutoConfiguration"); //$NON-NLS-1$ //$NON-NLS-2$
+							throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + " for AutoConfiguration");   //$NON-NLS-2$
 					}
 				}
 			}
@@ -308,7 +308,7 @@ public abstract class AutoConfig
 			onPreSave();
 			
 			YamlConfiguration config = new YamlConfiguration();
-			Map<String, String> comments = new HashMap<String, String>();
+			Map<String, String> comments = new HashMap<>();
 			
 			// Add all the category comments
 			comments.putAll(mCategoryComments);
@@ -326,7 +326,7 @@ public abstract class AutoConfig
 				
 				field.setAccessible(true);
 				
-				String path = (configField.category().isEmpty() ? "" : configField.category() + ".") + optionName; //$NON-NLS-1$ //$NON-NLS-2$
+				String path = (configField.category().isEmpty() ? "" : configField.category() + ".") + optionName;   //$NON-NLS-2$
 
 				// Ensure the secion exists
 				if(!configField.category().isEmpty() && !config.contains(configField.category()))
@@ -362,12 +362,12 @@ public abstract class AutoConfig
 					else if(field.getType().getComponentType().equals(String.class))
 						config.set(path, Arrays.asList((String[])field.get(this)));
 					else
-						throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + " for AutoConfiguration"); //$NON-NLS-1$ //$NON-NLS-2$
+						throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + " for AutoConfiguration");   //$NON-NLS-2$
 				}
 				else if(List.class.isAssignableFrom(field.getType()))
 				{
 					if(field.getGenericType() == null)
-						throw new IllegalArgumentException("Cannot use type List without specifying generic type for AutoConfiguration"); //$NON-NLS-1$
+						throw new IllegalArgumentException("Cannot use type List without specifying generic type for AutoConfiguration");  
 					
 					Type type = ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0];
 					
@@ -376,15 +376,15 @@ public abstract class AutoConfig
 						|| type.equals(Short.class) || type.equals(Boolean.class)
 						|| type.equals(String.class))
 					{
-						config.set(path, (List<?>)field.get(this));
+						config.set(path, field.get(this));
 					}
 					else
-						throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + "<" + type.toString() + "> for AutoConfiguration"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + "<" + type.toString() + "> for AutoConfiguration");   //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				else if(Set.class.isAssignableFrom(field.getType()))
 				{
 					if(field.getGenericType() == null)
-						throw new IllegalArgumentException("Cannot use type Set without specifying generic type for AutoConfiguration"); //$NON-NLS-1$
+						throw new IllegalArgumentException("Cannot use type Set without specifying generic type for AutoConfiguration");  
 					
 					Type type = ((ParameterizedType)field.getGenericType()).getActualTypeArguments()[0];
 					
@@ -396,7 +396,7 @@ public abstract class AutoConfig
 						config.set(path, new ArrayList<Object>((Set<?>)field.get(this)));
 					}
 					else
-						throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + "<" + type.toString() + "> for AutoConfiguration"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+						throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + "<" + type.toString() + "> for AutoConfiguration");   //$NON-NLS-2$ //$NON-NLS-3$
 				}
 				else
 				{
@@ -432,7 +432,7 @@ public abstract class AutoConfig
 					else if(field.getType().equals(String.class))
 						config.set(path, field.get(this));
 					else
-						throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + " for AutoConfiguration"); //$NON-NLS-1$ //$NON-NLS-2$
+						throw new IllegalArgumentException("Cannot use type " + field.getType().getSimpleName() + " for AutoConfiguration");   //$NON-NLS-2$
 				}
 				
 				// Record the comment
@@ -443,26 +443,26 @@ public abstract class AutoConfig
 			String output = config.saveToString();
 			
 			// Apply comments
-			String category = ""; //$NON-NLS-1$
-			List<String> lines = new ArrayList<String>(Arrays.asList(output.split("\n"))); //$NON-NLS-1$
+			String category = "";  
+			List<String> lines = new ArrayList<>(Arrays.asList(output.split("\n")));  
 			for(int l = 0; l < lines.size(); l++)
 			{
 				String line = lines.get(l);
 				
-				if(line.startsWith("#")) //$NON-NLS-1$
+				if(line.startsWith("#"))  
 					continue;
 				
-				if(line.trim().startsWith("-")) //$NON-NLS-1$
+				if(line.trim().startsWith("-"))  
 					continue;
 				
-				if(!line.contains(":")) //$NON-NLS-1$
+				if(!line.contains(":"))  
 					continue;
 				
-				String path = ""; //$NON-NLS-1$
-				line = line.substring(0, line.indexOf(":")); //$NON-NLS-1$
+				String path;  
+				line = line.substring(0, line.indexOf(":"));  
 				
-				if(line.startsWith("  ")) //$NON-NLS-1$
-					path = category + "." + line.substring(2).trim(); //$NON-NLS-1$
+				if(line.startsWith("  "))  
+					path = category + "." + line.substring(2).trim();  
 				else
 				{
 					category = line.trim();
@@ -471,28 +471,28 @@ public abstract class AutoConfig
 				
 				if(comments.containsKey(path))
 				{
-					String indent = ""; //$NON-NLS-1$
+					String indent = "";  
 					for(int i = 0; i < line.length(); i++)
 					{
 						if(line.charAt(i) == ' ')
-							indent += " "; //$NON-NLS-1$
+							indent += " ";  
 						else
 							break;
 					}
 					
 					// Add in the comment lines
-					String[] commentLines = comments.get(path).split("\n"); //$NON-NLS-1$
-					lines.add(l++, ""); //$NON-NLS-1$
+					String[] commentLines = comments.get(path).split("\n");  
+					lines.add(l++, "");  
 					for(int i = 0; i < commentLines.length; i++)
 					{
-						commentLines[i] = indent + "# " + commentLines[i]; //$NON-NLS-1$
+						commentLines[i] = indent + "# " + commentLines[i];  
 						lines.add(l++,commentLines[i]);
 					}
 				}
 			}
-			output = ""; //$NON-NLS-1$
+			output = "";  
 			for(String line : lines)
-				output += line + "\n"; //$NON-NLS-1$
+				output += line + "\n";  
 			
 			FileWriter writer = new FileWriter(mFile);
 			writer.write(output);

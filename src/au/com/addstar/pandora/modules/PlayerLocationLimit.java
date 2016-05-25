@@ -28,7 +28,7 @@ public class PlayerLocationLimit implements Module, Listener {
 	private MasterPlugin mPlugin;
 	private File mFile;
 	private FileConfiguration mConfig;
-	private HashMap<World, Integer[]> WorldLimits = new HashMap<World, Integer[]>();
+	private HashMap<World, Integer[]> WorldLimits = new HashMap<>();
 
 	@Override
 	public void onEnable() {
@@ -69,7 +69,7 @@ public class PlayerLocationLimit implements Module, Listener {
 			Debug = mConfig.getBoolean("debug", false);
 
 			if ((mConfig != null) && (mConfig.isConfigurationSection("worlds"))) {
-				Set<String> worlds = (Set<String>) mConfig.getConfigurationSection("worlds").getKeys(false);
+				Set<String> worlds = mConfig.getConfigurationSection("worlds").getKeys(false);
 				System.out.println("Loading world configs...");
 				for (String wname : worlds) {
 					System.out.println("World: " + wname);

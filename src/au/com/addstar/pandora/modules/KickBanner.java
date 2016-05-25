@@ -19,7 +19,7 @@ import au.com.addstar.pandora.Utilities;
 
 public class KickBanner implements Module, Listener
 {
-	private HashMap<String, KickInfo> mKicks = new HashMap<String, KickInfo>();
+	private HashMap<String, KickInfo> mKicks = new HashMap<>();
 	
 	private Config mConfig;
 	

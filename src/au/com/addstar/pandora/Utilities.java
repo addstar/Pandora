@@ -193,7 +193,7 @@ public class Utilities
 		if(plugin == null || !plugin.isEnabled())
 			return;
 		
-		ArrayList<RegisteredListener> theirs = new ArrayList<RegisteredListener>();
+		ArrayList<RegisteredListener> theirs = new ArrayList<>();
 		RegisteredListener mine = null;
 		
 		for(RegisteredListener regListener : list.getRegisteredListeners())
@@ -222,7 +222,7 @@ public class Utilities
 	public static List<String> matchStrings(String str, Collection<String> values)
 	{
 		str = str.toLowerCase();
-		ArrayList<String> matches = new ArrayList<String>();
+		ArrayList<String> matches = new ArrayList<>();
 		
 		for(String value : values)
 		{

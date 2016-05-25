@@ -25,8 +25,8 @@ import au.com.addstar.pandora.Utilities;
 
 public class AntiChatRepeater implements Module, Listener
 {
-	private WeakHashMap<Player, Entry<String, Long>> mLastChat = new WeakHashMap<Player, Entry<String, Long>>();
-	private WeakHashMap<Player, Integer> mRepeatCount = new WeakHashMap<Player, Integer>();
+	private WeakHashMap<Player, Entry<String, Long>> mLastChat = new WeakHashMap<>();
+	private WeakHashMap<Player, Integer> mRepeatCount = new WeakHashMap<>();
 	
 	private Config mConfig;
 	private MasterPlugin mPlugin;
@@ -63,12 +63,12 @@ public class AntiChatRepeater implements Module, Listener
 		{
 			if(!mLastChat.containsKey(player))
 				return false;
-			
+
 			Entry<String, Long> entry = mLastChat.get(player);
-			
+
 			if(!entry.getKey().equalsIgnoreCase(message))
 				return false;
-			
+
 			return (System.currentTimeMillis() - entry.getValue()) < mConfig.timeout;
 		}
 	}
@@ -114,7 +114,7 @@ public class AntiChatRepeater implements Module, Listener
 	{
 		synchronized(mLastChat)
 		{
-			mLastChat.put(player, new AbstractMap.SimpleEntry<String, Long>(message, System.currentTimeMillis()));
+			mLastChat.put(player, new AbstractMap.SimpleEntry<>(message, System.currentTimeMillis()));
 		}
 	}
 	
@@ -187,7 +187,7 @@ public class AntiChatRepeater implements Module, Listener
 		public boolean isWhitelist = false;
 		
 		@ConfigField(comment="Use just the name the command (without the /) in lowercase.\nDont bother with aliases, aliases are resolved to the real command before being matched against these commands.")
-		public HashSet<String> commands = new HashSet<String>();
+		public HashSet<String> commands = new HashSet<>();
 		
 		@ConfigField(name="timeout", comment="The time specified as a date diff, after which the same message/command can be repeated.")
 		private String timeoutStr = "10s";

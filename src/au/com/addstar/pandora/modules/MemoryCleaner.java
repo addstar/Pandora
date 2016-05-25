@@ -32,7 +32,7 @@ public class MemoryCleaner implements Module, Listener
 	@Override
 	public void onEnable()
 	{
-		mPlayerCleanup = new ArrayList<Definition>();
+		mPlayerCleanup = new ArrayList<>();
 		
 		loadConfig();
 	}
@@ -106,14 +106,7 @@ public class MemoryCleaner implements Module, Listener
 	public void onPlayerLeave(PlayerQuitEvent event)
 	{
 		final Player player = event.getPlayer();
-		Bukkit.getScheduler().runTaskLater(mPlugin, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				runList(mPlayerCleanup, player);
-			}
-		}, 2L);
+		Bukkit.getScheduler().runTaskLater(mPlugin, () -> runList(mPlayerCleanup, player), 2L);
 	}
 	
 	private void runList(List<Definition> definitions, Object object)

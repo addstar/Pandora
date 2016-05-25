@@ -247,14 +247,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		if(world != null)
 		{
 			final World fWorld = world;
-			claims = Lists.newArrayList(Iterables.filter(claims, new Predicate<Claim>()
-			{
-				@Override
-				public boolean apply( Claim claim )
-				{
-					return (claim.getLesserBoundaryCorner().getWorld().equals(fWorld));
-				}
-			}));
+			claims = Lists.newArrayList(Iterables.filter(claims, claim -> (claim.getLesserBoundaryCorner().getWorld().equals(fWorld))));
 		}
 		
 		List<GPClaimData> data = GPExtended.getClaimManager().getData(claims);
@@ -417,14 +410,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		if (world != null)
 		{
 			final World fWorld = world;
-			claims = Lists.newArrayList(Iterables.filter(claims, new Predicate<Claim>()
-			{
-				@Override
-				public boolean apply( Claim claim )
-				{
-					return (claim.getLesserBoundaryCorner().getWorld().equals(fWorld));
-				}
-			}));
+			claims = Lists.newArrayList(Iterables.filter(claims, claim -> (claim.getLesserBoundaryCorner().getWorld().equals(fWorld))));
 		}
 		
 		List<GPClaimData> data = GPExtended.getClaimManager().getData(claims);
@@ -527,7 +513,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 			ArrayList<String> playerNames;
 			List<Player> players = Bukkit.matchPlayer(args[0]);
 			
-			playerNames = new ArrayList<String>(players.size());
+			playerNames = new ArrayList<>(players.size());
 			for(Player player : players)
 				playerNames.add(player.getName());
 			

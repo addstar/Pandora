@@ -50,26 +50,21 @@ public class EventManipulator implements Module, Listener
 		mFile = new File(mPlugin.getDataFolder(), "EventManipulator.yml");
 		if(!mFile.exists())
 			mPlugin.saveResource("EventManipulator.yml", false);
-		
-		Bukkit.getScheduler().runTask(mPlugin, new Runnable()
-		{
-			@Override
-			public void run()
-			{
-				EventHelper.buildEventMap();
-				
-				try
-				{
-					manipulateEvents();
-				}
-				catch ( Exception e )
-				{
-					mPlugin.getLogger().severe("Failed to load EventManipulator.yml:");
-					e.printStackTrace();
-				}
-			}
-		});
-		
+
+		Bukkit.getScheduler().runTask(mPlugin, () -> {
+            EventHelper.buildEventMap();
+
+            try
+            {
+                manipulateEvents();
+            }
+            catch ( Exception e )
+            {
+                mPlugin.getLogger().severe("Failed to load EventManipulator.yml:");
+                e.printStackTrace();
+            }
+        });
+
 	}
 	
 	public void manipulateEvents() throws InvalidConfigurationException, IOException
@@ -139,7 +134,7 @@ public class EventManipulator implements Module, Listener
 			
 			Collection<Manipulator> applicableManipulators = manipulators.get(eventClass);
 			
-			ArrayList<RegisteredListener> listeners = new ArrayList<RegisteredListener>();
+			ArrayList<RegisteredListener> listeners = new ArrayList<>();
 			for(RegisteredListener listener : handlers.getRegisteredListeners())
 			{
 				handlers.unregister(listener);
@@ -246,11 +241,9 @@ public class EventManipulator implements Module, Listener
 			
 			if(priority != null && listener.getPriority() != priority)
 				return false;
-			
-			if(ignoreCanceled != null && listener.isIgnoringCancelled() != ignoreCanceled)
-				return false;
-			
-			return true;
+
+			return !(ignoreCanceled != null && listener.isIgnoringCancelled() != ignoreCanceled);
+
 		}
 	}
 	
@@ -273,8 +266,8 @@ public class EventManipulator implements Module, Listener
 			if(section.isString("move"))
 			{
 				valid = true;
-				mBefore = new ArrayList<String>();
-				mAfter = new ArrayList<String>();
+				mBefore = new ArrayList<>();
+				mAfter = new ArrayList<>();
 				
 				String[] depends = section.getString("move").trim().split(",");
 				for(String dependString : depends)

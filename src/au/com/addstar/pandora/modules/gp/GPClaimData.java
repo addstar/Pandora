@@ -94,7 +94,6 @@ public class GPClaimData
 		catch (IOException e)
 		{
 			e.printStackTrace();
-			return;
 		}
 	}
 	

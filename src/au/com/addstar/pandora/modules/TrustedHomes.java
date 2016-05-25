@@ -33,7 +33,7 @@ public class TrustedHomes implements Module, Listener
 	
 		Validate.notNull(setHome, "Could not locate sethome command. Something is not installed correctly.");
 		
-		mAllValid = new ArrayList<String>();
+		mAllValid = new ArrayList<>();
 		mAllValid.add("/" + setHome.getLabel());
 		
 		if(setHome.getAliases() != null)

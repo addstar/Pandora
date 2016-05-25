@@ -21,7 +21,7 @@ public class AntiPortalTrap implements Module, Listener{
 	private Map<Player, Location> portalPlayers;
 	
 	public AntiPortalTrap(){
-		portalPlayers = new HashMap<Player, Location>();
+		portalPlayers = new HashMap<>();
 	}
 
 	@Override
@@ -41,20 +41,10 @@ public class AntiPortalTrap implements Module, Listener{
 	private void playerLogin(PlayerLoginEvent event){
 		final Player ply = event.getPlayer();
 		final Location pos = Bukkit.getServer().getWorlds().get(0).getSpawnLocation();
-		Bukkit.getScheduler().scheduleSyncDelayedTask(mPlugin, new Runnable() {
-			
-			@Override
-			public void run() {
-				portalPlayers.put(ply, pos);
-				Bukkit.getScheduler().scheduleSyncDelayedTask(mPlugin, new Runnable() {
-					
-					@Override
-					public void run() {
-						portalPlayers.remove(ply);
-					}
-				}, 20);
-			}
-		}, 200);
+		Bukkit.getScheduler().scheduleSyncDelayedTask(mPlugin, () -> {
+            portalPlayers.put(ply, pos);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(mPlugin, () -> portalPlayers.remove(ply), 20);
+        }, 200);
 	}
 	
 	@EventHandler
@@ -73,20 +63,10 @@ public class AntiPortalTrap implements Module, Listener{
 		if(event.getEntity() instanceof Player){
 			final Player ply = (Player)event.getEntity();
 			final Location pos = ply.getLocation().clone().add(0, 1, 0);
-			Bukkit.getScheduler().scheduleSyncDelayedTask(mPlugin, new Runnable() {
-				
-				@Override
-				public void run() {
-					portalPlayers.put(ply, pos);
-					Bukkit.getScheduler().scheduleSyncDelayedTask(mPlugin, new Runnable() {
-						
-						@Override
-						public void run() {
-							portalPlayers.remove(ply);
-						}
-					}, 20);
-				}
-			}, 200);
+			Bukkit.getScheduler().scheduleSyncDelayedTask(mPlugin, () -> {
+                portalPlayers.put(ply, pos);
+                Bukkit.getScheduler().scheduleSyncDelayedTask(mPlugin, () -> portalPlayers.remove(ply), 20);
+            }, 200);
 		}
 	}
 }

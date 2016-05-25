@@ -156,12 +156,7 @@ public class UndesiredMovementBlocker implements Module, Listener, PacketListene
 		}
 		
 		// Remove the fish hook if it hooks into a player
-		Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
-			@Override
-			public void run() {
-				removeFishHookIfNeeded(hook);
-			}
-		}, 0);
+		Bukkit.getScheduler().runTaskLater(plugin, () -> removeFishHookIfNeeded(hook), 0);
 		
 		// Mark this hook to be checked at a packet level
 		hooks.put(hook.getEntityId(), hook);

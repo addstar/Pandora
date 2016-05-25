@@ -45,21 +45,18 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	private MasterPlugin mPlugin;
 	private File mFile;
 	private FileConfiguration mConfig;
-	private HashMap<Minigame, HashMap<Material, Boolean>> Lockables = new HashMap<Minigame, HashMap<Material, Boolean>>();
-	private HashMap<Location, Lockable> Locks = new HashMap<Location, Lockable>();
-	private ArrayList<Material> LockableMaterials = new ArrayList<Material>();
-	private HashMap<Minigame, Boolean> DisabledMinigames = new HashMap<Minigame, Boolean>();
+	private HashMap<Minigame, HashMap<Material, Boolean>> Lockables = new HashMap<>();
+	private HashMap<Location, Lockable> Locks = new HashMap<>();
+	private ArrayList<Material> LockableMaterials = new ArrayList<>();
+	private HashMap<Minigame, Boolean> DisabledMinigames = new HashMap<>();
 
 	@Override
 	public void onEnable() {
 		// Delay start up so Minigames are all loaded before we try to validate stuff
 		System.out.println("Delaying MinigameLocks initialisation...");
-		Bukkit.getScheduler().runTaskLater(mPlugin, new Runnable() {
-            @Override
-            public void run() {
-            	// Load and validate config
-				loadConfig();
-            }
+		Bukkit.getScheduler().runTaskLater(mPlugin, () -> {
+            // Load and validate config
+            loadConfig();
         }, 40);
 	}
 
@@ -158,7 +155,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 					// Grab all the settings for this minigame
 					Minigame mg = Minigames.plugin.mdata.getMinigame(mgname);
 					if (mg != null) {
-						HashMap<Material, Boolean> types = new HashMap<Material, Boolean>();
+						HashMap<Material, Boolean> types = new HashMap<>();
 						ConfigurationSection mgsection = mConfig.getConfigurationSection("minigames." + mgname);
 
 						for (String locktype : mgsection.getKeys(false)) {
@@ -210,12 +207,8 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 
 	public boolean HasBlockAccess(Lockable lock, Player player) {
 		if (lock != null) {
-			if (lock.owner.equals(player.getUniqueId())) {
-				// Allow owner to access chest
-				return true;
-			} else {
-				return false;
-			}
+			// Allow owner to access chest
+			return lock.owner.equals(player.getUniqueId());
 		} else {
 			// No lock in this location
 			return true;

@@ -57,7 +57,7 @@ public class EventHelper
 	
 	public static List<EventCallback> getEventCallbacks(Listener listener)
 	{
-		ArrayList<EventCallback> callbacks = new ArrayList<EventCallback>();
+		ArrayList<EventCallback> callbacks = new ArrayList<>();
 		
 		Method[] methods = listener.getClass().getDeclaredMethods();
 		
@@ -90,9 +90,9 @@ public class EventHelper
 	
 	public static List<EventCallback> getEventCallbacks(Plugin plugin)
 	{
-		ArrayList<EventCallback> callbacks = new ArrayList<EventHelper.EventCallback>();
+		ArrayList<EventCallback> callbacks = new ArrayList<>();
 		List<RegisteredListener> all = HandlerList.getRegisteredListeners(plugin);
-		HashSet<Listener> unique = new HashSet<Listener>();
+		HashSet<Listener> unique = new HashSet<>();
 		
 		for(RegisteredListener listener : all)
 		{
@@ -116,9 +116,9 @@ public class EventHelper
 	
 	public static void buildEventMap()
 	{
-		eventMap = new HashMap<String, Class<? extends Event>>();
-		HashSet<Class<? extends Event>> unique = new HashSet<Class<? extends Event>>();
-		HashSet<Listener> listeners = new HashSet<Listener>();
+		eventMap = new HashMap<>();
+		HashSet<Class<? extends Event>> unique = new HashSet<>();
+		HashSet<Listener> listeners = new HashSet<>();
 		
 		for(HandlerList list : HandlerList.getHandlerLists())
 		{
@@ -128,7 +128,9 @@ public class EventHelper
 				{
 					listeners.add(listener.getListener());
 				}
-				catch(NullPointerException e) {}
+				catch(NullPointerException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		
@@ -195,7 +197,7 @@ public class EventHelper
 	}
 	public static Map<String, Object> dumpClass(Object object)
 	{
-		HashMap<String, Object> result = new HashMap<String, Object>();
+		HashMap<String, Object> result = new HashMap<>();
 		
 		Class<?> clazz = object.getClass();
 		

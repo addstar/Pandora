@@ -30,10 +30,10 @@ public class MasterPlugin extends JavaPlugin
 	
 	public MasterPlugin()
 	{
-		mAvailableModules = new HashMap<String, ModuleDefinition>();
-		mAvailableModulesByName = new HashMap<String, ModuleDefinition>();
+		mAvailableModules = new HashMap<>();
+		mAvailableModulesByName = new HashMap<>();
 		
-		mLoadedModules = new HashMap<String, Module>();
+		mLoadedModules = new HashMap<>();
 	}
 	
 	private void registerModules()
@@ -347,12 +347,12 @@ public class MasterPlugin extends JavaPlugin
 		}
 		
 		@ConfigField()
-		public HashSet<String> disabledModules = new HashSet<String>();
+		public HashSet<String> disabledModules = new HashSet<>();
 		
 		@Override
 		protected void onPostLoad() throws InvalidConfigurationException
 		{
-			HashSet<String> lowerCaseSet = new HashSet<String>(disabledModules.size());
+			HashSet<String> lowerCaseSet = new HashSet<>(disabledModules.size());
 			
 			for(String name : disabledModules)
 				lowerCaseSet.add(name.toLowerCase());

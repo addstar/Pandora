@@ -33,7 +33,7 @@ public class AntiBuild implements Module, Listener {
 	private MasterPlugin mPlugin;
 	private File mFile;
 	private FileConfiguration mConfig;
-	private HashMap<World, Integer[]> WorldLimits = new HashMap<World, Integer[]>();
+	private HashMap<World, Integer[]> WorldLimits = new HashMap<>();
 
 	@Override
 	public void onEnable() {

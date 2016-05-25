@@ -45,7 +45,7 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 	
 	public PlayerListing()
 	{
-		mGroups = new LinkedHashMap<String, Group>();
+		mGroups = new LinkedHashMap<>();
 	}
 	
 	@Override
@@ -88,7 +88,7 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 			e.printStackTrace();
 		}
 		
-		mVisualGroups = new ArrayList<PlayerListing.Group>(mGroups.values());
+		mVisualGroups = new ArrayList<>(mGroups.values());
 		mVisualGroups.add(new Group("Players", null, null));
 		mVisualGroups.add(new Group("Console", null, null));
 	}
@@ -121,14 +121,7 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 		if (playerGroup != null)
 		{
 			final Group finalGroup = playerGroup;
-			Bukkit.getScheduler().runTaskLater(mPlugin, new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					BungeeChat.getSyncManager().setPlayerProperty(event.getPlayer().getUniqueId(), "AS:group", finalGroup.name.toLowerCase());
-				}
-			}, 2);
+			Bukkit.getScheduler().runTaskLater(mPlugin, () -> BungeeChat.getSyncManager().setPlayerProperty(event.getPlayer().getUniqueId(), "AS:group", finalGroup.name.toLowerCase()), 2);
 		}
 	}
 
@@ -139,9 +132,7 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 		if (id == null)
 			return false;
 		Object obj = visibility.get(id.toString());
-		if (obj instanceof Boolean && (Boolean)obj)
-			return true;
-		return false;
+		return obj instanceof Boolean && (Boolean) obj;
 	}
 	
 	private String getGroupName(CommandSender player, Map<String, Object> groups)
@@ -272,7 +263,7 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 				continue;
 			
 			// Sort by name in natural order
-			ArrayList<CommandSender> ordered = new ArrayList<CommandSender>(players);
+			ArrayList<CommandSender> ordered = new ArrayList<>(players);
 			Collections.sort(ordered, new Comparator<CommandSender>()
 			{
 				@Override

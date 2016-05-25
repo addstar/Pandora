@@ -34,7 +34,7 @@ import au.com.addstar.pandora.Module;
 
 public class PVPHandler implements Module, Listener
 {
-	private HashSet<PotionEffectType> mBadEffects = new HashSet<PotionEffectType>();
+	private HashSet<PotionEffectType> mBadEffects = new HashSet<>();
 	private WorldGuardPlugin mWorldGuard;
 	
 	private Config mConfig;
@@ -91,7 +91,7 @@ public class PVPHandler implements Module, Listener
 			if(ent.equals(thrower))
 				continue;
 			
-			if(((Player)ent).hasPermission("pandora.pvphandler.ignore"))
+			if(ent.hasPermission("pandora.pvphandler.ignore"))
 				continue;
 			
 			ApplicableRegionSet regions = manager.getApplicableRegions(ent.getLocation());
@@ -134,7 +134,7 @@ public class PVPHandler implements Module, Listener
 			if(!(entity instanceof Player) || entity.hasMetadata("NPC"))
 				continue;
 			
-			if (((Player)entity).hasPermission("pandora.pvphandler.ignore"))
+			if (entity.hasPermission("pandora.pvphandler.ignore"))
 				continue;
 			
 			entity.getLocation(playerLoc);

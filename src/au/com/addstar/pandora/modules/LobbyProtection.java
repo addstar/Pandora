@@ -34,19 +34,19 @@ public class LobbyProtection implements Module, Listener {
 	private MasterPlugin mPlugin;
 	private File mFile;
 	private FileConfiguration mConfig;
-	private HashMap<World, ProtOpts> protworlds = new HashMap<World, ProtOpts>();
+	private HashMap<World, ProtOpts> protworlds = new HashMap<>();
 	private boolean Debug = false;
 
-	public static enum ProtAction {
+	public enum ProtAction {
 		IGNORE,
 		CANCEL,
 		SPAWN,
-		KILL;
+		KILL
 	}
 
 	public class ProtOpts {
 		ProtAction defaultOpt = ProtAction.IGNORE;
-		HashMap<EntityDamageEvent.DamageCause, ProtAction> causeAction = new HashMap<EntityDamageEvent.DamageCause, ProtAction>();
+		HashMap<EntityDamageEvent.DamageCause, ProtAction> causeAction = new HashMap<>();
 		boolean inventoryLock = false;
 		ItemStack[] inventory;
 		ItemStack[] armour;
@@ -174,17 +174,14 @@ public class LobbyProtection implements Module, Listener {
 					ps.setSaturation(20.0f);
 
 					// The best way to prevent lingering damage effects from still being applied after the teleport 
-					Bukkit.getScheduler().runTask(mPlugin, new Runnable() {
-						@Override
-						public void run() {
-							ps.setFireTicks(0);
-							ps.setNoDamageTicks(40);
-							ps.setHealth(20.0f);
-							ps.setSaturation(20.0f);
-							ps.setFallDistance(0);
-							ps.setVelocity(new Vector(0, 0, 0));
-						}
-					});
+					Bukkit.getScheduler().runTask(mPlugin, () -> {
+                        ps.setFireTicks(0);
+                        ps.setNoDamageTicks(40);
+                        ps.setHealth(20.0f);
+                        ps.setSaturation(20.0f);
+                        ps.setFallDistance(0);
+                        ps.setVelocity(new Vector(0, 0, 0));
+                    });
 				} else {
 					mPlugin.getLogger().warning("[LobbyProtection] Spawn teleport failed for " + ps.getName() + "!");
 				}
@@ -211,7 +208,7 @@ public class LobbyProtection implements Module, Listener {
 		if (mConfig.getConfigurationSection("worlds") == null)
 			return true;
 
-		Set<String> worlds = (Set<String>) mConfig.getConfigurationSection("worlds").getKeys(false);
+		Set<String> worlds = mConfig.getConfigurationSection("worlds").getKeys(false);
 		for (String w : worlds) {
 			World world = Bukkit.getWorld(w);
 			if (world == null) {

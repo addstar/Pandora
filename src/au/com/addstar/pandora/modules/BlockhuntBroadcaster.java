@@ -2,7 +2,6 @@ package au.com.addstar.pandora.modules;
 
 import java.io.File;
 
-import nl.Steffion.BlockHunt.Arena;
 import nl.Steffion.BlockHunt.Arena.ArenaState;
 import nl.Steffion.BlockHunt.Events.EndArenaEvent;
 

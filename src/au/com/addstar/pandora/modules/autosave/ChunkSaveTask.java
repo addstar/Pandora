@@ -49,7 +49,7 @@ public class ChunkSaveTask implements Runnable
 	
 	private LinkedList<Chunk> findChunksForSaving()
 	{
-		LinkedList<Chunk> chunks = new LinkedList<Chunk>();
+		LinkedList<Chunk> chunks = new LinkedList<>();
 		
 		for(World world : Bukkit.getWorlds())
 		{
@@ -100,7 +100,7 @@ public class ChunkSaveTask implements Runnable
 						stop();
 						return;
 					}
-					mPercentage = (int)((100 * mChunksToSave.size()) / mTotal);
+					mPercentage =((100 * mChunksToSave.size()) / mTotal);
 					
 					if(chunk.isLoaded())
 						saveChunk(chunk);

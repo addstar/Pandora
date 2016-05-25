@@ -49,16 +49,11 @@ public class LookCloseSafe extends Trait
 		List<Entity> nearby = this.npc.getEntity().getNearbyEntities(range, range, range);
 		
 		final Location npcLocation = this.npc.getEntity().getLocation(NPC_LOCATION);
-		Collections.sort(nearby, new Comparator<Entity>()
-		{
-			@Override
-			public int compare( Entity o1, Entity o2 )
-			{
-				double d1 = o1.getLocation().distanceSquared(npcLocation);
-				double d2 = o2.getLocation().distanceSquared(npcLocation);
-				return Double.compare(d1, d2);
-			}
-		});
+		Collections.sort(nearby, (o1, o2) -> {
+            double d1 = o1.getLocation().distanceSquared(npcLocation);
+            double d2 = o2.getLocation().distanceSquared(npcLocation);
+            return Double.compare(d1, d2);
+        });
 		
 		for(Entity entity : nearby)
 		{

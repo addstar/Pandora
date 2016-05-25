@@ -109,6 +109,7 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
         if (sender.hasPermission("Pandora.booklogger.readbooks")){
             if(args.length > 0){

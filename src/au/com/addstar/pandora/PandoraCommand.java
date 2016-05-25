@@ -31,7 +31,7 @@ public class PandoraCommand implements CommandExecutor, TabCompleter
 			
 			Set<String> modules = mPlugin.getAllModules();
 			
-			ArrayList<String> all = new ArrayList<String>(modules.size());
+			ArrayList<String> all = new ArrayList<>(modules.size());
 			for(String module : modules)
 			{
 				if(mPlugin.isModuleLoaded(module))
@@ -40,14 +40,7 @@ public class PandoraCommand implements CommandExecutor, TabCompleter
 					all.add(ChatColor.RED + module);
 			}
 
-			Collections.sort(all, new Comparator<String>()
-			{
-				@Override
-				public int compare( String o1, String o2 )
-				{
-					return ChatColor.stripColor(o1).compareTo(ChatColor.stripColor(o2));
-				}
-			});
+			Collections.sort(all, (o1, o2) -> ChatColor.stripColor(o1).compareTo(ChatColor.stripColor(o2)));
 			
 			String moduleList = "";
 			for(String mod : all)
@@ -118,7 +111,7 @@ public class PandoraCommand implements CommandExecutor, TabCompleter
 	
 	private List<String> matchModules(String module)
 	{
-		ArrayList<String> matching = new ArrayList<String>();
+		ArrayList<String> matching = new ArrayList<>();
 		for(String name : mPlugin.getAllModules())
 		{
 			if(module.isEmpty() || name.startsWith(module))
