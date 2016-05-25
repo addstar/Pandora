@@ -1,5 +1,5 @@
 name: Pandora
-version: ${pom.version}
+version: ${project.version}-${build.number}
 
 description: Bukkit plugin with many miscellaneous features specifically created for Addstar MC
 
