@@ -1,5 +1,5 @@
 name: Pandora
-version: ${project.version}-${build.number}
+version: ${plugin.version}
 
 description: Bukkit plugin with many miscellaneous features specifically created for Addstar MC
 
@@ -113,7 +113,7 @@ permissions:
   pandora.movement.override.hook:
     description: Players with this permission will be able to hook players with a fishing rod regardless
     default: false
-  pandora.booklogger.offline
+  pandora.booklogger.offline:
      description: Save book reports to file
      default: true
   pandora.booklogger.offline.report:
@@ -169,3 +169,6 @@ commands:
   mgl:
     usage: /<command> <action>
     permission: pandora.minigamelocks.admin
+  bookreport:
+    usage: /<command> <player> <booknum>
+    permission: pandora.booklogger.readbooks
