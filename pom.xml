@@ -10,8 +10,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <scm>
-    <connection>scm:git:https://github.com/AddstarMC/pandora.git</connection>
-    <developerConnection>scm:git:https://github.com/AddstarMC/pandora.git</developerConnection>
+    <connection>scm:git:git@github.com:AddstarMC/Pandora.git</connection>
+    <developerConnection>scm:git:git@github.com:AddstarMC/Pandora.git</developerConnection>
     <url>https://github.com/AddstarMC/pandora</url>
     <tag>release</tag>
   </scm>
@@ -19,7 +19,6 @@
     <developer>
       <id>AddstarMC</id>
       <name>AddstarMC</name>
-      <email>AddstarMC@addstar.com.au</email>
       <url>http://github.com/AddstarMC</url>
       <roles>
         <role>developer</role>
