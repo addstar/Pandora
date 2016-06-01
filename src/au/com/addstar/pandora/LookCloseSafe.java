@@ -1,7 +1,6 @@
 package au.com.addstar.pandora;
 
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -34,7 +33,7 @@ public class LookCloseSafe extends Trait
 
 	private boolean canSee(Player player)
 	{
-		return (!realisticLooking || ((npc.getEntity() instanceof LivingEntity) ? ((LivingEntity)npc.getEntity()).hasLineOfSight(player) : true)) && !VanishUtil.isPlayerVanished(player);
+		return (!realisticLooking || (!(npc.getEntity() instanceof LivingEntity) || ((LivingEntity) npc.getEntity()).hasLineOfSight(player))) && !VanishUtil.isPlayerVanished(player);
 	}
 
 	public void configure( CommandContext args )

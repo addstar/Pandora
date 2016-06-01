@@ -18,7 +18,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.material.MaterialData;
-import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.List;
@@ -54,23 +53,24 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
         if (maxdur > 0){
             sender.sendMessage(ChatColor.GOLD + " Durability: "+ ChatColor.RED + (maxdur-dur) + " / " + maxdur);
         }
-        if(item.getType() == Material.POTION){
+        if(item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION){
             StringBuilder msg = new StringBuilder(" **Potion** \n");
-            Potion potion = Potion.fromItemStack(item);
-            if (potion != null) {
+            PotionMeta meta = (PotionMeta) item.getItemMeta();
+            if (meta != null) {
                 msg.append(" Main type: ");
-                if (potion.getType() != null) {
-                    msg.append(potion.getType().getEffectType());
+                if (meta.getCustomEffects().get(0) != null) {
+                    msg.append(meta.getCustomEffects().get(0).getType().getName());
                     msg.append("  Strength: ")
-                            .append(potion.getLevel()).append(" Dur Mod: ").append(potion.getType().getEffectType()
-                            .getDurationModifier()).append("");
-                    if (potion.isSplash()) msg.append(" Splash Potion: YES");
+                            .append(meta.getCustomEffects().get(0).getAmplifier()).append(" Dur Mod: ").append(meta.getCustomEffects().
+                            get(0).getDuration()).append("");
+                    if (item.getType() == Material.SPLASH_POTION) msg.append(" Splash Potion: YES");
+                    if (item.getType() == Material.LINGERING_POTION) msg.append(" Lingering Potion: YES");
                 } else {
                     msg.append("  Custom Potion - could not be cast to a real potion.");
                 }
             }
-            if(potion.getEffects() != null){
-            for(PotionEffect e : potion.getEffects()) {
+            if(meta.getCustomEffects() != null){
+            for(PotionEffect e : meta.getCustomEffects()) {
                 msg.append( "  Subtype: ").append(e.getType().toString()).append(" Strength: ").append(e.getAmplifier()).append(" Duration: ").append(e.getDuration());
             }
             }

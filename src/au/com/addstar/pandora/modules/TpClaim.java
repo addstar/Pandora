@@ -18,7 +18,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
@@ -78,7 +77,8 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		else
 			return false;
 	}
-	
+	//todo Needs refactor to use a Monolith lookup rather than offline Player
+	@SuppressWarnings("deprecation")
 	private boolean onTPClaim(CommandSender sender, String label, String[] args)
 	{
 		if(!(sender instanceof Player))

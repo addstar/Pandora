@@ -7,9 +7,13 @@ import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -29,6 +33,8 @@ import java.util.logging.Logger;
 public class BookMonitor implements Module, CommandExecutor, Listener {
     MasterPlugin plugin;
     Map<UUID,List<BookMeta>> map;
+    private File bFile;
+    private FileConfiguration bConfig;
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEditBook(PlayerEditBookEvent event){
@@ -53,7 +59,7 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
             }
             Logger log = plugin.getLogger();
             log.info(player.getName()+ " Wrote Book: " + "Title:" + title);
-            if(plugin.getConfig().getBoolean("bookreport.offline.report")) {
+            if(bConfig.getBoolean("offline.savereports",true)) {
                 try {
                     saveBook(player, meta);
                 } catch (IOException e) {
@@ -79,16 +85,40 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
 
     }
 
+    private boolean loadConfig() {
+        // Load the config
+        try
+        {
+            bFile = new File(plugin.getDataFolder(), "BookMonitor.yml");
+            if (!bFile.exists())
+                plugin.saveResource("BookMonitor.yml", false);
+
+            bConfig = YamlConfiguration.loadConfiguration(bFile);
+            if (bFile.exists())
+                bConfig.load(bFile);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
 
 
     @Override
     public void onEnable() {
-        map = createLRUMap(10);
-
+        loadConfig();
+        int count = bConfig.getInt("booklogcount",10);
+        map = createLRUMap(count);
     }
 
     @Override
     public void onDisable() {
+
+        bConfig = null;
+        bFile = null;
         map.clear();
     }
 
@@ -144,8 +174,8 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
     private void reportresult(CommandSender sender, UUID uuid, int report){
         List<BookMeta> resultList =  map.get(uuid);
         if(resultList == null){
-            if(plugin.getConfig().getBoolean("pandora.booklogger.offline.report")){
-           offlinereporter(sender,uuid);
+            if(bConfig.getBoolean("offline.savereports")){
+                        offlinereporter(sender,uuid);
             }else{
                 sender.sendMessage(ChatColor.RED + "No report available for that player.");
             }

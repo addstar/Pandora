@@ -149,7 +149,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 			DisabledMinigames.clear();
 
 			if ((mConfig != null) && (mConfig.isConfigurationSection("minigames"))) {
-				Set<String> minigames = (Set<String>) mConfig.getConfigurationSection("minigames").getKeys(false);
+				Set<String> minigames = mConfig.getConfigurationSection("minigames").getKeys(false);
 				System.out.println("Loading MinigameLocks config...");
 				for (String mgname : minigames) {
 					// Grab all the settings for this minigame
@@ -164,7 +164,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 								System.out.println("WARNING: Unknown Material \"" + locktype + "\"!");
 								continue;
 							}
-							Boolean autolock = ( mgsection.getString(locktype).toUpperCase().equals("AUTOLOCK") ? true : false);
+							Boolean autolock = (mgsection.getString(locktype).toUpperCase().equals("AUTOLOCK"));
 							types.put(mat, autolock);
 
 							// Keep a list of all lockable materials configured (for performance)

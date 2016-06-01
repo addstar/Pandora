@@ -26,7 +26,18 @@
       <timezone>10</timezone>
     </developer>
   </developers>
-
+  <distributionManagement>
+    <repository>
+      <id>maven.addstar.com.au</id>
+      <name>maven.addstar.com.au-releases</name>
+      <url>http://maven.addstar.com.au/artifactory/ext-release-local</url>
+    </repository>
+    <snapshotRepository>
+      <id>maven.addstar.com.au</id>
+      <name>maven.addstar.com.au-snapshots</name>
+      <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
+    </snapshotRepository>
+  </distributionManagement>
   <repositories>
     <!-- For spigot -->
     <repository>
@@ -35,7 +46,6 @@
       <releases><enabled>true</enabled></releases>
       <snapshots><enabled>true</enabled></snapshots>
     </repository>
-
     <!-- Addstar repos -->
     <repository>
       <id>addstar-repo</id>
@@ -54,7 +64,6 @@
         <enabled>false</enabled>
       </releases>
     </repository>
-
     <!-- For SnakeYAML (contains many other things too) -->
     <repository>
       <id>Sonatype-public</id>
@@ -82,9 +91,12 @@
     
     <!-- ProtocolLib -->
     <repository>
-      <id>comphenix-rep</id>
-      <name>Comphenix Repository</name>
-      <url>http://repo.comphenix.net/content/groups/public</url>
+      <id>dmulloy2-releases</id>
+      <url>http://repo.dmulloy2.net/content/repositories/releases/</url>
+    </repository>
+    <repository>
+      <id>dmulloy2-repo</id>
+      <url>http://repo.dmulloy2.net/content/groups/public/</url>
     </repository>
     
     <!-- Maven central -->
@@ -112,7 +124,7 @@
     <dependency>
       <groupId>net.milkbowl.vault</groupId>
       <artifactId>Vault</artifactId>
-      <version>1.4.1</version>
+      <version>1.5.6</version>
       <exclusions>
         <exclusion>
           <groupId>org.bukkit</groupId>
@@ -128,23 +140,24 @@
 
     <!-- WorldEdit -->
     <dependency>
-      <groupId>com.sk89q</groupId>
-      <artifactId>worldedit</artifactId>
-      <version>5.6.2</version>
+      <groupId>com.sk89q.worldedit</groupId>
+      <artifactId>worldedit-bukkit</artifactId>
+      <version>6.1.2</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- GriefPrevention -->
     <dependency>
       <groupId>me.ryanhamshire</groupId>
       <artifactId>GriefPrevention</artifactId>
-      <version>14.2</version>
+      <version>14.6</version>
     </dependency>
     
     <!-- QuickShop -->
     <dependency>
-      <groupId>org.maxgamer</groupId>
+      <groupId>au.com.addstar</groupId>
       <artifactId>quickshop</artifactId>
-      <version>4.4</version>
+      <version>4.7-SNAPSHOT</version>
     </dependency>
     
     <!-- VanishNoPacket -->
@@ -232,7 +245,8 @@
     <dependency>
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib</artifactId>
-      <version>3.4.0</version>
+      <version>4.0.0</version>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>

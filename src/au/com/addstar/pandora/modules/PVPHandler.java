@@ -1,6 +1,7 @@
 package au.com.addstar.pandora.modules;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.AreaEffectCloudApplyEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.potion.PotionEffect;
@@ -95,7 +97,7 @@ public class PVPHandler implements Module, Listener
 				continue;
 			
 			ApplicableRegionSet regions = manager.getApplicableRegions(ent.getLocation());
-			if(!regions.allows(DefaultFlag.PVP))
+			if(!regions.testState(null,DefaultFlag.PVP))
 			{
 				if(!warned)
 				{
@@ -106,6 +108,51 @@ public class PVPHandler implements Module, Listener
 			}
 		}
 	}
+
+	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
+	private void onLingerPotion(AreaEffectCloudApplyEvent event) {
+		if (!(event.getEntity().getSource() instanceof Player) || ((Player) event.getEntity().getSource()).hasMetadata("NPC")) {
+			return;
+		}
+		boolean bad = false;
+		for (PotionEffect effect : event.getEntity().getCustomEffects()) {
+			if (mBadEffects.contains(effect.getType()))
+				bad = true;
+		}
+		if (!bad) return;
+		Player thrower = (Player) event.getEntity().getSource();
+		if (thrower.hasPermission("pandora.pvphandler.bypass"))
+			return;
+
+		boolean warned = false;
+		RegionManager manager = mWorldGuard.getRegionManager(event.getEntity().getWorld());
+		if (manager == null)
+			return;
+		List<LivingEntity> removals = new ArrayList<>();
+		for (LivingEntity ent : event.getAffectedEntities()) {
+			if (!(ent instanceof Player) || ent.hasMetadata("NPC"))
+				continue;
+
+			if (ent.equals(thrower))
+				continue;
+
+			if (ent.hasPermission("pandora.pvphandler.ignore"))
+				continue;
+
+			ApplicableRegionSet regions = manager.getApplicableRegions(ent.getLocation());
+			if (!regions.testState(null, DefaultFlag.PVP)) {
+				if (!warned) {
+					thrower.sendMessage(ChatColor.RED + "PVP is not allowed in this area");
+					warned = true;
+				}
+				removals.add(ent);
+			}
+		}
+		for (LivingEntity ent: removals){
+			event.getAffectedEntities().remove(ent);
+		}
+	}
+
 	
 	private boolean handleBlockPlace(Block block, Player player, Material placeMaterial)
 	{
@@ -120,7 +167,7 @@ public class PVPHandler implements Module, Listener
 		Location blockLoc = block.getLocation();
 		
 		ApplicableRegionSet regions = manager.getApplicableRegions(blockLoc);
-		if(regions.allows(DefaultFlag.PVP))
+		if(regions.testState(null,DefaultFlag.PVP))
 			return false;
 		
 		List<Entity> entities = player.getNearbyEntities(mSearchRadius, mSearchRadius, mSearchRadius);

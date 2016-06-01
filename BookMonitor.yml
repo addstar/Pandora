@@ -1,0 +1,9 @@
+#
+# Configuration file for BookMonitor
+# This file contains the number of books to store
+#
+#debug: true
+#
+#booklogcount: 10
+#offline.savereports: true
+
