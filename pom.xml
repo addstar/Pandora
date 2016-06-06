@@ -2,10 +2,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.com.addstar</groupId>
   <artifactId>Pandora</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.0</version>
   <name>Pandora</name>
   <properties>
-    <build.number/>
+    <build.number />
     <plugin.version>${project.version}-${build.number}</plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -13,6 +13,7 @@
     <connection>scm:git:git@github.com:AddstarMC/Pandora.git</connection>
     <developerConnection>scm:git:git@github.com:AddstarMC/Pandora.git</developerConnection>
     <url>https://github.com/AddstarMC/pandora</url>
+    <tag>Pandora-1.0.0</tag>
   </scm>
   <developers>
     <developer>
