@@ -56,7 +56,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("SignColour", "au.com.addstar.pandora.modules.SignColour");
 		registerModule("MinigameBCast", "au.com.addstar.pandora.modules.MinigameBroadcaster", "Minigames", "BungeeChatBukkit");
 		registerModule("AntiBuild", "au.com.addstar.pandora.modules.AntiBuild");
-		registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver", "1_9_R2");
+		registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver", "1_10_R1");
 		registerModule("ItemDB", "au.com.addstar.pandora.modules.ItemDB", "Monolith");
 		registerModule("ItemMetaReporter", "au.com.addstar.pandora.modules.ItemMetaReporter");
 		registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving", "Monolith");
@@ -70,7 +70,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("Sparklers", "au.com.addstar.pandora.modules.Sparklers");
 		registerModule("GPExtended", "au.com.addstar.pandora.modules.GPExtended", "GriefPrevention");
 		registerModule("MinigameLocks", "au.com.addstar.pandora.modules.MinigameLocks", "Minigames");
-		registerNMSModule("UndesiredMovementBlocker", "au.com.addstar.pandora.modules.UndesiredMovementBlocker", "1_9_R2", "ProtocolLib");
+		registerNMSModule("UndesiredMovementBlocker", "au.com.addstar.pandora.modules.UndesiredMovementBlocker", "1_10_R1", "ProtocolLib");
 		registerModule("PlayerLocationLimit", "au.com.addstar.pandora.modules.PlayerLocationLimit");
 		registerModule("BlockhuntBroadcaster", "au.com.addstar.pandora.modules.BlockhuntBroadcaster", "BlockHunt", "BungeeChatBukkit");
 		registerModule("BookMonitor", "au.com.addstar.pandora.modules.BookMonitor", "Monolith");

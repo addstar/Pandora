@@ -9,9 +9,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_9_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FishHook;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -36,8 +37,8 @@ import com.google.common.collect.Maps;
 
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
-import net.minecraft.server.v1_9_R2.DataWatcher;
-import net.minecraft.server.v1_9_R2.EntityFishingHook;
+import net.minecraft.server.v1_10_R1.DataWatcher;
+import net.minecraft.server.v1_10_R1.EntityFishingHook;
 
 public class UndesiredMovementBlocker implements Module, Listener, PacketListener {
 	private Plugin plugin;
@@ -177,11 +178,11 @@ public class UndesiredMovementBlocker implements Module, Listener, PacketListene
 		}
 		
 		Entity hookedEnt = hook.hooked.getBukkitEntity();
-		if (hookedEnt instanceof Player) {
-			Player player = (Player)hookedEnt;
+		if (hookedEnt instanceof HumanEntity) {
+			HumanEntity player = (HumanEntity)hookedEnt;
 			
 			// Can this player be hooked?
-			if (player.hasPermission("pandora.movement.nohook")) {
+			if (!(player instanceof Player) || player.hasPermission("pandora.movement.nohook")) {
 				hook.hooked = null;
 				hook.die();
 			}
@@ -217,12 +218,12 @@ public class UndesiredMovementBlocker implements Module, Listener, PacketListene
 			if (item.a().a() == HOOK_ENTITYID_FIELD) {
 				// This hook has hooked something
 				int targetId = (Integer)item.b() - 1;
-				Player hookedPlayer = getPlayer(event.getPlayer().getWorld(), targetId);
+				HumanEntity hookedPlayer = getPlayer(event.getPlayer().getWorld(), targetId);
 				
 				if (hookedPlayer != null) {
 					// It hooked a player
 					// Can this player be hooked?
-					if (hookedPlayer.hasPermission("pandora.movement.nohook")) {
+					if (!(hookedPlayer instanceof Player) || hookedPlayer.hasPermission("pandora.movement.nohook")) {
 						// Remove hook status
 						it.remove();
 					}
@@ -235,8 +236,8 @@ public class UndesiredMovementBlocker implements Module, Listener, PacketListene
 		}
 	}
 	
-	private Player getPlayer(World world, int id) {
-		for (Player player : world.getPlayers()) {
+	private HumanEntity getPlayer(World world, int id) {
+		for (HumanEntity player : world.getEntitiesByClass(HumanEntity.class)) {
 			if (player.getEntityId() == id) {
 				return player;
 			}
