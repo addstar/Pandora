@@ -195,7 +195,8 @@ public class UndesiredMovementBlocker implements Module, Listener, PacketListene
 	 * blocking it at the packet level.
 	 */
 	public void onPacketSending(PacketEvent event) {
-		final int HOOK_ENTITYID_FIELD = 5;
+		//requires updating to the hooked entity id field on http://wiki.vg/Entities#FishingHook
+		final int HOOK_ENTITYID_FIELD = 6;
 		
 		if (event.getPacketType() != PacketType.Play.Server.ENTITY_METADATA) {
 			return;
@@ -217,6 +218,7 @@ public class UndesiredMovementBlocker implements Module, Listener, PacketListene
 			DataWatcher.Item<?> item = (DataWatcher.Item<?>)it.next();
 			if (item.a().a() == HOOK_ENTITYID_FIELD) {
 				// This hook has hooked something
+				//.b() returns the actual item we are watching....
 				int targetId = (Integer)item.b() - 1;
 				HumanEntity hookedPlayer = getPlayer(event.getPlayer().getWorld(), targetId);
 				

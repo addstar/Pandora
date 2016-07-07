@@ -70,19 +70,32 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
     }
 
     private void saveBook(Player player, BookMeta meta) throws IOException{
+        FileWriter fw;
+        BufferedWriter bw;
+        PrintWriter out = null;
+        try{
         File parent = new File(plugin.getDataFolder(), "bookreports");
         parent.mkdirs();
         File dest = new File(parent, player.getUniqueId() + ".txt");
-        PrintWriter printer = new PrintWriter(dest);
-        printer.println("-----------------------------------------");
-        printer.println("  Book report: " + meta.getTitle() + " Author:" + meta.getAuthor());
-        printer.println("  Completed " + DateFormat.getDateTimeInstance().format(new Date()));
+        fw = new FileWriter(dest, true);
+        bw = new BufferedWriter(fw);
+        out = new PrintWriter(bw);
+        out.println("-----------------------------------------");
+        out.println("  Book report: " + meta.getTitle() + " Author:" + meta.getAuthor());
+        out.println("  Completed " + DateFormat.getDateTimeInstance().format(new Date()));
         int i =1;
         for (String page:meta.getPages()) {
-            printer.println("Page:" +i);
-            printer.println(page);
+            out.println("Page:" +i);
+            out.println(page);
         }
-
+        out.flush();
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            if (out != null) {
+                out.close();
+            }
+        }
     }
 
     private boolean loadConfig() {
