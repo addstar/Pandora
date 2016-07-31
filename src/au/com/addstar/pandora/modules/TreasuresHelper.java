@@ -48,6 +48,10 @@ public class TreasuresHelper implements Module, Listener
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	public void onTreasureOpen(TreasuresChestOpenEvent event)
 	{
+		// Ignore the event unless the event is successful (only successful events use up keys or give rewards)
+		if (event.getResult() != TreasuresChestOpenResult.SUCCESS)
+			return;
+
 		Player p = event.getPlayer();
 		PlayerInventory inv = p.getInventory();
 		if (mConfig.debug) System.out.println("[DEBUG] TreasuresChestOpenEvent called for " + p.getName());
