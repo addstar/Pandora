@@ -50,6 +50,7 @@ public class TreasuresHelper implements Module, Listener
 	{
 		Player p = event.getPlayer();
 		PlayerInventory inv = p.getInventory();
+		if (mConfig.debug) System.out.println("[DEBUG] TreasuresChestOpenEvent called for " + p.getName());
 
 		// Check how many (normal) inventory slots are free (excluding armour)
 		int free = 0;
@@ -59,17 +60,23 @@ public class TreasuresHelper implements Module, Listener
 				free++;
 			}
 		}
+		if (mConfig.debug) System.out.println("[DEBUG] " + p.getName() + " has " + free + " inventory slots free.");
 
-		// Check if the player has required number of fre slots
+		// Check if the player has required number of free slots
 		if (free < mConfig.min_free_slots) {
+			if (mConfig.debug) System.out.println("[DEBUG] Cancelling event for " + p.getName());
+			p.sendMessage(ChatColor.translateAlternateColorCodes('&', mConfig.not_enough_room_msg).replace("%slots%", String.valueOf(mConfig.min_free_slots)));
 			event.setCancelled(true);
 			event.getPlayer().closeInventory();
+			TreasuresKeys.addKey(event.getPlayer().getUniqueId().toString(), event.getChestName(), 1);
 		}
 	}
 
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	public void onTreasureReward(TreasuresFindRewardEvent event)
 	{
+		if (mConfig.debug) System.out.println("[DEBUG] TreasuresFindRewardEvent called for " + event.getPlayer().getName());
+
 		// Broadcast the message across other servers
 		String msg = ChatColor.translateAlternateColorCodes('&', event.getBroadcastMessage());
 		BungeeChat.mirrorChat(msg, mConfig.broadcast_channel);
@@ -82,6 +89,9 @@ public class TreasuresHelper implements Module, Listener
 			super(file);
 		}
 		
+		@ConfigField(comment="Enable debug messages")
+		public boolean debug = false;
+
 		@ConfigField(comment="The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
 		public String broadcast_channel = "~BC";
 
