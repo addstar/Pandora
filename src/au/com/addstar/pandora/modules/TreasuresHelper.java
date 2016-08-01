@@ -85,7 +85,7 @@ public class TreasuresHelper implements Module, Listener
 
 		// Look for a message associated with the reward
 		String msg = event.getBroadcastMessage();
-		if (Strings.isNullOrEmpty(msg) || msg == "null") return;
+		if (Strings.isNullOrEmpty(msg) || msg.equals("null")) return;
 
 		if (mConfig.debug) System.out.println("[DEBUG] " + msg);
 
