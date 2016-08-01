@@ -1,6 +1,8 @@
 package au.com.addstar.pandora.modules;
 
 import java.io.File;
+
+import com.google.common.base.Strings;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -81,9 +83,15 @@ public class TreasuresHelper implements Module, Listener
 	{
 		if (mConfig.debug) System.out.println("[DEBUG] TreasuresFindRewardEvent called for " + event.getPlayer().getName());
 
+		// Look for a message associated with the reward
+		String msg = event.getBroadcastMessage();
+		if (Strings.isNullOrEmpty(msg) || msg == "null") return;
+
+		if (mConfig.debug) System.out.println("[DEBUG] " + msg);
+
 		// Broadcast the message across other servers
-		String msg = ChatColor.translateAlternateColorCodes('&', event.getBroadcastMessage());
-		BungeeChat.mirrorChat(msg, mConfig.broadcast_channel);
+		String colouredMsg = ChatColor.translateAlternateColorCodes('&', msg);
+		BungeeChat.mirrorChat(colouredMsg, mConfig.broadcast_channel);
 	}
 	
 	private class Config extends AutoConfig
