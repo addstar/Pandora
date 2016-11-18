@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_10_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitTask;
 
 public class RegionFileFlusher implements Runnable

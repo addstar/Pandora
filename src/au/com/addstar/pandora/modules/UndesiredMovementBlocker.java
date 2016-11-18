@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_10_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_11_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FishHook;
 import org.bukkit.entity.HumanEntity;
@@ -37,8 +37,8 @@ import com.google.common.collect.Maps;
 
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
-import net.minecraft.server.v1_10_R1.DataWatcher;
-import net.minecraft.server.v1_10_R1.EntityFishingHook;
+import net.minecraft.server.v1_11_R1.DataWatcher;
+import net.minecraft.server.v1_11_R1.EntityFishingHook;
 
 public class UndesiredMovementBlocker implements Module, Listener, PacketListener {
 	private Plugin plugin;
@@ -189,11 +189,13 @@ public class UndesiredMovementBlocker implements Module, Listener, PacketListene
 		}
 	}
 
-	@Override
+
 	/**
 	 * This method guarantees that players can't be hooked by
 	 * blocking it at the packet level.
+	 * @param event the PacketEvent
 	 */
+	@Override
 	public void onPacketSending(PacketEvent event) {
 		//requires updating to the hooked entity id field on http://wiki.vg/Entities#FishingHook
 		final int HOOK_ENTITYID_FIELD = 6;
