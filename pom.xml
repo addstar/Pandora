@@ -216,13 +216,14 @@
     <dependency>
       <groupId>au.com.addstar</groupId>
       <artifactId>Monolith</artifactId>
-      <version>1.4.2</version>
+      <version>1.4.4-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.spigotmc</groupId>
           <artifactId>spigot</artifactId>
-    </exclusion>
+        </exclusion>
       </exclusions>
+      <scope>provided</scope>
     </dependency>
     
     <dependency>
@@ -248,7 +249,7 @@
     <dependency>
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib</artifactId>
-      <version>4.0.0</version>
+      <version>4.1.0</version>
       <scope>provided</scope>
     </dependency>
 
