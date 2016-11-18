@@ -79,7 +79,7 @@
       <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
     </repository>
 
-    <!-- WorldEdit, WorldGuard, etc -->
+    <!-- WorldEdit, WorldGuard -->
     <repository>
       <id>sk89q-mvn2</id>
       <url>http://maven.sk89q.com/repo</url>
@@ -160,7 +160,7 @@
     <dependency>
       <groupId>me.robifoxx.treasures</groupId>
       <artifactId>Treasures</artifactId>
-      <version>1.10.16</version>
+      <version>2.3.4</version>
     </dependency>
 
     <!-- VanishNoPacket -->
