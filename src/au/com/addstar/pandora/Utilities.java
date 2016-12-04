@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import au.com.addstar.monolith.MonoSpawnEgg;
+import au.com.addstar.monolith.Monolith;
+import au.com.addstar.monolith.lookup.EntityDefinition;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
@@ -350,9 +354,14 @@ public class Utilities
 			
 			++index;
 		}
-		
 		ItemStack item = def.asItemStack(amount);
-		
+		if (def.getMaterial() == Material.MONSTER_EGG){
+			String type = args[start+1];
+			EntityDefinition edef = Lookup.findEntityByName(type);
+			MonoSpawnEgg egg = new MonoSpawnEgg(item);
+			egg.setMonoSpawnedType(edef.getType());
+			item = egg.getItem();
+		}
 		// Parse Meta
 		if (args.length > index)
 		{
