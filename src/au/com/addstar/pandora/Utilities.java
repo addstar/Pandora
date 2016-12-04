@@ -318,19 +318,18 @@ public class Utilities
 			{
 				int data = 0;
 				if (dataStr != null)
-				{
-					try
-					{
+				{try {
+					try {
 						data = Integer.parseInt(dataStr);
 						if (data < 0)
 							throw new IllegalArgumentException("Data value cannot be less than 0");
-					}
-					catch(NumberFormatException e)
-					{
+					} catch (NumberFormatException e) {
 						throw new IllegalArgumentException("Unable to parse data value " + dataStr);
 					}
+				}catch (IllegalArgumentException e){
+					e.printStackTrace();
 				}
-				
+				}
 				def = new MaterialDefinition(def.getMaterial(), (short)data);
 			}
 			
