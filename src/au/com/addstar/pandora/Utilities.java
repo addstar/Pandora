@@ -267,6 +267,7 @@ public class Utilities
 	public static ItemStack getItem(String[] args, int start) throws IllegalArgumentException
 	{
 		MaterialDefinition def = null;
+		EntityDefinition edef = null;
 		Material mat = Lookup.findByMinecraftName(args[start]);
 		int index = start;
 		if(mat != null && args[index].contains(":"))
@@ -301,6 +302,7 @@ public class Utilities
 		else
 		{
 			String dataStr = null;
+
 			if (args[index].contains(":"))
 			{
 				String name = args[index].split(":")[0];
@@ -313,10 +315,10 @@ public class Utilities
 			
 			if (def == null)
 				throw new IllegalArgumentException("Unknown material " + args[index]);
-			
 			if (def.getData() < 0)
 			{
 				int data = 0;
+
 				if (dataStr != null)
 				{try {
 					try {
@@ -324,7 +326,13 @@ public class Utilities
 						if (data < 0)
 							throw new IllegalArgumentException("Data value cannot be less than 0");
 					} catch (NumberFormatException e) {
-						throw new IllegalArgumentException("Unable to parse data value " + dataStr);
+						if(def.getMaterial() == Material.MONSTER_EGG){
+							String type = dataStr;
+							edef = Lookup.findEntityByName(type);
+						}else{
+							throw new IllegalArgumentException("Unable to parse data value " + dataStr);
+
+						}
 					}
 				}catch (IllegalArgumentException e){
 					e.printStackTrace();
@@ -354,9 +362,7 @@ public class Utilities
 			++index;
 		}
 		ItemStack item = def.asItemStack(amount);
-		if (def.getMaterial() == Material.MONSTER_EGG){
-			String type = args[start+1];
-			EntityDefinition edef = Lookup.findEntityByName(type);
+		if (def.getMaterial() == Material.MONSTER_EGG && edef != null){
 			MonoSpawnEgg egg = new MonoSpawnEgg(item);
 			egg.setMonoSpawnedType(edef.getType());
 			item = egg.getItem();
