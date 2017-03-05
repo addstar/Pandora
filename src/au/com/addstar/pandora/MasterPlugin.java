@@ -75,7 +75,8 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("BlockhuntBroadcaster", "au.com.addstar.pandora.modules.BlockhuntBroadcaster", "BlockHunt", "BungeeChatBukkit");
 		registerModule("BookMonitor", "au.com.addstar.pandora.modules.BookMonitor", "Monolith");
 		registerModule("TreasureHelper", "au.com.addstar.pandora.modules.TreasuresHelper", "Treasures");
-		
+		registerModule("AntiSwim", "au.com.addstar.pandora.modules.AntiSwim");
+
 		//TODO: Register additional modules here
 	}
 	

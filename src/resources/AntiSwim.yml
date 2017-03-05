@@ -1,0 +1,25 @@
+debug: false
+
+#
+# Per world configuration for AntiSwim
+#
+#    action => The action to perform when the player is detected swimming
+#    [Actions]:
+#       - IGNORE
+#       - CANCEL
+#       - SPAWN
+#       - KILL
+#
+#    radius: => How far around the player to check for water
+#
+#    message: => The message to show the player when they are detected swimming
+#
+#
+# worlds:
+#  hub:
+#    action: spawn
+#    radius: 10
+#    message: '&cYou cannot swim this far'
+#  lobby:
+#    default: ignore
+#
