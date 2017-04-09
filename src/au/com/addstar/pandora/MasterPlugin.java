@@ -76,6 +76,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("BookMonitor", "au.com.addstar.pandora.modules.BookMonitor", "Monolith");
 		registerModule("TreasureHelper", "au.com.addstar.pandora.modules.TreasuresHelper", "Treasures");
 		registerModule("AntiSwim", "au.com.addstar.pandora.modules.AntiSwim");
+		registerModule("PhatLootsHelper", "au.com.addstar.pandora.modules.PhatLootsHelper", "PhatLoots");
 
 		//TODO: Register additional modules here
 	}
