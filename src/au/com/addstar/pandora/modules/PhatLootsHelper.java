@@ -256,6 +256,12 @@ public class PhatLootsHelper implements Module, Listener {
         // Do not use lootExpirationMinutes since that includes the randomized shift value
         String lootWindowString = Long.toString(Math.round(mConfig.loot_expiration_minutes));
 
+        if (minutesRemainingApproximate > mConfig.loot_expiration_minutes) {
+            // The randomShift addon extended the actual loot time beyond loot_expiration_minutes
+            // To avoid confusion, update minutesRemainingApproximate to match loot_expiration_minutes
+            minutesRemainingApproximate = Math.round(mConfig.loot_expiration_minutes);
+        }
+
         p.sendMessage(ChatColor.translateAlternateColorCodes('&',
                 mConfig.multi_loot_too_soon
                         .replace("%MAX_LOOTS%", Integer.toString(maxLoots))
@@ -513,7 +519,7 @@ public class PhatLootsHelper implements Module, Listener {
                 " %LOOT_WINDOW% - the rolling loot_expiration_minutes window\n" +
                 " %MINUTES%     - the additional minutes they must wait")
         public String multi_loot_too_soon = "&cYou have accessed %MAX_LOOTS% chests of this loot type " +
-                "in a %LOOT_WINDOW% minute interval; wait approximately %MINUTES% minutes to access this loot chest";     // or "please try again later"
+                "in a %LOOT_WINDOW% minute interval; wait approximately %MINUTES% minutes to access this loot chest";
 
         @ConfigField(comment = "The time, in minutes, that a loot access event expires\n" +
                 "Tracked on a per loot level, not a per chest level")
