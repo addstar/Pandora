@@ -31,7 +31,7 @@ public class PhatLootsHelper implements Module, Listener {
 
     final private String ACCESS_TIMES_FILE = "PhatLootsAccessTimes.yml";
 
-    final private long AUTO_SAVE_INTERVAL_SECONDS = 900;
+    final private long AUTO_SAVE_INTERVAL_MINUTES = 30;
 
     final private long MAX_TRACKING_TIME_DAYS = 30;
 
@@ -86,7 +86,7 @@ public class PhatLootsHelper implements Module, Listener {
         loadData();
 
         mTask = Bukkit.getScheduler().runTaskTimer(mPlugin, new PhatLootsAccessTracker(),
-                AUTO_SAVE_INTERVAL_SECONDS * 20, AUTO_SAVE_INTERVAL_SECONDS * 20);
+                AUTO_SAVE_INTERVAL_MINUTES * 60 * 20, AUTO_SAVE_INTERVAL_MINUTES * 60 * 20);
     }
 
     @Override
@@ -531,7 +531,7 @@ public class PhatLootsHelper implements Module, Listener {
         @Override
         public void run() {
             if (mConfig.debug)
-                System.out.println("[DEBUG] Saving cached data since " + AUTO_SAVE_INTERVAL_SECONDS + " seconds elapsed");
+                System.out.println("[DEBUG] Saving cached data since " + AUTO_SAVE_INTERVAL_MINUTES + " minutes elapsed");
 
             saveData();
         }
