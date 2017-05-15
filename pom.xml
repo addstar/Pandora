@@ -113,7 +113,8 @@
     <dependency>
        <groupId>org.spigotmc</groupId>
        <artifactId>spigot</artifactId>
-       <version>1.11-R0.1-SNAPSHOT</version>
+       <version>1.11.2-R0.1-SNAPSHOT</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- Used for Economy interop -->
@@ -147,6 +148,7 @@
       <groupId>me.ryanhamshire</groupId>
       <artifactId>GriefPrevention</artifactId>
       <version>14.6</version>
+      <scope>provided</scope>
     </dependency>
 
     <!-- PhatLoots -->
@@ -295,7 +297,7 @@
     <dependency>
       <groupId>au.com.mineauz</groupId>
       <artifactId>Minigames</artifactId>
-      <version>1.7.0-SNAPSHOT</version>
+      <version>1.11.0-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.bukkit</groupId>
