@@ -113,7 +113,7 @@
     <dependency>
        <groupId>org.spigotmc</groupId>
        <artifactId>spigot</artifactId>
-       <version>1.12-pre2-SNAPSHOT</version>
+       <version>1.12-pre6-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
 
@@ -258,7 +258,7 @@
     <dependency>
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib</artifactId>
-      <version>4.1.0</version>
+      <version>4.2.1</version>
       <scope>provided</scope>
     </dependency>
 
