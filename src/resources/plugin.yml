@@ -119,7 +119,7 @@ permissions:
   pandora.booklogger.offline.report:
     description: This will allow offline reports to be loaded and reported in game.
     default: false
-  pandora.slimechunk.show
+  pandora.slimechunk.show:
     description: Ability to detect slimechunks with /slimechunk
     default: false
 
