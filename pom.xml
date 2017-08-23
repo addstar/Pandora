@@ -42,10 +42,8 @@
   <repositories>
     <!-- For spigot -->
     <repository>
-      <id>md5-repo</id>
-      <url>http://repo.md-5.net/content/groups/public/</url>
-      <releases><enabled>true</enabled></releases>
-      <snapshots><enabled>true</enabled></snapshots>
+      <id>spigot-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
     <!-- Addstar repos -->
     <repository>
@@ -100,6 +98,7 @@
       <id>dmulloy2-repo</id>
       <url>http://repo.dmulloy2.net/content/groups/public/</url>
     </repository>
+
     
     <!-- Maven central -->
     <repository>

@@ -78,6 +78,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("AntiSwim", "au.com.addstar.pandora.modules.AntiSwim");
 		registerModule("PhatLootsHelper", "au.com.addstar.pandora.modules.PhatLootsHelper", "PhatLoots");
 		registerModule("SlimeChunk", "au.com.addstar.pandora.modules.SlimeChunk");
+		registerModule("DeathInterceptor", "au.com.addstar.pandora.modules.DeathInterceptor");
 
 		//Register additional modules here
 	}

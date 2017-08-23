@@ -1,16 +1,12 @@
 package au.com.addstar.pandora.modules;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-
+import au.com.addstar.bc.BungeeChat;
+import au.com.addstar.bc.PlayerManager;
+import au.com.addstar.bc.PlayerSettings;
+import au.com.addstar.bc.sync.IMethodCallback;
+import au.com.addstar.pandora.MasterPlugin;
+import au.com.addstar.pandora.Module;
+import com.google.common.collect.HashMultimap;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Server;
@@ -28,13 +24,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.permissions.Permissible;
 
-import com.google.common.collect.HashMultimap;
-
-import au.com.addstar.bc.BungeeChat;
-import au.com.addstar.bc.PlayerManager;
-import au.com.addstar.bc.sync.IMethodCallback;
-import au.com.addstar.pandora.MasterPlugin;
-import au.com.addstar.pandora.Module;
+import java.io.File;
+import java.io.IOException;
+import java.util.*;
 
 public class PlayerListing implements Module, CommandExecutor, Listener
 {
@@ -302,7 +294,12 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 					builder.append(ChatColor.WHITE);
 				}
 				
-				// TODO: afk
+				final PlayerSettings settings = BungeeChat.getPlayerManager().getPlayerSettings(player);
+				if(settings.isAFK){
+					builder.append(ChatColor.GRAY);
+					builder.append("[AFK]");
+					builder.append(ChatColor.WHITE);
+				}
 				
 				builder.append(name);
 			}
