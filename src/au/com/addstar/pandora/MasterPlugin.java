@@ -80,7 +80,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("SlimeChunk", "au.com.addstar.pandora.modules.SlimeChunk");
 		registerModule("DeathInterceptor", "au.com.addstar.pandora.modules.DeathInterceptor");
 
-		//Register additional modules here
+		//TODO: Register additional modules here
 	}
 	
 	@Override

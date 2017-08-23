@@ -2,12 +2,14 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>au.com.addstar</groupId>
   <artifactId>Pandora</artifactId>
-  <version>1.0.2-SNAPSHOT</version>
+  <version>1.0.3-SNAPSHOT</version>
   <name>Pandora</name>
+  <description>For NMS VERSION ${spigot.version}</description>
   <properties>
     <build.number />
     <plugin.version>${project.version}-${build.number}</plugin.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <spigot.version>1.12.1-R0.1-SNAPSHOT</spigot.version>
   </properties>
   <scm>
     <connection>scm:git:git@github.com:AddstarMC/Pandora.git</connection>
@@ -48,14 +50,14 @@
     <!-- Addstar repos -->
     <repository>
       <id>addstar-repo</id>
-      <url>http://maven.addstar.com.au/artifactory/ext-release-local</url>
+      <url>http://maven.addstar.com.au/artifactory/all-release</url>
       <snapshots>
       	<enabled>false</enabled>
       </snapshots>
     </repository>
     <repository>
       <id>addstar-snapshot-repo</id>
-      <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
+      <url>http://maven.addstar.com.au/artifactory/all-snapshot</url>
       <snapshots>
       	<enabled>true</enabled>
       </snapshots>
@@ -92,13 +94,12 @@
     <!-- ProtocolLib -->
     <repository>
       <id>dmulloy2-releases</id>
-      <url>http://repo.dmulloy2.net/content/repositories/releases/</url>
+      <url>http://repo.dmulloy2.net/nexus/repository/releases/</url>
     </repository>
     <repository>
       <id>dmulloy2-repo</id>
       <url>http://repo.dmulloy2.net/content/groups/public/</url>
     </repository>
-
     
     <!-- Maven central -->
     <repository>
@@ -112,7 +113,7 @@
     <dependency>
        <groupId>org.spigotmc</groupId>
        <artifactId>spigot</artifactId>
-       <version>1.12.1-R0.1-SNAPSHOT</version>
+       <version>${spigot.version}</version>
       <scope>provided</scope>
     </dependency>
 
@@ -138,7 +139,7 @@
     <dependency>
       <groupId>com.sk89q.worldedit</groupId>
       <artifactId>worldedit-bukkit</artifactId>
-      <version>6.1.2</version>
+      <version>6.1.5-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
 
@@ -257,7 +258,7 @@
     <dependency>
       <groupId>com.comphenix.protocol</groupId>
       <artifactId>ProtocolLib</artifactId>
-      <version>4.1.0</version>
+      <version>4.4.0-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
 
