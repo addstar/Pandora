@@ -112,7 +112,7 @@
     <dependency>
        <groupId>org.spigotmc</groupId>
        <artifactId>spigot</artifactId>
-       <version>1.12-pre2-SNAPSHOT</version>
+       <version>1.12.1-R0.1-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
 
@@ -296,7 +296,7 @@
     <dependency>
       <groupId>au.com.mineauz</groupId>
       <artifactId>Minigames</artifactId>
-      <version>1.11.0-SNAPSHOT</version>
+      <version>1.12.0-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.bukkit</groupId>
