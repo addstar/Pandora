@@ -1,30 +1,28 @@
 package au.com.addstar.pandora;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import au.com.addstar.monolith.MonoSpawnEgg;
-import au.com.addstar.monolith.Monolith;
+import au.com.addstar.monolith.ItemMetaBuilder;
 import au.com.addstar.monolith.lookup.EntityDefinition;
+import au.com.addstar.monolith.lookup.Lookup;
+import au.com.addstar.monolith.lookup.MaterialDefinition;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
-import au.com.addstar.monolith.ItemMetaBuilder;
-import au.com.addstar.monolith.lookup.Lookup;
-import au.com.addstar.monolith.lookup.MaterialDefinition;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Utilities
 {
@@ -362,10 +360,12 @@ public class Utilities
 			++index;
 		}
 		ItemStack item = def.asItemStack(amount);
-		if (def.getMaterial() == Material.MONSTER_EGG && edef != null){
-			MonoSpawnEgg egg = new MonoSpawnEgg(item);
-			egg.setMonoSpawnedType(edef.getType());
-			item = egg.getItem();
+		ItemMeta meta = item.getItemMeta();
+		//force test and apply for spawneggmeta
+		if(meta instanceof SpawnEggMeta){
+			ItemMetaBuilder builder = new ItemMetaBuilder(item);
+			builder.accept("SpawnEggMeta", null);
+			item.setItemMeta(builder.build());
 		}
 		// Parse Meta
 		if (args.length > index)
