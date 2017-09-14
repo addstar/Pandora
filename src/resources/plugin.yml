@@ -1,9 +1,9 @@
 name: Pandora
 version: ${plugin.version}
 
-description: Bukkit plugin with many miscellaneous features specifically created for Addstar MC
+description: ${project.description}
 
-main: au.com.addstar.pandora.MasterPlugin
+main: ${mainClass}
 
 softdepend: [Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier, Monolith, Minigames]
 
@@ -12,7 +12,6 @@ loadbefore: [CommandHelper]
 permissions:
   pandora.antibuild.bypass:
     default: op
-
   quickshop.allowinclaims:
     default: op
   trustedhomes.bypass:

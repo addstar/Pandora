@@ -327,6 +327,7 @@ public class Utilities
 						if(def.getMaterial() == Material.MONSTER_EGG){
 							String type = dataStr;
 							edef = Lookup.findEntityByName(type);
+							data = edef.getType().getTypeId();
 						}else{
 							throw new IllegalArgumentException("Unable to parse data value " + dataStr);
 
@@ -363,9 +364,14 @@ public class Utilities
 		ItemMeta meta = item.getItemMeta();
 		//force test and apply for spawneggmeta
 		if(meta instanceof SpawnEggMeta){
-			ItemMetaBuilder builder = new ItemMetaBuilder(item);
-			builder.accept("SpawnEggMeta", null);
-			item.setItemMeta(builder.build());
+			if (edef !=null){
+				((SpawnEggMeta) meta).setSpawnedType(edef.getType());
+			}
+			if(((SpawnEggMeta)meta).getSpawnedType() == null) {
+				ItemMetaBuilder builder = new ItemMetaBuilder(item);
+				builder.accept("SpawnEggMeta", null);
+				item.setItemMeta(builder.build());
+			}
 		}
 		// Parse Meta
 		if (args.length > index)
