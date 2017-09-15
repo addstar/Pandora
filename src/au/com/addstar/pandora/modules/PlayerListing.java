@@ -2,7 +2,7 @@ package au.com.addstar.pandora.modules;
 
 import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.bc.PlayerManager;
-import au.com.addstar.bc.PlayerSettings;
+import au.com.addstar.bc.objects.PlayerSettings;
 import au.com.addstar.bc.sync.IMethodCallback;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
@@ -294,13 +294,13 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 					builder.append(ChatColor.WHITE);
 				}
 				
-				final PlayerSettings settings = BungeeChat.getPlayerManager().getPlayerSettings(player);
-				if(settings.isAFK){
-					builder.append(ChatColor.GRAY);
-					builder.append("[AFK]");
-					builder.append(ChatColor.WHITE);
-				}
-				
+				final PlayerSettings settings = BungeeChat.getPlayerManager().getPlayerSettings(player,true);
+                    if (settings !=null && settings.isAFK) {
+                        builder.append(ChatColor.GRAY);
+                        builder.append("[AFK]");
+                        builder.append(ChatColor.WHITE);
+                    }
+
 				builder.append(name);
 			}
 		}

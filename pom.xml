@@ -1,386 +1,402 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>au.com.addstar</groupId>
-  <artifactId>Pandora</artifactId>
-  <version>1.0.3-SNAPSHOT</version>
-  <name>Pandora</name>
-  <description>For NMS VERSION ${spigot.version}</description>
-  <properties>
-    <build.number />
-    <plugin.version>${project.version}-${build.number}</plugin.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <spigot.version>1.12.1-R0.1-SNAPSHOT</spigot.version>
-  </properties>
-  <scm>
-    <connection>scm:git:git@github.com:AddstarMC/Pandora.git</connection>
-    <developerConnection>scm:git:git@github.com:AddstarMC/Pandora.git</developerConnection>
-    <url>https://github.com/AddstarMC/pandora</url>
-    <tag>HEAD</tag>
-  </scm>
-  <developers>
-    <developer>
-      <id>AddstarMC</id>
-      <name>AddstarMC</name>
-      <url>http://github.com/AddstarMC</url>
-      <roles>
-        <role>developer</role>
-        <role>maintainer</role>
-      </roles>
-      <timezone>10</timezone>
-    </developer>
-  </developers>
-  <distributionManagement>
-    <repository>
-      <id>maven.addstar.com.au</id>
-      <name>maven.addstar.com.au-releases</name>
-      <url>http://maven.addstar.com.au/artifactory/ext-release-local</url>
-    </repository>
-    <snapshotRepository>
-      <id>maven.addstar.com.au</id>
-      <name>maven.addstar.com.au-snapshots</name>
-      <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
-    </snapshotRepository>
-  </distributionManagement>
-  <repositories>
-    <!-- For spigot -->
-    <repository>
-      <id>spigot-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-    </repository>
-    <!-- Addstar repos -->
-    <repository>
-      <id>addstar-repo</id>
-      <url>http://maven.addstar.com.au/artifactory/all-release</url>
-      <snapshots>
-      	<enabled>false</enabled>
-      </snapshots>
-    </repository>
-    <repository>
-      <id>addstar-snapshot-repo</id>
-      <url>http://maven.addstar.com.au/artifactory/all-snapshot</url>
-      <snapshots>
-      	<enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-    <!-- For SnakeYAML (contains many other things too) -->
-    <repository>
-      <id>Sonatype-public</id>
-      <name>SnakeYAML repository</name>
-      <url>http://oss.sonatype.org/content/groups/public/</url>
-    </repository>
-    
-    <!-- For Vault -->
-    <repository>
-      <id>vault-repo</id>
-      <name>Public Releases</name>
-      <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
-    </repository>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>au.com.addstar</groupId>
+    <artifactId>Pandora</artifactId>
+    <version>1.0.3-SNAPSHOT</version>
+    <name>Pandora</name>
+    <description>Multi Module plugin for NMS VERSION ${spigot.version} and MonoLith ${monolith.version} designed
+        for AddstarMC
+    </description>
+    <properties>
+        <build.number/>
+        <plugin.version>${project.version}-${build.number}</plugin.version>
+        <mainClass>au.com.addstar.pandora.MasterPlugin</mainClass>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <spigot.version>1.12.1-R0.1-SNAPSHOT</spigot.version>
+        <monolith.version>1.4.7-SNAPSHOT</monolith.version>
+    </properties>
+    <scm>
+        <connection>scm:git:git@github.com:AddstarMC/Pandora.git</connection>
+        <developerConnection>scm:git:git@github.com:AddstarMC/Pandora.git</developerConnection>
+        <url>https://github.com/AddstarMC/pandora</url>
+        <tag>HEAD</tag>
+    </scm>
+    <developers>
+        <developer>
+            <id>AddstarMC</id>
+            <name>AddstarMC</name>
+            <url>http://github.com/AddstarMC</url>
+            <roles>
+                <role>developer</role>
+                <role>maintainer</role>
+            </roles>
+            <timezone>10</timezone>
+        </developer>
+    </developers>
+    <distributionManagement>
+        <repository>
+            <id>maven.addstar.com.au</id>
+            <name>maven.addstar.com.au-releases</name>
+            <url>http://maven.addstar.com.au/artifactory/ext-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven.addstar.com.au</id>
+            <name>maven.addstar.com.au-snapshots</name>
+            <url>http://maven.addstar.com.au/artifactory/ext-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+    <repositories>
+        <!-- For spigot -->
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <!-- Addstar repos -->
+        <repository>
+            <id>addstar-repo</id>
+            <url>http://maven.addstar.com.au/artifactory/all-release</url>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>addstar-snapshot-repo</id>
+            <url>http://maven.addstar.com.au/artifactory/all-snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+        <!-- For SnakeYAML (contains many other things too) -->
+        <repository>
+            <id>Sonatype-public</id>
+            <name>SnakeYAML repository</name>
+            <url>http://oss.sonatype.org/content/groups/public/</url>
+        </repository>
 
-    <!-- WorldEdit, WorldGuard -->
-    <repository>
-      <id>sk89q-mvn2</id>
-      <url>http://maven.sk89q.com/repo</url>
-    </repository>
+        <!-- For Vault -->
+        <repository>
+            <id>vault-repo</id>
+            <name>Public Releases</name>
+            <url>http://nexus.hc.to/content/repositories/pub_releases/</url>
+        </repository>
 
-    <!-- Citizens/NPC -->
-    <repository>
-      <id>citizens</id>
-      <url>http://repo.citizensnpcs.co/</url>
-    </repository>
-    
-    <!-- ProtocolLib -->
-    <repository>
-      <id>dmulloy2-releases</id>
-      <url>http://repo.dmulloy2.net/nexus/repository/releases/</url>
-    </repository>
-    <repository>
-      <id>dmulloy2-repo</id>
-      <url>http://repo.dmulloy2.net/content/groups/public/</url>
-    </repository>
-    
-    <!-- Maven central -->
-    <repository>
-      <id>maven-central</id>
-      <url>http://repo1.maven.org/maven2/</url>
-    </repository>
-  </repositories>
+        <!-- WorldEdit, WorldGuard -->
+        <repository>
+            <id>sk89q-mvn2</id>
+            <url>http://maven.sk89q.com/repo</url>
+        </repository>
 
-  <dependencies>
-    <!-- We use Spigot now, not Bukkit -->
-    <dependency>
-       <groupId>org.spigotmc</groupId>
-       <artifactId>spigot</artifactId>
-       <version>${spigot.version}</version>
-      <scope>provided</scope>
-    </dependency>
+        <!-- Citizens/NPC -->
+        <repository>
+            <id>citizens</id>
+            <url>http://repo.citizensnpcs.co/</url>
+        </repository>
 
-    <!-- Used for Economy interop -->
-    <dependency>
-      <groupId>net.milkbowl.vault</groupId>
-      <artifactId>Vault</artifactId>
-      <version>1.6.6</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>bukkit</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>craftbukkit</artifactId>
-        </exclusion>
-      </exclusions>
+        <!-- ProtocolLib -->
+        <repository>
+            <id>dmulloy2-releases</id>
+            <url>http://repo.dmulloy2.net/nexus/repository/releases/</url>
+        </repository>
+        <repository>
+            <id>dmulloy2-repo</id>
+            <url>http://repo.dmulloy2.net/content/groups/public/</url>
+        </repository>
 
-    </dependency>
+        <!-- Maven central -->
+        <repository>
+            <id>maven-central</id>
+            <url>http://repo1.maven.org/maven2/</url>
+        </repository>
+    </repositories>
 
-    <!-- WorldEdit -->
-    <dependency>
-      <groupId>com.sk89q.worldedit</groupId>
-      <artifactId>worldedit-bukkit</artifactId>
-      <version>6.1.5-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
+    <dependencies>
+        <!-- We use Spigot now, not Bukkit -->
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
+            <version>${spigot.version}</version>
+            <scope>provided</scope>
+        </dependency>
 
-    <!-- GriefPrevention -->
-    <dependency>
-      <groupId>me.ryanhamshire</groupId>
-      <artifactId>GriefPrevention</artifactId>
-      <version>14.6</version>
-      <scope>provided</scope>
-    </dependency>
+        <!-- Used for Economy interop -->
+        <dependency>
+            <groupId>net.milkbowl.vault</groupId>
+            <artifactId>Vault</artifactId>
+            <version>1.6.6</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>craftbukkit</artifactId>
+                </exclusion>
+            </exclusions>
 
-    <!-- PhatLoots -->
-    <dependency>
-      <groupId>com.codisimus.plugins.phatloots</groupId>
-      <artifactId>PhatLoots</artifactId>
-      <version>4.2.3</version>
-    </dependency>
+        </dependency>
 
-    <!-- QuickShop -->
-    <dependency>
-      <groupId>au.com.addstar</groupId>
-      <artifactId>quickshop</artifactId>
-      <version>4.7</version>
-    </dependency>
-    
-    <!-- Treasures -->
-    <dependency>
-      <groupId>me.robifoxx.treasures</groupId>
-      <artifactId>Treasures</artifactId>
-      <version>2.3.4</version>
-    </dependency>
+        <!-- WorldEdit -->
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>6.1.5-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
 
-    <!-- VanishNoPacket -->
-    <dependency>
-      <groupId>org.kitteh</groupId>
-      <artifactId>vanish</artifactId>
-      <version>3.18.2</version>
-      <type>jar</type>
-      <scope>compile</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>net.milkbowl.vault</groupId>
-          <artifactId>Vault</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    
-    <!-- Citizens -->
-    <dependency>
-      <groupId>net.citizensnpcs</groupId>
-      <artifactId>citizens</artifactId>
-      <version>2.0.16-SNAPSHOT</version>
-      <type>jar</type>
-      <scope>compile</scope>
-    </dependency>
-	
-    <!-- SurvivalGames -->
-    <dependency>
-      <groupId>org.mcsg</groupId>
-      <artifactId>SurvivalGames</artifactId>
-      <version>0.6.0-SNAPSHOT</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>bukkit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
+        <!-- GriefPrevention -->
+        <dependency>
+            <groupId>me.ryanhamshire</groupId>
+            <artifactId>GriefPrevention</artifactId>
+            <version>14.6</version>
+            <scope>provided</scope>
+        </dependency>
 
-    <!-- BlockHunt -->
-    <dependency>
-        <groupId>nl.Steffion</groupId>
-        <artifactId>BlockHunt</artifactId>
-        <version>0.2.1</version>
-    </dependency>
+        <!-- PhatLoots -->
+        <dependency>
+            <groupId>com.codisimus.plugins.phatloots</groupId>
+            <artifactId>PhatLoots</artifactId>
+            <version>4.2.3</version>
+        </dependency>
 
-    <dependency>
-      <groupId>com.griefcraft</groupId>
-      <artifactId>lwc</artifactId>
-      <version>4.4.0</version>
-    </dependency>
-    
-    <dependency>
-      <groupId>au.com.addstar</groupId>
-      <artifactId>Monolith</artifactId>
-      <version>1.4.4-SNAPSHOT</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.spigotmc</groupId>
-          <artifactId>spigot</artifactId>
-        </exclusion>
-      </exclusions>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>com.sk89q</groupId>
-      <artifactId>worldguard</artifactId>
-      <version>6.1</version>
-      <exclusions>
-      	<exclusion>
-      	  <groupId>com.sk89q</groupId>
-      	  <artifactId>commandbook</artifactId>
-      	</exclusion>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>bukkit</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>craftbukkit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    
-    <dependency>
-      <groupId>com.comphenix.protocol</groupId>
-      <artifactId>ProtocolLib</artifactId>
-      <version>4.4.0-SNAPSHOT</version>
-      <scope>provided</scope>
-    </dependency>
+        <!-- QuickShop -->
+        <dependency>
+            <groupId>au.com.addstar</groupId>
+            <artifactId>quickshop</artifactId>
+            <version>4.7</version>
+        </dependency>
 
-    <dependency>
-      <groupId>com.vexsoftware</groupId>
-      <artifactId>votifier</artifactId>
-      <version>1.9</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>bukkit</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>craftbukkit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    
-    <dependency>
-      <groupId>au.com.addstar</groupId>
-      <artifactId>BungeeChat-Bukkit</artifactId>
-      <version>1.1.0-SNAPSHOT</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>bukkit</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>craftbukkit</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    
-    <dependency>
-      <groupId>au.com.mineauz</groupId>
-      <artifactId>Minigames</artifactId>
-      <version>1.12.0-SNAPSHOT</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>bukkit</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>craftbukkit</artifactId>
-        </exclusion>
-        <exclusion>
-          <groupId>net.milkbowl.vault</groupId>
-          <artifactId>Vault</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-  </dependencies>
+        <!-- Treasures -->
+        <dependency>
+            <groupId>me.robifoxx.treasures</groupId>
+            <artifactId>Treasures</artifactId>
+            <version>2.3.4</version>
+        </dependency>
 
-  <build>
-    <resources>
-      <resource>
-      <targetPath>.</targetPath>
-      <filtering>true</filtering>
-        <directory>${basedir}/src/resources/.</directory>
-        <includes>
-          <include>*.yml</include>
-          <include>keywords.txt</include>
-          <include>MemoryCleaner.txt</include>
-        </includes>
-      </resource>
-      <resource>
-      	<directory>lang</directory>
-      	<filtering>true</filtering>
-      	<targetPath>lang</targetPath>
-      </resource>
-    </resources>
+        <!-- VanishNoPacket -->
+        <dependency>
+            <groupId>org.kitteh</groupId>
+            <artifactId>vanish</artifactId>
+            <version>3.18.2</version>
+            <type>jar</type>
+            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.milkbowl.vault</groupId>
+                    <artifactId>Vault</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
 
-    <sourceDirectory>src</sourceDirectory>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>2.3.2</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-source-plugin</artifactId>
-        <version>3.0.0</version>
-        <configuration>
-          <attach>true</attach>
-        </configuration>
-        <executions>
-          <execution>
-            <id>attach-sources</id>
-            <phase>verify</phase>
-            <goals>
-              <goal>jar-no-fork</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.10.3</version>
-        <executions>
-        <execution>
-          <id>attach-sources</id>
-          <phase>verify</phase>
-          <goals>
-            <goal>aggregate-jar</goal>
-          </goals>
-        </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.1</version>
-      </plugin>
-    </plugins>
-  </build>
+        <!-- Citizens -->
+        <dependency>
+            <groupId>net.citizensnpcs</groupId>
+            <artifactId>citizens</artifactId>
+            <version>2.0.16-SNAPSHOT</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- SurvivalGames -->
+        <dependency>
+            <groupId>org.mcsg</groupId>
+            <artifactId>SurvivalGames</artifactId>
+            <version>0.6.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- BlockHunt -->
+        <dependency>
+            <groupId>nl.Steffion</groupId>
+            <artifactId>BlockHunt</artifactId>
+            <version>0.2.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.griefcraft</groupId>
+            <artifactId>lwc</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>au.com.addstar</groupId>
+            <artifactId>Monolith</artifactId>
+            <version>${monolith.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.spigotmc</groupId>
+                    <artifactId>spigot</artifactId>
+                </exclusion>
+            </exclusions>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sk89q</groupId>
+            <artifactId>worldguard</artifactId>
+            <version>6.1</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>commandbook</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>craftbukkit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.comphenix.protocol</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>4.4.0-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vexsoftware</groupId>
+            <artifactId>votifier</artifactId>
+            <version>1.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>craftbukkit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>au.com.addstar</groupId>
+            <artifactId>BungeeChat-Bukkit</artifactId>
+            <version>1.2.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>craftbukkit</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>au.com.mineauz</groupId>
+            <artifactId>Minigames</artifactId>
+            <version>1.12.0-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>craftbukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.milkbowl.vault</groupId>
+                    <artifactId>Vault</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <targetPath>.</targetPath>
+                <filtering>true</filtering>
+                <directory>${basedir}/src/resources/.</directory>
+                <includes>
+                    <include>*.yml</include>
+                    <include>keywords.txt</include>
+                    <include>MemoryCleaner.txt</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>lang</directory>
+                <filtering>true</filtering>
+                <targetPath>lang</targetPath>
+            </resource>
+        </resources>
+        <sourceDirectory>src</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>2.3.2</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.0.2</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${mainClass}</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.10.3</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>aggregate-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.1</version>
+            </plugin>
+        </plugins>
+    </build>
 </project>
