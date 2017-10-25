@@ -43,7 +43,7 @@ public class MasterPlugin extends JavaPlugin
 		registerModule("Quickshop-Griefprevention-Interop", "au.com.addstar.pandora.modules.QuickshopGPInterop", "GriefPrevention", "QuickShop");
 		registerModule("Vanish-Citizens-Interop", "au.com.addstar.pandora.modules.VanishCitizensIO", "VanishNoPacket", "Citizens");
 		registerModule("AntiChatRepeater", "au.com.addstar.pandora.modules.AntiChatRepeater");
-		registerModule("SignLogger", "au.com.addstar.pandora.modules.SignLogger");
+		registerModule("SignLogger", "au.com.addstar.pandora.modules.SignLogger", "BungeeChatBukkit");
 		registerModule("KickBanner", "au.com.addstar.pandora.modules.KickBanner");
 		registerModule("AntiPortalTrap", "au.com.addstar.pandora.modules.AntiPortalTrap");
 		registerModule("LWC-GP-Interop", "au.com.addstar.pandora.modules.LWCGPInterop", "LWC", "GriefPrevention");
@@ -291,6 +291,38 @@ public class MasterPlugin extends JavaPlugin
 		
 		return true;
 	}
+
+    public boolean registerBungeeChat(){
+      //  try {
+           // Class clazz = this.getClassLoader().loadClass("au.com.addstar.bc.BungeeChat"); //force a class loader error if no BungeeChat
+            return registerMessageChannel("BungeeChat");
+       // }catch (ClassNotFoundException exception){
+       //     this.getLogger().warning("Attempt to Register a Bungee Chat Channel with no BungeeChat installed.");
+      //  }
+	 //  return false;
+    }
+
+	public boolean registerMessageChannel(String channel){
+			Set<String> channels = Bukkit.getMessenger().getOutgoingChannels(this);
+			if (channels.size() > 0 && channels.contains(channel) ) {
+				return true;
+			}else {
+				Bukkit.getMessenger().registerOutgoingPluginChannel(this, channel);
+				return true;
+			}
+	}
+	public void deregisterBungeeChat(){
+        deregisterMessagechannel("BungeeChat");
+    }
+
+
+	public void deregisterMessagechannel(String channel){
+        Set<String> channels = Bukkit.getMessenger().getOutgoingChannels(this);
+        if (channels.size() > 0 && channels.contains(channel) ) {
+            Bukkit.getMessenger().unregisterOutgoingPluginChannel(this,channel);
+        }
+    }
+
 	
 	private Module createModule(String name, String moduleClass)
 	{
@@ -381,4 +413,5 @@ public class MasterPlugin extends JavaPlugin
 				this.dependencies = dependencies;
 		}
 	}
+
 }

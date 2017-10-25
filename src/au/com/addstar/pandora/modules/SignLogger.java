@@ -1,5 +1,10 @@
 package au.com.addstar.pandora.modules;
 
+import au.com.addstar.bc.BungeeChat;
+import au.com.addstar.pandora.AutoConfig;
+import au.com.addstar.pandora.ConfigField;
+import au.com.addstar.pandora.MasterPlugin;
+import au.com.addstar.pandora.Module;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -8,11 +13,15 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 
-import au.com.addstar.pandora.MasterPlugin;
-import au.com.addstar.pandora.Module;
+import java.io.File;
 
-public class SignLogger implements Module, Listener
-{
+public class SignLogger implements Module, Listener{
+	private MasterPlugin mPlugin;
+
+	private Config mConfig;
+
+	private boolean bungeechatenabled = false;
+
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	private void onSignChange(SignChangeEvent event)
 	{
@@ -30,24 +39,47 @@ public class SignLogger implements Module, Listener
 					event.getLine(2) + ChatColor.RESET + ChatColor.GRAY,
 					event.getLine(3) + ChatColor.RESET + ChatColor.GRAY, 
 					locationMessage);
+            if(bungeechatenabled) {
+                BungeeChat.mirrorChat(message, mConfig.channel);
+            }else {
+                for (Player player : Bukkit.getOnlinePlayers()) {
+                    if (player.equals(event.getPlayer()))
+                        continue;
 
-			for(Player player : Bukkit.getOnlinePlayers())
-			{
-				if(player.equals(event.getPlayer()))
-					continue;
-				
-				if(player.hasPermission("pandora.signlogger.listen"))
-					player.sendMessage(ChatColor.GRAY + message);
-			}
+                    if (player.hasPermission("pandora.signlogger.listen"))
+                        player.sendMessage(ChatColor.GRAY + message);
+                }
+            }
 		}
+
 	}
 	
 	@Override
-	public void onEnable() {}
+	public void onEnable() {
+        if(mConfig.load())
+            mConfig.save();
+        if(!(mConfig.channel.length() > 1)) {
+            bungeechatenabled = mPlugin.registerBungeeChat();
+        }
+    }
 
 	@Override
-	public void onDisable() {}
+	public void onDisable() {
+        mPlugin.deregisterBungeeChat();
+        bungeechatenabled = false;
+    }
 
 	@Override
 	public void setPandoraInstance( MasterPlugin plugin ) {}
+
+	private class Config extends AutoConfig
+	{
+		public Config(File file)
+		{
+			super(file);
+		}
+
+		@ConfigField(comment="The bungee chat channel to broadcast on. Default is '~SS' (the SocialSpy broadcast channel). Setting this to '' will stop messages.")
+		public String channel = "~SS";
+	}
 }

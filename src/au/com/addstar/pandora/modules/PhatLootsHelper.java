@@ -1,12 +1,11 @@
 package au.com.addstar.pandora.modules;
 
-import java.io.*;
-
-import java.util.*;
-
-import com.codisimus.plugins.phatloots.events.PrePlayerLootEvent;
+import au.com.addstar.pandora.AutoConfig;
+import au.com.addstar.pandora.ConfigField;
+import au.com.addstar.pandora.MasterPlugin;
+import au.com.addstar.pandora.Module;
 import com.codisimus.plugins.phatloots.PhatLoot;
-
+import com.codisimus.plugins.phatloots.events.PrePlayerLootEvent;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,10 +19,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.scheduler.BukkitTask;
 
-import au.com.addstar.pandora.AutoConfig;
-import au.com.addstar.pandora.ConfigField;
-import au.com.addstar.pandora.MasterPlugin;
-import au.com.addstar.pandora.Module;
+import java.io.*;
+import java.util.*;
 
 public class PhatLootsHelper implements Module, Listener {
     private MasterPlugin mPlugin;
@@ -59,13 +56,15 @@ public class PhatLootsHelper implements Module, Listener {
      * Yaml configuration class for persisting data
      */
     FileConfiguration mPlayerLootAccessConfig;
+    private boolean bungeechatenabled = false;
+
 
     @Override
     public void onEnable() {
         if (mConfig.load())
             mConfig.save();
 
-        Bukkit.getMessenger().registerOutgoingPluginChannel(mPlugin, "BungeeChat");
+        bungeechatenabled = mPlugin.registerBungeeChat();
 
         mPlayerLootHistory = new HashMap<>();
 
@@ -92,8 +91,8 @@ public class PhatLootsHelper implements Module, Listener {
     @Override
     public void onDisable() {
 
-        Bukkit.getMessenger().unregisterOutgoingPluginChannel(mPlugin, "BungeeChat");
-
+        mPlugin.deregisterBungeeChat();
+        bungeechatenabled = false;
         mTask.cancel();
 
         // Save mPlayerLootHistory and mPlayerLootMostRecent to disk

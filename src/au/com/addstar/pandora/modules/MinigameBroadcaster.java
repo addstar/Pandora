@@ -1,38 +1,38 @@
 package au.com.addstar.pandora.modules;
 
-import java.io.File;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-
-import au.com.mineauz.minigames.events.MinigamesBroadcastEvent;
-
 import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
+import au.com.mineauz.minigames.events.MinigamesBroadcastEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+
+import java.io.File;
 
 public class MinigameBroadcaster implements Module, Listener
 {
 	private MasterPlugin mPlugin;
 	
 	private Config mConfig;
+
+	private boolean bungeechatenabled = false;
 	
 	@Override
 	public void onEnable()
 	{
 		if(mConfig.load())
 			mConfig.save();
-		
-		Bukkit.getMessenger().registerOutgoingPluginChannel(mPlugin, "BungeeChat");
+		bungeechatenabled = mPlugin.registerBungeeChat();
 	}
 
 	@Override
 	public void onDisable()
 	{
-		Bukkit.getMessenger().unregisterOutgoingPluginChannel(mPlugin, "BungeeChat");
+		mPlugin.deregisterBungeeChat();
+		bungeechatenabled = false;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class MinigameBroadcaster implements Module, Listener
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	public void onMinigameBroadcast(MinigamesBroadcastEvent event)
 	{
-		BungeeChat.mirrorChat(event.getMessageWithPrefix(), mConfig.channel);
+		if(bungeechatenabled)BungeeChat.mirrorChat(event.getMessageWithPrefix(), mConfig.channel);
 	}
 	
 	private class Config extends AutoConfig

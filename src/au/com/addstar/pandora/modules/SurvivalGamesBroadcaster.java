@@ -1,38 +1,38 @@
 package au.com.addstar.pandora.modules;
 
-import java.io.File;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-
-import org.mcsg.survivalgames.api.PlayerWinEvent;
-
 import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.mcsg.survivalgames.api.PlayerWinEvent;
+
+import java.io.File;
 
 public class SurvivalGamesBroadcaster implements Module, Listener
 {
 	private MasterPlugin mPlugin;
 	
 	private Config mConfig;
-	
+	private boolean bungeechatenabled = false;
+
 	@Override
 	public void onEnable()
 	{
 		if(mConfig.load())
 			mConfig.save();
-		
-		Bukkit.getMessenger().registerOutgoingPluginChannel(mPlugin, "BungeeChat");
+
+		bungeechatenabled = mPlugin.registerBungeeChat();
 	}
 
 	@Override
 	public void onDisable()
 	{
-		Bukkit.getMessenger().unregisterOutgoingPluginChannel(mPlugin, "BungeeChat");
+		mPlugin.deregisterBungeeChat();
+		bungeechatenabled = false;
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class SurvivalGamesBroadcaster implements Module, Listener
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled=true)
 	public void onSurvivalGamesWin(PlayerWinEvent event)
 	{
-		BungeeChat.mirrorChat(event.getMessage(), mConfig.channel);
+		if(bungeechatenabled)BungeeChat.mirrorChat(event.getMessage(), mConfig.channel);
 	}
 	
 	private class Config extends AutoConfig

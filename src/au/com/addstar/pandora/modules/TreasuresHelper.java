@@ -1,9 +1,15 @@
 package au.com.addstar.pandora.modules;
 
-import java.io.File;
-
+import au.com.addstar.bc.BungeeChat;
+import au.com.addstar.pandora.AutoConfig;
+import au.com.addstar.pandora.ConfigField;
+import au.com.addstar.pandora.MasterPlugin;
+import au.com.addstar.pandora.Module;
 import com.google.common.base.Strings;
-import org.bukkit.Bukkit;
+import me.robifoxx.treasures.api.TreasuresChestOpenEvent;
+import me.robifoxx.treasures.api.TreasuresChestOpenResult;
+import me.robifoxx.treasures.api.TreasuresFindRewardEvent;
+import me.robifoxx.treasures.api.TreasuresKeys;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,18 +18,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-import me.robifoxx.treasures.api.*;
-
-import au.com.addstar.bc.BungeeChat;
-import au.com.addstar.pandora.AutoConfig;
-import au.com.addstar.pandora.ConfigField;
-import au.com.addstar.pandora.MasterPlugin;
-import au.com.addstar.pandora.Module;
+import java.io.File;
 
 public class TreasuresHelper implements Module, Listener
 {
 	private MasterPlugin mPlugin;
 	private Config mConfig;
+	private boolean bungeechatenabled = false;
+
 
 	@Override
 	public void onEnable()
@@ -31,13 +33,14 @@ public class TreasuresHelper implements Module, Listener
 		if(mConfig.load())
 			mConfig.save();
 
-		Bukkit.getMessenger().registerOutgoingPluginChannel(mPlugin, "BungeeChat");
+		bungeechatenabled = mPlugin.registerBungeeChat();
 	}
 
 	@Override
 	public void onDisable()
 	{
-		Bukkit.getMessenger().unregisterOutgoingPluginChannel(mPlugin, "BungeeChat");
+		mPlugin.deregisterBungeeChat();
+		bungeechatenabled = false;
 	}
 
 	@Override
@@ -91,7 +94,7 @@ public class TreasuresHelper implements Module, Listener
 
 		// Broadcast the message across other servers
 		String colouredMsg = ChatColor.translateAlternateColorCodes('&', msg);
-		BungeeChat.mirrorChat(colouredMsg, mConfig.broadcast_channel);
+		if(bungeechatenabled)BungeeChat.mirrorChat(colouredMsg, mConfig.broadcast_channel);
 	}
 	
 	private class Config extends AutoConfig
