@@ -56,15 +56,12 @@ public class PhatLootsHelper implements Module, Listener {
      * Yaml configuration class for persisting data
      */
     FileConfiguration mPlayerLootAccessConfig;
-    private boolean bungeechatenabled = false;
 
 
     @Override
     public void onEnable() {
         if (mConfig.load())
             mConfig.save();
-
-        bungeechatenabled = mPlugin.registerBungeeChat();
 
         mPlayerLootHistory = new HashMap<>();
 
@@ -90,9 +87,6 @@ public class PhatLootsHelper implements Module, Listener {
 
     @Override
     public void onDisable() {
-
-        mPlugin.deregisterBungeeChat();
-        bungeechatenabled = false;
         mTask.cancel();
 
         // Save mPlayerLootHistory and mPlayerLootMostRecent to disk
