@@ -1,15 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.com.addstar</groupId>
     <artifactId>Pandora</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>1.0.3</version>
     <name>Pandora</name>
     <description>Multi Module plugin for NMS VERSION ${spigot.version} and MonoLith ${monolith.version} designed
         for AddstarMC
     </description>
     <properties>
-        <build.number/>
+        <build.number />
         <plugin.version>${project.version}-${build.number}</plugin.version>
         <mainClass>au.com.addstar.pandora.MasterPlugin</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -20,7 +19,7 @@
         <connection>scm:git:git@github.com:AddstarMC/Pandora.git</connection>
         <developerConnection>scm:git:git@github.com:AddstarMC/Pandora.git</developerConnection>
         <url>https://github.com/AddstarMC/pandora</url>
-        <tag>HEAD</tag>
+        <tag>Pandora-1.0.3</tag>
     </scm>
     <developers>
         <developer>
