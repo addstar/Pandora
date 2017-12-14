@@ -3,6 +3,7 @@ package au.com.addstar.pandora.modules;
 import au.com.addstar.monolith.StringTranslator;
 import au.com.addstar.monolith.lookup.Lookup;
 import au.com.addstar.monolith.lookup.MaterialDefinition;
+import au.com.addstar.monolith.util.nbtapi.NBTItem;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import org.bukkit.ChatColor;
@@ -30,7 +31,7 @@ import java.util.Set;
  */
 public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
+    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         Player sender;
         if(!(commandSender instanceof Player)) {
             commandSender.sendMessage("&cPlayer only command.");
@@ -111,7 +112,10 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
 
             sender.sendMessage(ChatColor.GOLD  +"  Raw META: " + imeta.toString()); //raw imeta data dump
         }
-
+        NBTItem nItem = new NBTItem(item);
+        if(args.length > 0 && args[0].equalsIgnoreCase("nbt") ) {
+            sender.sendRawMessage(ChatColor.RED + "NBT Data: " + nItem.asNBTString());
+        }
         return true;
     }
 
