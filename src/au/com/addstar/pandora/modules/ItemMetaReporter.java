@@ -3,7 +3,9 @@ package au.com.addstar.pandora.modules;
 import au.com.addstar.monolith.StringTranslator;
 import au.com.addstar.monolith.lookup.Lookup;
 import au.com.addstar.monolith.lookup.MaterialDefinition;
+import au.com.addstar.monolith.util.nbtapi.NBTCompound;
 import au.com.addstar.monolith.util.nbtapi.NBTItem;
+import au.com.addstar.monolith.util.nbtapi.NBTReflectionUtil;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import org.bukkit.ChatColor;
@@ -69,12 +71,13 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
                 } else {
                     msg.append("  Custom Potion - could not be cast to a real potion.");
                 }
+                if(meta.getCustomEffects() != null){
+                    for(PotionEffect e : meta.getCustomEffects()) {
+                        msg.append( "  Subtype: ").append(e.getType().toString()).append(" Strength: ").append(e.getAmplifier()).append(" Duration: ").append(e.getDuration());
+                    }
+                }
             }
-            if(meta.getCustomEffects() != null){
-            for(PotionEffect e : meta.getCustomEffects()) {
-                msg.append( "  Subtype: ").append(e.getType().toString()).append(" Strength: ").append(e.getAmplifier()).append(" Duration: ").append(e.getDuration());
-            }
-            }
+
             sender.sendMessage(ChatColor.GOLD + msg.toString());
 
         }
@@ -112,10 +115,15 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
 
             sender.sendMessage(ChatColor.GOLD  +"  Raw META: " + imeta.toString()); //raw imeta data dump
         }
-        NBTItem nItem = new NBTItem(item);
-        if(args.length > 0 && args[0].equalsIgnoreCase("nbt") ) {
-            sender.sendRawMessage(ChatColor.RED + "NBT Data: " + nItem.asNBTString());
+        if(args.length >0 ){
+            if(args[0].equalsIgnoreCase("nbt")){
+                NBTItem nbtItem = new NBTItem(item);
+                if(nbtItem.hasNBTData()){
+                    sender.sendMessage(ChatColor.RED + "NBT Tag: " + ((NBTCompound) NBTReflectionUtil.getItemRootNBTTagCompound(NBTReflectionUtil.getNMSItemStack(nbtItem.getItem()))).asNBTString());
+                }
+            }
         }
+
         return true;
     }
 

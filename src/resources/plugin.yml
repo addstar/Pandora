@@ -1,4 +1,4 @@
-name: Pandora
+name: ${project.name}
 version: ${plugin.version}
 
 description: ${project.description}
@@ -144,7 +144,7 @@ commands:
     permission: pandora.item
     aliases: [i]
   itemmeta:
-    usage: /<command>
+    usage: /<command> [nbt]
     permission: pandora.itemmeta
   give:
     usage: /<command> <player> (<minecraftname> [<data> <amount> [<metadata>]]|<item|item:data> [<amount> [<metadata>]])
