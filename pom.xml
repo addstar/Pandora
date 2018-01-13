@@ -14,7 +14,7 @@
         <mainClass>au.com.addstar.pandora.MasterPlugin</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.version>1.12.2-R0.1-SNAPSHOT</spigot.version>
-        <monolith.version>1.4.7</monolith.version>
+        <monolith.version>1.4.8-SNAPSHOT</monolith.version>
     </properties>
     <scm>
         <connection>scm:git:git@github.com:AddstarMC/Pandora.git</connection>
@@ -125,8 +125,8 @@
         <!-- Used for Economy interop -->
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
-            <artifactId>Vault</artifactId>
-            <version>1.6.6</version>
+            <artifactId>VaultAPI</artifactId>
+            <version>1.6</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.bukkit</groupId>
@@ -137,7 +137,6 @@
                     <artifactId>craftbukkit</artifactId>
                 </exclusion>
             </exclusions>
-
         </dependency>
 
         <!-- WorldEdit -->
@@ -146,6 +145,7 @@
             <artifactId>worldedit-bukkit</artifactId>
             <version>6.1.5-SNAPSHOT</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <!-- GriefPrevention -->
@@ -154,6 +154,7 @@
             <artifactId>GriefPrevention</artifactId>
             <version>14.6</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <!-- PhatLoots -->
@@ -161,6 +162,7 @@
             <groupId>com.codisimus.plugins.phatloots</groupId>
             <artifactId>PhatLoots</artifactId>
             <version>4.2.3</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- QuickShop -->
@@ -168,6 +170,7 @@
             <groupId>au.com.addstar</groupId>
             <artifactId>quickshop</artifactId>
             <version>4.7</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- Treasures -->
@@ -175,6 +178,7 @@
             <groupId>me.robifoxx.treasures</groupId>
             <artifactId>Treasures</artifactId>
             <version>2.3.4</version>
+            <optional>true</optional>
         </dependency>
 
         <!-- VanishNoPacket -->
@@ -198,7 +202,8 @@
             <artifactId>citizens</artifactId>
             <version>2.0.16-SNAPSHOT</version>
             <type>jar</type>
-            <scope>compile</scope>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <!-- SurvivalGames -->
@@ -208,10 +213,16 @@
             <version>0.6.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
-                    <groupId>org.bukkit</groupId>
-                    <artifactId>bukkit</artifactId>
+                    <groupId>org.spigotmc</groupId>
+                    <artifactId>spigot</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.milkbowl.vault</groupId>
+                    <artifactId>Vault</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <!-- BlockHunt -->
@@ -219,12 +230,22 @@
             <groupId>nl.Steffion</groupId>
             <artifactId>BlockHunt</artifactId>
             <version>0.2.1</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>com.griefcraft</groupId>
             <artifactId>lwc</artifactId>
             <version>4.4.0</version>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -238,6 +259,7 @@
                 </exclusion>
             </exclusions>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -258,6 +280,8 @@
                     <artifactId>craftbukkit</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -265,6 +289,7 @@
             <artifactId>ProtocolLib</artifactId>
             <version>4.4.0-SNAPSHOT</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -281,6 +306,8 @@
                     <artifactId>craftbukkit</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -297,6 +324,8 @@
                     <artifactId>craftbukkit</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -317,6 +346,8 @@
                     <artifactId>Vault</artifactId>
                 </exclusion>
             </exclusions>
+            <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
     </dependencies>
 
