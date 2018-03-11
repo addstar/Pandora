@@ -79,6 +79,7 @@ public class TreasuresHelper implements Module, Listener
 			event.getPlayer().closeInventory();
 			TreasuresKeys.addKey(event.getPlayer().getUniqueId().toString(), event.getChestName(), 1);
 		}
+		if(mConfig.verboseChests) mPlugin.getLogger().info(event.getPlayer().getDisplayName()+" opened a  "+ event.getChestName());
 	}
 
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
@@ -95,6 +96,7 @@ public class TreasuresHelper implements Module, Listener
 		// Broadcast the message across other servers
 		String colouredMsg = ChatColor.translateAlternateColorCodes('&', msg);
 		if(bungeechatenabled)BungeeChat.mirrorChat(colouredMsg, mConfig.broadcast_channel);
+        if(mConfig.verboseChests) mPlugin.getLogger().info(event.getPlayer().getDisplayName()+" recieved a  "+ event.getRewardName() + "( " + event.getRarity() +")");
 	}
 	
 	private class Config extends AutoConfig
@@ -106,7 +108,8 @@ public class TreasuresHelper implements Module, Listener
 		
 		@ConfigField(comment="Enable debug messages")
 		public boolean debug = false;
-
+		@ConfigField(comment = "Verbose reporting of chest opens")
+        public boolean verboseChests = false;
 		@ConfigField(comment="The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
 		public String broadcast_channel = "~BC";
 

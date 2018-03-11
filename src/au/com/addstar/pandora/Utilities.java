@@ -364,10 +364,11 @@ public class Utilities
 		ItemMeta meta = item.getItemMeta();
 		//force test and apply for spawneggmeta
 		if(meta instanceof SpawnEggMeta){
+		    SpawnEggMeta smeta = (SpawnEggMeta)meta;
 			if (edef !=null){
-				((SpawnEggMeta) meta).setSpawnedType(edef.getType());
+				smeta.setSpawnedType(edef.getType());
 			}
-			if(((SpawnEggMeta)meta).getSpawnedType() == null) {
+			if(smeta.getSpawnedType() == null) {
 				ItemMetaBuilder builder = new ItemMetaBuilder(item);
 				builder.accept("SpawnEggMeta", null);
 				item.setItemMeta(builder.build());
