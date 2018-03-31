@@ -41,9 +41,6 @@ public class DeathInterceptor implements Listener, Module {
             message = StringUtils.replaceOnce(message, killer.getName(), killer.getDisplayName());
         }
         event.setDeathMessage(message);
-        if(event.getEntity().isOp()){
-            event.setDeathMessage( message + " ... and " + player.getDisplayName() + " is just a really bad admin...");
-            }
     }
 
 }
