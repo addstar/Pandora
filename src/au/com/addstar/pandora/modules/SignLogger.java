@@ -25,7 +25,7 @@ public class SignLogger implements Module, Listener{
 	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
 	private void onSignChange(SignChangeEvent event)
 	{
-		if(event.getLine(0).isEmpty() && event.getLine(1).isEmpty() && event.getLine(2).isEmpty() && event.getLine(3).isEmpty())
+	    if(event.getLine(0).isEmpty() && event.getLine(1).isEmpty() && event.getLine(2).isEmpty() && event.getLine(3).isEmpty())
 			return;
 		
 		String locationMessage = String.format("%s(%d,%d,%d)", event.getBlock().getWorld().getName(), event.getBlock().getX(), event.getBlock().getY(), event.getBlock().getZ());
@@ -70,7 +70,9 @@ public class SignLogger implements Module, Listener{
     }
 
 	@Override
-	public void setPandoraInstance( MasterPlugin plugin ) {}
+	public void setPandoraInstance( MasterPlugin plugin ) {
+        mConfig = new Config(new File(plugin.getDataFolder(), "SignLogger.yml"));
+    }
 
 	private class Config extends AutoConfig
 	{
