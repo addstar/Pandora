@@ -25,14 +25,12 @@ public class MinigameBroadcaster implements Module, Listener
 	{
 		if(mConfig.load())
 			mConfig.save();
-		bungeechatenabled = mPlugin.registerBungeeChat();
+		bungeechatenabled = mPlugin.isBungeeChatAvailable();
 	}
 
 	@Override
 	public void onDisable()
 	{
-		mPlugin.deregisterBungeeChat();
-		bungeechatenabled = false;
 	}
 
 	@Override
