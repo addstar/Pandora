@@ -125,12 +125,6 @@
             <version>${spigot.version}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${spigot.version}</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- Used for Economy interop -->
         <dependency>
             <groupId>net.milkbowl.vault</groupId>

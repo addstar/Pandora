@@ -1,12 +1,13 @@
 package au.com.addstar.pandora.modules;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import au.com.addstar.pandora.MasterPlugin;
+import au.com.addstar.pandora.Module;
+import au.com.mineauz.minigames.MinigamePlayer;
+import au.com.mineauz.minigames.Minigames;
+import au.com.mineauz.minigames.events.EndMinigameEvent;
+import au.com.mineauz.minigames.events.QuitMinigameEvent;
+import au.com.mineauz.minigames.events.StartMinigameEvent;
+import au.com.mineauz.minigames.minigame.Minigame;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -30,14 +31,13 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import au.com.addstar.pandora.MasterPlugin;
-import au.com.addstar.pandora.Module;
-import au.com.mineauz.minigames.MinigamePlayer;
-import au.com.mineauz.minigames.Minigames;
-import au.com.mineauz.minigames.events.EndMinigameEvent;
-import au.com.mineauz.minigames.events.QuitMinigameEvent;
-import au.com.mineauz.minigames.events.StartMinigameEvent;
-import au.com.mineauz.minigames.minigame.Minigame;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 public class MinigameLocks implements Module, Listener, CommandExecutor
 {
@@ -83,7 +83,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 
 		if (args[0].equalsIgnoreCase("disable") && args.length == 2) {
 			if (sender.hasPermission("pandora.minigamelocks.admin")) {
-				Minigame mg = Minigames.plugin.mdata.getMinigame(args[1]);
+				Minigame mg = Minigames.getPlugin().getMinigameManager().getMinigame(args[1]);
 				if (mg != null) {
 					DisableLocks(mg);
 					sender.sendMessage(ChatColor.RED + "MinigameLocks have been cleared and disabled for: " + mg.getName(true));
@@ -95,7 +95,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 		}
 		else if (args[0].equalsIgnoreCase("enable") && args.length == 2) {
 			if (sender.hasPermission("pandora.minigamelocks.admin")) {
-				Minigame mg = Minigames.plugin.mdata.getMinigame(args[1]);
+				Minigame mg = Minigames.getPlugin().getMinigameManager().getMinigame(args[1]);
 				if (mg != null) {
 					EnableLocks(mg);
 					sender.sendMessage(ChatColor.GREEN + "MinigameLocks have been enabled for: " + mg.getName(true));
@@ -153,7 +153,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 				System.out.println("Loading MinigameLocks config...");
 				for (String mgname : minigames) {
 					// Grab all the settings for this minigame
-					Minigame mg = Minigames.plugin.mdata.getMinigame(mgname);
+					Minigame mg = Minigames.getPlugin().getMinigameManager().getMinigame(mgname);
 					if (mg != null) {
 						HashMap<Material, Boolean> types = new HashMap<>();
 						ConfigurationSection mgsection = mConfig.getConfigurationSection("minigames." + mgname);
@@ -218,9 +218,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	public boolean CanLock(Minigame mg, Material mat) {
 		HashMap<Material, Boolean> types = Lockables.get(mg);
 		if (types != null) {
-			if (types.get(mat)) {
-				return true;
-			}
+            return types.get(mat);
 		}
 		return false;
 	}
@@ -302,7 +300,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 		// Exit early if this block can't be locked
 		if (!LockableMaterials.contains(event.getBlock().getType())) return; 
 
-		MinigamePlayer mgp = Minigames.plugin.pdata.getMinigamePlayer(event.getPlayer());
+		MinigamePlayer mgp = Minigames.getPlugin().getPlayerManager().getMinigamePlayer(event.getPlayer());
 		if ((mgp != null) && (mgp.isInMinigame())) {
 			Minigame mg = mgp.getMinigame();
 			if (mg == null) DebugMsg(2, "[onBlockPlace] Player \"" + event.getPlayer().getName() + "\" not in a Minigame");
@@ -383,7 +381,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	public void onPlayerQuitMinigame(QuitMinigameEvent event) {
 		// Early exit if there are no locks at all
 		if (Locks.isEmpty()) return;
-		MinigamePlayer mgp = Minigames.plugin.pdata.getMinigamePlayer(event.getPlayer());
+		MinigamePlayer mgp = Minigames.getPlugin().getPlayerManager().getMinigamePlayer(event.getPlayer());
 		if (mgp != null) {
 			ClearPlayerLocks(mgp);
 		} else {
@@ -396,7 +394,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	public void onPlayerDisconnect(PlayerQuitEvent event) {
 		// Early exit if there are no locks at all
 		if (Locks.isEmpty()) return;
-		MinigamePlayer mgp = Minigames.plugin.pdata.getMinigamePlayer(event.getPlayer());
+		MinigamePlayer mgp = Minigames.getPlugin().getPlayerManager().getMinigamePlayer(event.getPlayer());
 		if (mgp != null) {
 			ClearPlayerLocks(mgp);
 		} else {
