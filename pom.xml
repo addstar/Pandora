@@ -125,7 +125,12 @@
             <version>${spigot.version}</version>
             <scope>provided</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${spigot.version}</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- Used for Economy interop -->
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -150,6 +155,16 @@
             <version>6.1.9-SNAPSHOT</version>
             <scope>provided</scope>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>junit</groupId>
+                    <artifactId>junit</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- GriefPrevention -->
@@ -159,6 +174,16 @@
             <version>16.8</version>
             <scope>provided</scope>
             <optional>true</optional>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.sk89q.worldedit</groupId>
+                    <artifactId>worldedit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>worldgaurd</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- PhatLoots -->
@@ -173,7 +198,7 @@
         <dependency>
             <groupId>au.com.addstar</groupId>
             <artifactId>quickshop</artifactId>
-            <version>4.7</version>
+            <version>4.8.0</version>
             <optional>true</optional>
         </dependency>
 
@@ -224,6 +249,10 @@
                     <groupId>net.milkbowl.vault</groupId>
                     <artifactId>Vault</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>org.bukkit</groupId>
+                    <artifactId>bukkit</artifactId>
+                </exclusion>
             </exclusions>
             <scope>provided</scope>
             <optional>true</optional>
@@ -269,11 +298,15 @@
         <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldguard</artifactId>
-            <version>6.1</version>
+            <version>6.1.1-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.sk89q</groupId>
                     <artifactId>commandbook</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.sk89q</groupId>
+                    <artifactId>worldedit</artifactId>
                 </exclusion>
                 <exclusion>
                     <groupId>org.bukkit</groupId>
@@ -283,6 +316,14 @@
                     <groupId>org.bukkit</groupId>
                     <artifactId>craftbukkit</artifactId>
                 </exclusion>
+                <exclusion>
+                    <groupId>com.google.guava</groupId>
+                    <artifactId>guava</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.yaml</groupId>
+                    <artifactId>snakeyaml</artifactId>
+                </exclusion>
             </exclusions>
             <scope>provided</scope>
             <optional>true</optional>
@@ -290,7 +331,7 @@
 
         <dependency>
             <groupId>com.comphenix.protocol</groupId>
-            <artifactId>ProtocolLib</artifactId>
+            <artifactId>ProtocolLib-API</artifactId>
             <version>4.4.0-SNAPSHOT</version>
             <scope>provided</scope>
             <optional>true</optional>
@@ -335,7 +376,7 @@
         <dependency>
             <groupId>au.com.mineauz</groupId>
             <artifactId>Minigames</artifactId>
-            <version>1.12.0-SNAPSHOT</version>
+            <version>1.12.2-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.bukkit</groupId>
@@ -431,6 +472,16 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-release-plugin</artifactId>
                 <version>2.5.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.5</version>
             </plugin>
         </plugins>
     </build>
