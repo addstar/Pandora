@@ -96,11 +96,6 @@
             <url>http://repo.citizensnpcs.co/</url>
         </repository>
 
-        <!-- ProtocolLib -->
-        <repository>
-            <id>dmulloy2-releases</id>
-            <url>http://repo.dmulloy2.net/nexus/repository/releases/</url>
-        </repository>
         <repository>
             <id>dmulloy2-repo</id>
             <url>http://repo.dmulloy2.net/content/groups/public/</url>
@@ -207,8 +202,8 @@
         <!-- VanishNoPacket -->
         <dependency>
             <groupId>org.kitteh</groupId>
-            <artifactId>vanish</artifactId>
-            <version>3.18.2</version>
+            <artifactId>VanishNoPacket</artifactId>
+            <version>3.20.0-SNAPSHOT</version>
             <type>jar</type>
             <scope>compile</scope>
             <exclusions>
