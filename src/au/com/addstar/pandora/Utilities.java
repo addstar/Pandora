@@ -3,7 +3,7 @@ package au.com.addstar.pandora;
 import au.com.addstar.monolith.ItemMetaBuilder;
 import au.com.addstar.monolith.lookup.EntityDefinition;
 import au.com.addstar.monolith.lookup.Lookup;
-import au.com.addstar.monolith.lookup.MaterialDefinition;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -13,8 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SpawnEggMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
 
@@ -161,27 +159,27 @@ public class Utilities
 		Block ground = feet.getRelative(BlockFace.DOWN);
 		Block head = feet.getRelative(BlockFace.UP);
 		
-		return (isSafe(feet) && isSafe(head) && (head.getType() != Material.WATER && head.getType() != Material.STATIONARY_WATER) && ground.getType().isSolid());
+		return (isSafe(feet) && isSafe(head) && (head.getType() != Material.WATER) && ground.getType().isSolid());
 	}
 	
 	private static boolean isSafe(Block block)
 	{
 		switch(block.getType())
 		{
-		case AIR:
-		case SUGAR_CANE_BLOCK:
-		case WATER:
-		case STATIONARY_WATER:
-		case LONG_GRASS:
-		case CROPS:
-		case CARROT:
-		case POTATO:
+			case AIR:
+				case SUGAR_CANE:
+					case WATER:
+					case TALL_GRASS:
+				case WHEAT:
+				case CARROT:
+					case POTATO:
 		case RED_MUSHROOM:
-		case RED_ROSE:
+			case POPPY:
 		case BROWN_MUSHROOM:
-		case YELLOW_FLOWER:
+			case SUNFLOWER:
+
 		case DEAD_BUSH:
-		case SIGN_POST:
+			case SIGN:
 		case WALL_SIGN:
 			return true;
 		default:
@@ -237,114 +235,36 @@ public class Utilities
 		return matches;
 	}
 	
-	@SuppressWarnings( "deprecation" )
-    public static MaterialDefinition getMaterial(String name)
+    public static Material getMaterial(String name)
 	{
 		// Bukkit name
 		Material mat = Material.getMaterial(name.toUpperCase());
 		if (mat != null)
-			return new MaterialDefinition(mat, (short)-1);
-		
-		// Id
-		try
-		{
-			short id = Short.parseShort(name);
-			mat = Material.getMaterial(id);
-		}
-		catch(NumberFormatException e)
-		{
-		}
-		
-		if(mat != null)
-			return new MaterialDefinition(mat, (short)-1);
-
+			return mat;
 		// ItemDB
 		return Lookup.findItemByName(name);
 	}
 	
 	public static ItemStack getItem(String[] args, int start) throws IllegalArgumentException
 	{
-		MaterialDefinition def = null;
+		// Get Material
+		Material mat = null;
 		EntityDefinition edef = null;
-		Material mat = Lookup.findByMinecraftName(args[start]);
+		mat = Lookup.findByMinecraftName(args[start]);
 		int index = start;
-		if(mat != null && args[index].contains(":"))
-		{
-			if(args.length != 1)
-			{
-				if(args.length < 3)
-					throw new IllegalArgumentException("When using minecraft ids, you must specify both the data value, and amount too");
-				
-				short data = 0;
-				try
-				{
-					data = Short.parseShort(args[index+1]);
-					if(data < 0)
-						throw new IllegalArgumentException("Data value for " + args[index] + " cannot be less than 0");
-				}
-				catch(NumberFormatException e)
-				{
-					throw new IllegalArgumentException("Data value after " + args[index]);
-				}
-				
-				index += 2;
-				
-				def = new MaterialDefinition(mat, data);
-			}
-			else
-			{
-				def = new MaterialDefinition(mat, (short)0);
-				index = 1;
-			}
-		}
-		else
-		{
-			String dataStr = null;
-
+		if(mat == null ) {
 			if (args[index].contains(":"))
 			{
-				String name = args[index].split(":")[0];
-				dataStr = args[index].split(":")[1];
-				
-				def = getMaterial(name);
-			}
-			else
-				def = getMaterial(args[index]);
+				throw new IllegalArgumentException("Using integers and data values is no longer supported");
+			} else mat = getMaterial(args[index]);
 			
-			if (def == null)
+			if (mat == null)
 				throw new IllegalArgumentException("Unknown material " + args[index]);
-			if (def.getData() < 0)
-			{
-				int data = 0;
-
-				if (dataStr != null)
-				{try {
-					try {
-						data = Integer.parseInt(dataStr);
-						if (data < 0)
-							throw new IllegalArgumentException("Data value cannot be less than 0");
-					} catch (NumberFormatException e) {
-						if(def.getMaterial() == Material.MONSTER_EGG){
-							String type = dataStr;
-							edef = Lookup.findEntityByName(type);
-							data = edef.getType().getTypeId();
-						}else{
-							throw new IllegalArgumentException("Unable to parse data value " + dataStr);
-
-						}
-					}
-				}catch (IllegalArgumentException e){
-					e.printStackTrace();
-				}
-				}
-				def = new MaterialDefinition(def.getMaterial(), (short)data);
-			}
-			
 			index++;
 		}
 		
 		// Parse amount
-		int amount = def.getMaterial().getMaxStackSize();
+		int amount = mat.getMaxStackSize();
 		if(args.length > index)
 		{
 			try
@@ -360,20 +280,8 @@ public class Utilities
 			
 			++index;
 		}
-		ItemStack item = def.asItemStack(amount);
-		ItemMeta meta = item.getItemMeta();
-		//force test and apply for spawneggmeta
-		if(meta instanceof SpawnEggMeta){
-		    SpawnEggMeta smeta = (SpawnEggMeta)meta;
-			if (edef !=null){
-				smeta.setSpawnedType(edef.getType());
-			}
-			if(smeta.getSpawnedType() == null) {
-				ItemMetaBuilder builder = new ItemMetaBuilder(item);
-				builder.accept("SpawnEggMeta", null);
-				item.setItemMeta(builder.build());
-			}
-		}
+
+		ItemStack item = new ItemStack(mat,amount);
 		// Parse Meta
 		if (args.length > index)
 		{

@@ -1,6 +1,7 @@
 package au.com.addstar.pandora.modules;
 
-import java.util.List;
+import au.com.addstar.pandora.MasterPlugin;
+import au.com.addstar.pandora.Module;
 
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
@@ -11,8 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
-import au.com.addstar.pandora.MasterPlugin;
-import au.com.addstar.pandora.Module;
+import java.util.List;
 
 public class AngryPigmen implements Module, Listener
 {
@@ -37,7 +37,7 @@ public class AngryPigmen implements Module, Listener
 		if (event.getPlayer().getWorld().getEnvironment() != Environment.NETHER)
 			return;
 		
-		if (event.getItem().getType() == Material.GRILLED_PORK || event.getItem().getType() == Material.PORK)
+		if (event.getItem().getType() == Material.COOKED_PORKCHOP || event.getItem().getType() == Material.PORKCHOP)
 		{
 			List<Entity> entities = event.getPlayer().getNearbyEntities(30, 30, 30);
 			for (Entity entity : entities)

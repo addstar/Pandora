@@ -2,12 +2,10 @@ package au.com.addstar.pandora.modules;
 
 import au.com.addstar.monolith.StringTranslator;
 import au.com.addstar.monolith.lookup.Lookup;
-import au.com.addstar.monolith.lookup.MaterialDefinition;
-import au.com.addstar.monolith.util.nbtapi.NBTCompound;
 import au.com.addstar.monolith.util.nbtapi.NBTItem;
-import au.com.addstar.monolith.util.nbtapi.NBTReflectionUtil;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -20,7 +18,6 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.material.MaterialData;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.List;
@@ -43,14 +40,12 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
         }
 
         ItemStack item = sender.getInventory().getItemInMainHand();
-        MaterialDefinition def = MaterialDefinition.from(item);
-        sender.sendMessage(ChatColor.GOLD +"Item Name: " +ChatColor.RED+ StringTranslator.getName(item)+ ChatColor.RED + def.getMaterial().getId() + ":" + def.getData());
+        Material mat = item.getType();
+        sender.sendMessage(ChatColor.GOLD +"Item Name: " +ChatColor.RED+ StringTranslator.getName(item));
         sender.sendMessage(ChatColor.GOLD +"Item Type: "+ ChatColor.RED + item.getType().toString());
-        MaterialData mdata = item.getData();
         String mcName = Lookup.findMinecraftNameByItem(item.getType());
         if(mcName != null)
             sender.sendMessage(ChatColor.GOLD + "Minecraft Name: " + ChatColor.RED + mcName);
-        sender.sendMessage(ChatColor.GOLD +"Bukkit Name: "+ ChatColor.RED+ mdata.getItemType());
         Short dur = item.getDurability();
         Short maxdur = item.getType().getMaxDurability();
         if (maxdur > 0){
@@ -65,7 +60,7 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
                     msg.append(meta.getCustomEffects().get(0).getType().getName());
                     msg.append("  Strength: ")
                             .append(meta.getCustomEffects().get(0).getAmplifier()).append(" Dur Mod: ").append(meta.getCustomEffects().
-                            get(0).getDuration()).append("");
+                            get(0).getDuration());
                     if (item.getType() == Material.SPLASH_POTION) msg.append(" Splash Potion: YES");
                     if (item.getType() == Material.LINGERING_POTION) msg.append(" Lingering Potion: YES");
                 } else {
@@ -119,7 +114,8 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
             if(args[0].equalsIgnoreCase("nbt")){
                 NBTItem nbtItem = new NBTItem(item);
                 if(nbtItem.hasNBTData()){
-                    sender.sendMessage(ChatColor.RED + "NBT Tag: " + ((NBTCompound) NBTReflectionUtil.getItemRootNBTTagCompound(NBTReflectionUtil.getNMSItemStack(nbtItem.getItem()))).asNBTString());
+                    sender.sendMessage(ChatColor.RED + "NBT Tag: "+ChatColor.GOLD  + NBTItem.convertItemtoNBT(item).getParent().asNBTString());
+                    sender.sendMessage(ChatColor.RED + "NBT Tag as String: " +ChatColor.GOLD + NBTItem.convertItemtoNBT(item).getParent().toString());
                 }
             }
         }

@@ -2,7 +2,6 @@ package au.com.addstar.pandora;
 
 import org.bukkit.entity.Player;
 import org.kitteh.vanish.staticaccess.VanishNoPacket;
-import org.kitteh.vanish.staticaccess.VanishNotLoadedException;
 
 public class VanishUtil
 {
@@ -12,7 +11,7 @@ public class VanishUtil
 		{
 			return VanishNoPacket.isVanished(player.getName());
 		}
-		catch ( VanishNotLoadedException e )
+		catch ( Exception e )
 		{
 			return false;
 		}

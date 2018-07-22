@@ -1,9 +1,15 @@
 package au.com.addstar.pandora.modules;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import au.com.addstar.pandora.AutoConfig;
+import au.com.addstar.pandora.ConfigField;
+import au.com.addstar.pandora.MasterPlugin;
+import au.com.addstar.pandora.Module;
+
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.events.DisallowedPVPEvent;
+import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,16 +29,10 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.events.DisallowedPVPEvent;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-
-import au.com.addstar.pandora.AutoConfig;
-import au.com.addstar.pandora.ConfigField;
-import au.com.addstar.pandora.MasterPlugin;
-import au.com.addstar.pandora.Module;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 public class PVPHandler implements Module, Listener
 {
@@ -199,7 +199,7 @@ public class PVPHandler implements Module, Listener
 	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
 	private void onPlaceFire(BlockPlaceEvent event)
 	{
-		if(event.getBlock().getType() != Material.FIRE && event.getBlock().getType() != Material.LAVA && event.getBlock().getType() != Material.STATIONARY_LAVA)
+		if(event.getBlock().getType() != Material.FIRE && event.getBlock().getType() != Material.LAVA)
 			return;
 		
 		event.setCancelled(handleBlockPlace(event.getBlock(), event.getPlayer(), event.getBlock().getType()));

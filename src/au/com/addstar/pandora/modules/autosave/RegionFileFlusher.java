@@ -1,11 +1,11 @@
 package au.com.addstar.pandora.modules.autosave;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.List;
 
 public class RegionFileFlusher implements Runnable
 {
@@ -50,7 +50,7 @@ public class RegionFileFlusher implements Runnable
 			try
 			{
 				for(World world : mWorlds)
-					((CraftWorld)world).getHandle().saveLevel();
+					((CraftWorld)world).getHandle().flushSave();
 			}
 			finally
 			{

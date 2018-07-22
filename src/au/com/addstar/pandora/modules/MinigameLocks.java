@@ -345,7 +345,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		// Right clicking crafting table (create personal workbench for each player)
 		Block b = event.getClickedBlock();
-		if ((event.getAction() == Action.RIGHT_CLICK_BLOCK) && (b != null) && (b.getType() == Material.WORKBENCH)) {
+		if ((event.getAction() == Action.RIGHT_CLICK_BLOCK) && (b != null) && (b.getType() == Material.CRAFTING_TABLE)) {
 			Player p = event.getPlayer();
 			p.openWorkbench(p.getLocation(), true);
 			event.setCancelled(true);
