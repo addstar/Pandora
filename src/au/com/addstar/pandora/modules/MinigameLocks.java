@@ -34,7 +34,6 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -54,10 +53,8 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	public void onEnable() {
 		// Delay start up so Minigames are all loaded before we try to validate stuff
 		System.out.println("Delaying MinigameLocks initialisation...");
-		Bukkit.getScheduler().runTaskLater(mPlugin, () -> {
-            // Load and validate config
-            loadConfig();
-        }, 40);
+		// Load and validate config
+		Bukkit.getScheduler().runTaskLater(mPlugin, this::loadConfig, 40);
 	}
 
 	@Override
@@ -199,13 +196,13 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 		return true;
 	}
 
-	public Lockable GetLockable(Location loc) {
+	private Lockable GetLockable(Location loc) {
 		// TODO: logic for double chests (normal and trapped)
 		Location newloc = new Location(loc.getWorld(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
 		return Locks.get(newloc);
 	}
 
-	public boolean HasBlockAccess(Lockable lock, Player player) {
+	private boolean HasBlockAccess(Lockable lock, Player player) {
 		if (lock != null) {
 			// Allow owner to access chest
 			return lock.owner.equals(player.getUniqueId());
@@ -246,26 +243,16 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
 	public void ClearMinigameLocks(Minigame mg) {
 		if (!Lockables.containsKey(mg)) return;
 		DebugMsg(2, "Clearing locks for \"" + mg.getName(true) + "\"");
-		for(Iterator<Map.Entry<Location, Lockable>> it = Locks.entrySet().iterator(); it.hasNext(); ) {
-			Map.Entry<Location, Lockable> entry = it.next();
-			if (entry.getValue().minigame.equals(mg)) {
-				// Remove the entry if part of the specified Minigame
-				it.remove();
-			}
-		}
+		// Remove the entry if part of the specified Minigame
+		Locks.entrySet().removeIf(entry -> entry.getValue().minigame.equals(mg));
 	}
 
 	// Clear all the locks for a given player
 	public void ClearPlayerLocks(MinigamePlayer mgp) {
 		if (mgp != null) {
 			DebugMsg(2, "Clearing player locks for \"" + mgp.getName() + "\"");
-			for(Iterator<Map.Entry<Location, Lockable>> it = Locks.entrySet().iterator(); it.hasNext(); ) {
-				Map.Entry<Location, Lockable> entry = it.next();
-				if (entry.getValue().owner.equals(mgp.getUUID())) {
-					// Remove the entry if owned by the MinigamePlayer
-					it.remove();
-				}
-			}
+			// Remove the entry if owned by the MinigamePlayer
+			Locks.entrySet().removeIf(entry -> entry.getValue().owner.equals(mgp.getUUID()));
 		}
 	}
 

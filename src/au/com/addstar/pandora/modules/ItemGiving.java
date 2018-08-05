@@ -249,14 +249,16 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
     {
 		try
 		{
-			if(command.getName().equals("item"))
-				return onItem(sender, args);
-			else if(command.getName().equals("give"))
-				return onGive(sender, args);
-			else if(command.getName().equals("giveall"))
-				return onGiveAll(sender, args);
-			else if(command.getName().equals("giveallworld"))
-				return onGiveAllWorld(sender, args);
+            switch (command.getName()) {
+                case "item":
+                    return onItem(sender, args);
+                case "give":
+                    return onGive(sender, args);
+                case "giveall":
+                    return onGiveAll(sender, args);
+                case "giveallworld":
+                    return onGiveAllWorld(sender, args);
+            }
 			return false;
 		}
 		catch(IllegalArgumentException e)

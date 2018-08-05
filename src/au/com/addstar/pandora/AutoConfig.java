@@ -279,22 +279,7 @@ public abstract class AutoConfig
 			
 			return true;
 		}
-		catch( IOException e )
-		{
-			e.printStackTrace();
-			return false;
-		}
-		catch ( InvalidConfigurationException e )
-		{
-			e.printStackTrace();
-			return false;
-		}
-		catch ( IllegalArgumentException e )
-		{
-			e.printStackTrace();
-			return false;
-		}
-		catch ( IllegalAccessException e )
+		catch( IOException | IllegalAccessException | IllegalArgumentException | InvalidConfigurationException e )
 		{
 			e.printStackTrace();
 			return false;
@@ -308,10 +293,9 @@ public abstract class AutoConfig
 			onPreSave();
 			
 			YamlConfiguration config = new YamlConfiguration();
-			Map<String, String> comments = new HashMap<>();
-			
+
 			// Add all the category comments
-			comments.putAll(mCategoryComments);
+			Map<String, String> comments = new HashMap<>(mCategoryComments);
 			
 			// Add all the values
 			for(Field field : getClass().getDeclaredFields())
@@ -440,11 +424,11 @@ public abstract class AutoConfig
 					comments.put(path,configField.comment());
 			}
 			
-			String output = config.saveToString();
+			StringBuilder output = new StringBuilder(config.saveToString());
 			
 			// Apply comments
 			String category = "";  
-			List<String> lines = new ArrayList<>(Arrays.asList(output.split("\n")));  
+			List<String> lines = new ArrayList<>(Arrays.asList(output.toString().split("\n")));
 			for(int l = 0; l < lines.size(); l++)
 			{
 				String line = lines.get(l);
@@ -490,24 +474,16 @@ public abstract class AutoConfig
 					}
 				}
 			}
-			output = "";  
+			output = new StringBuilder();
 			for(String line : lines)
-				output += line + "\n";  
+				output.append(line).append("\n");
 			
 			FileWriter writer = new FileWriter(mFile);
-			writer.write(output);
+			writer.write(output.toString());
 			writer.close();
 			return true;
 		}
-		catch ( IllegalArgumentException e )
-		{
-			e.printStackTrace();
-		}
-		catch ( IllegalAccessException e )
-		{
-			e.printStackTrace();
-		}
-		catch ( IOException e )
+		catch ( IllegalArgumentException | IOException | IllegalAccessException e )
 		{
 			e.printStackTrace();
 		}

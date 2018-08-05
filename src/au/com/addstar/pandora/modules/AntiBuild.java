@@ -20,10 +20,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
@@ -144,8 +144,9 @@ public class AntiBuild implements Module, Listener {
 	}
 
 	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
-	public void onPlayerPickUpItem(PlayerPickupItemEvent event) {
-		checkBuildPerms(event, event.getPlayer(), null);
+	public void onPlayerPickUpItem(EntityPickupItemEvent event) {
+		if(event.getEntity() instanceof Player)
+		checkBuildPerms(event, (Player) event.getEntity(), null);
 	}
 
 	@EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)

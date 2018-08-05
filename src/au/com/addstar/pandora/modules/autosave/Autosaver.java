@@ -3,7 +3,6 @@ package au.com.addstar.pandora.modules.autosave;
 import java.io.File;
 import java.util.logging.Logger;
 
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.plugin.Plugin;
 
 import au.com.addstar.pandora.AutoConfig;
@@ -93,8 +92,7 @@ public class Autosaver implements Module
 		public int userCacheSaveInterval;
 		
 		@Override
-		protected void onPostLoad() throws InvalidConfigurationException
-		{
+		protected void onPostLoad() {
 			if(autoSaveBatchSize <= 0)
 			{
 				mLogger.warning("[Autosaver] Batch size is set too low and has been limited to 1");

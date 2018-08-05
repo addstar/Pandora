@@ -104,18 +104,13 @@ public class GPClaimData
 		{
 			config.load(file);
 		}
-		catch (IOException e)
+		catch (IOException | InvalidConfigurationException e)
 		{
 			e.printStackTrace();
 			return;
 		}
-		catch (InvalidConfigurationException e)
-		{
-			e.printStackTrace();
-			return;
-		}
-		
-		
+
+
 		if (config.contains("name"))
 			name = config.getString("name");
 		

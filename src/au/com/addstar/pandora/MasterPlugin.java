@@ -309,18 +309,18 @@ public class MasterPlugin extends JavaPlugin {
     private boolean loadModule(String name) {
         ModuleDefinition module = mAvailableModulesByName.get(name);
         
-        String missingDeps = "";
+        StringBuilder missingDeps = new StringBuilder();
         
         for (String plugin : module.dependencies) {
             if (!Bukkit.getPluginManager().isPluginEnabled(plugin)) {
-                if (!missingDeps.isEmpty())
-                    missingDeps += ", ";
-                missingDeps += plugin;
+                if (missingDeps.length() > 0)
+                    missingDeps.append(", ");
+                missingDeps.append(plugin);
             }
         }
         
-        if (!missingDeps.isEmpty()) {
-            getLogger().info(String.format("[%s] Not enabling, missing dependencies: %s", name, missingDeps));
+        if (missingDeps.length() > 0) {
+            getLogger().info(String.format("[%s] Not enabling, missing dependencies: %s", name, missingDeps.toString()));
             return false;
         }
         
@@ -411,10 +411,7 @@ public class MasterPlugin extends JavaPlugin {
                 getLogger().severe("Failed to enable module: " + name);
                 e.printStackTrace();
             }
-        } catch (InstantiationException e) {
-            getLogger().severe("Failed to instanciate " + name);
-            e.printStackTrace();
-        } catch (ExceptionInInitializerError e) {
+        } catch (InstantiationException | ExceptionInInitializerError e) {
             getLogger().severe("Failed to instanciate " + name);
             e.printStackTrace();
         } catch (IllegalAccessException e) {

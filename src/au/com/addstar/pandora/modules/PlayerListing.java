@@ -71,15 +71,11 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 				mGroups.put(groupName.toLowerCase(), new Group(groupName, memPerm, seePerm));
 			}
 		}
-		catch(InvalidConfigurationException e)
+		catch(InvalidConfigurationException | IOException e)
 		{
 			e.printStackTrace();
 		}
-		catch(IOException e)
-		{
-			e.printStackTrace();
-		}
-		
+
 		mVisualGroups = new ArrayList<>(mGroups.values());
 		mVisualGroups.add(new Group("Players", null, null));
 		mVisualGroups.add(new Group("Console", null, null));
@@ -256,15 +252,10 @@ public class PlayerListing implements Module, CommandExecutor, Listener
 			
 			// Sort by name in natural order
 			ArrayList<CommandSender> ordered = new ArrayList<>(players);
-			Collections.sort(ordered, new Comparator<CommandSender>()
-			{
-				@Override
-				public int compare( CommandSender o1, CommandSender o2 )
-				{
-					String name1 = getName(o1);
-					String name2 = getName(o2);
-					return name1.compareToIgnoreCase(name2);
-				}
+			ordered.sort((o1, o2) -> {
+				String name1 = getName(o1);
+				String name2 = getName(o2);
+				return name1.compareToIgnoreCase(name2);
 			});
 			
 			builder.append('\n');

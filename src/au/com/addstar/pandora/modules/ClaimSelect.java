@@ -11,9 +11,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import com.sk89q.worldedit.regions.RegionSelector;
 
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
@@ -52,7 +55,10 @@ public class ClaimSelect implements Module, CommandExecutor
 			Location loc2 = claim.getGreaterBoundaryCorner();
 			Selection sel = new CuboidSelection(player.getWorld(), loc1, loc2);
 			WorldEditPlugin wep = (WorldEditPlugin) mPlugin.getServer().getPluginManager().getPlugin("WorldEdit");
-			wep.setSelection(player, sel);
+			LocalSession sess = wep.getSession(player);
+			RegionSelector selector = sel.getRegionSelector();
+			sess.setRegionSelector(new BukkitWorld(player.getWorld()),selector);
+			sess.dispatchCUISelection(wep.wrapPlayer(player));
 			sender.sendMessage(ChatColor.GREEN + "Claim of selected with WorldEdit (" + sel.getArea() + " blocks)");
 		} else {
 			// Player is not in a claim

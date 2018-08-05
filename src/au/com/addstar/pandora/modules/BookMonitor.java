@@ -5,9 +5,9 @@ import au.com.addstar.monolith.lookup.LookupCallback;
 import au.com.addstar.monolith.lookup.PlayerDefinition;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -20,9 +20,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerEditBookEvent;
 import org.bukkit.inventory.meta.BookMeta;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -48,27 +59,23 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
             map.remove(playerUUID);
             map.put(playerUUID,list);
             String title = meta.getTitle();
-            String text = null;
+            StringBuilder text = null;
             if (meta.hasPages()) {
                 int i=1;
                 for (String page : meta.getPages()) {
-                    text = text + "Page "+ i +" "+page + "/n";
+                    text.append("Page ").append(i).append(" ").append(page).append("/n");
                     i++;
                 }
             }
             Logger log = plugin.getLogger();
             log.info(player.getName()+ " Wrote Book: " + "Title:" + title);
             if(bConfig.getBoolean("offline.savereports",true)) {
-                try {
-                    saveBook(player, meta);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            saveBook(player, meta);
             }
         }
     }
 
-    private void saveBook(Player player, BookMeta meta) throws IOException{
+    private void saveBook(Player player, BookMeta meta) {
         FileWriter fw;
         BufferedWriter bw;
         PrintWriter out = null;

@@ -1,19 +1,14 @@
 package au.com.addstar.pandora;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.kitteh.vanish.staticaccess.VanishNoPacket;
+import org.kitteh.vanish.VanishPlugin;
 
 public class VanishUtil
 {
-	public static boolean isPlayerVanished(Player player)
+    public static VanishPlugin plugin = (VanishPlugin) Bukkit.getPluginManager().getPlugin("VanishNoPacket");
+    public static boolean isPlayerVanished(Player player)
 	{
-		try
-		{
-			return VanishNoPacket.isVanished(player.getName());
-		}
-		catch ( Exception e )
-		{
-			return false;
-		}
+            return plugin.getManager().isVanished(player);
 	}
 }

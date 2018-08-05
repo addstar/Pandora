@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -33,7 +34,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.google.common.base.Functions;
-import com.google.common.collect.Lists;
 
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
@@ -82,7 +82,7 @@ public class Sparklers implements Module, Listener, CommandExecutor
 	{
 		mPlugin.getCommand("sparkler").setExecutor(this);
 		
-		mTask = Bukkit.getScheduler().runTaskTimer(mPlugin, () -> doSparklers(), 2, 2);
+		mTask = Bukkit.getScheduler().runTaskTimer(mPlugin, this::doSparklers, 2, 2);
 	}
 
 	@Override
@@ -184,7 +184,7 @@ public class Sparklers implements Module, Listener, CommandExecutor
 			
 			if (effect == null)
 			{
-				sender.sendMessage(ChatColor.RED + "Invalid effect. Valid effects are: " + StringUtils.join(Lists.transform(Arrays.asList(SparklerEffect.values()), Functions.toStringFunction()), ' '));
+				sender.sendMessage(ChatColor.RED + "Invalid effect. Valid effects are: " + StringUtils.join(Arrays.stream(SparklerEffect.values()).map(Functions.toStringFunction()::apply).collect(Collectors.toList()), ' '));
 				return true;
 			}
 			
@@ -357,7 +357,7 @@ public class Sparklers implements Module, Listener, CommandExecutor
 		item.addUnsafeEnchantment(Enchantment.ARROW_FIRE, 1);
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(mItemName + ChatColor.GRAY + " - " + ChatColor.RED + effect.name());
-		meta.setLore(Arrays.asList(ChatColor.GRAY + "Right click this to create a shower of sparks"));
+		meta.setLore(Collections.singletonList(ChatColor.GRAY + "Right click this to create a shower of sparks"));
 		item.setItemMeta(meta);
 		
 		return item;

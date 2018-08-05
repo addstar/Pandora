@@ -1,6 +1,5 @@
 package au.com.addstar.pandora;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Location;
@@ -12,7 +11,6 @@ import org.bukkit.entity.Player;
 import net.citizensnpcs.Settings;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.command.CommandContext;
-import net.citizensnpcs.api.exception.NPCLoadException;
 import net.citizensnpcs.api.trait.Trait;
 import net.citizensnpcs.api.util.DataKey;
 import net.citizensnpcs.util.Util;
@@ -48,11 +46,11 @@ public class LookCloseSafe extends Trait
 		List<Entity> nearby = this.npc.getEntity().getNearbyEntities(range, range, range);
 		
 		final Location npcLocation = this.npc.getEntity().getLocation(NPC_LOCATION);
-		Collections.sort(nearby, (o1, o2) -> {
-            double d1 = o1.getLocation().distanceSquared(npcLocation);
-            double d2 = o2.getLocation().distanceSquared(npcLocation);
-            return Double.compare(d1, d2);
-        });
+		nearby.sort((o1, o2) -> {
+			double d1 = o1.getLocation().distanceSquared(npcLocation);
+			double d2 = o2.getLocation().distanceSquared(npcLocation);
+			return Double.compare(d1, d2);
+		});
 		
 		for(Entity entity : nearby)
 		{
@@ -76,8 +74,7 @@ public class LookCloseSafe extends Trait
 		return false;
 	}
 
-	public void load( DataKey key ) throws NPCLoadException
-	{
+	public void load( DataKey key ) {
 		enabled = key.getBoolean("enabled", key.getBoolean(""));
 
 		range = key.getDouble("range", this.range);

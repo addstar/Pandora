@@ -73,16 +73,16 @@ public class EventHelper
 
             Class<? extends Event> eventClass = checkClass.asSubclass(Event.class);
             
-            String args = "";
+            StringBuilder args = new StringBuilder();
             for(Class<?> clazz : method.getParameterTypes())
             {
-            	if(!args.isEmpty())
-            		args += ", ";
+            	if(args.length() > 0)
+            		args.append(", ");
             	
-            	args += clazz.getSimpleName();
+            	args.append(clazz.getSimpleName());
             }
             
-            callbacks.add(new EventCallback(eventClass, handler.priority(), handler.ignoreCancelled(), String.format("%s.%s(%s)", listener.getClass().getName(), method.getName(), args)));
+            callbacks.add(new EventCallback(eventClass, handler.priority(), handler.ignoreCancelled(), String.format("%s.%s(%s)", listener.getClass().getName(), method.getName(), args.toString())));
 		}
 		
 		return callbacks;

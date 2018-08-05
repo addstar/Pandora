@@ -48,57 +48,39 @@ public class MemoryCleaner implements Module, Listener
 	{
 		if (!mConfigLocation.exists())
 			mPlugin.saveResource("MemoryCleaner.txt", false);
-		BufferedReader reader = null;
-		
-		try
-		{
-			reader = new BufferedReader(new FileReader(mConfigLocation));
-			
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(mConfigLocation))) {
+
 			List<Definition> defList = null;
-			
+
 			String line;
-			while ((line = reader.readLine()) != null)
-			{
+			while ((line = reader.readLine()) != null) {
 				line = line.trim();
 				if (line.isEmpty() || line.startsWith("#"))
 					continue;
 
-				if (line.startsWith("[") && line.endsWith("]"))
-				{
-					line = line.substring(1,line.length()-1);
+				if (line.startsWith("[") && line.endsWith("]")) {
+					line = line.substring(1, line.length() - 1);
 					if (line.equalsIgnoreCase("player"))
 						defList = mPlayerCleanup;
 					else
 						throw new IllegalArgumentException("Found unknown definition section " + line + " in MemoryCleaner config");
-					
+
 					continue;
 				}
-				
+
 				if (defList == null)
 					throw new IllegalArgumentException("Found definition '" + line + "' without being in a section in MemoryCleaner config");
-				
+
 				String[] parts = line.split(":");
 				if (parts.length != 2)
 					throw new IllegalArgumentException("Error in definition '" + line + "'. Is not in the format of <plugin>:<path> in MemoryCleaner config");
-				
+
 				String plugin = parts[0];
 				defList.add(new Definition(plugin, line));
 			}
-		}
-		catch(IOException e)
-		{
+		} catch (IOException e) {
 			throw new RuntimeException(e);
-		}
-		finally
-		{
-			try
-			{
-				if (reader != null)
-					reader.close();
-			}
-			catch(IOException e)
-			{
-			}
 		}
 	}
 

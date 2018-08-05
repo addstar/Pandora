@@ -3,6 +3,7 @@ package au.com.addstar.pandora;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -39,18 +40,18 @@ public class PandoraCommand implements CommandExecutor, TabCompleter
 					all.add(ChatColor.RED + module);
 			}
 
-			Collections.sort(all, (o1, o2) -> ChatColor.stripColor(o1).compareTo(ChatColor.stripColor(o2)));
+			all.sort(Comparator.comparing(ChatColor::stripColor));
 			
-			String moduleList = "";
+			StringBuilder moduleList = new StringBuilder();
 			for(String mod : all)
 			{
-				if(!moduleList.isEmpty())
-					moduleList += ", ";
+				if(moduleList.length() > 0)
+					moduleList.append(", ");
 				
-				moduleList += mod + ChatColor.GRAY;
+				moduleList.append(mod).append(ChatColor.GRAY);
 			}
 			
-			sender.sendMessage(moduleList);
+			sender.sendMessage(moduleList.toString());
 		}
 		else if((args.length == 1 || args.length == 2) && args[0].equalsIgnoreCase("reload"))
 		{
@@ -127,11 +128,11 @@ public class PandoraCommand implements CommandExecutor, TabCompleter
 			if(args[0].isEmpty())
 				return Arrays.asList("enable", "disable", "reload");
 			if("enable".startsWith(args[0].toLowerCase()))
-				return Arrays.asList("enable");
+				return Collections.singletonList("enable");
 			if("disable".startsWith(args[0].toLowerCase()))
-				return Arrays.asList("disable");
+				return Collections.singletonList("disable");
 			if("reload".startsWith(args[0].toLowerCase()))
-				return Arrays.asList("reload");
+				return Collections.singletonList("reload");
 		}
 		else if(args.length == 2 && args[0].equalsIgnoreCase("reload"))
 			return matchModules(args[1]);

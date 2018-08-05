@@ -38,15 +38,11 @@ public class VanishCitizensIO implements Listener, Module
 			mTalkableField = SpeechEvent.class.getDeclaredField("target");
 			mTalkableField.setAccessible(true);
 		}
-		catch ( NoSuchFieldException e )
+		catch ( NoSuchFieldException | SecurityException e )
 		{
 			e.printStackTrace();
 		}
-		catch ( SecurityException e )
-		{
-			e.printStackTrace();
-		}
-	}
+    }
 	
 	@EventHandler(priority=EventPriority.NORMAL, ignoreCancelled = true)
 	private void onNCPTalk(SpeechTargetedEvent event)

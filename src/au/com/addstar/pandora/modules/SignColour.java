@@ -39,7 +39,7 @@ public class SignColour implements Module, Listener
 		int pos = -1;
 		char colorChar = '&';
 		
-		StringBuffer buffer = new StringBuffer(message);
+		StringBuilder buffer = new StringBuilder(message);
 		
 		boolean hasColor = sender.hasPermission("pandora.signs.color");
 		boolean hasReset = sender.hasPermission("pandora.signs.format.reset");

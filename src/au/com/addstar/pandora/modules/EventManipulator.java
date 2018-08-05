@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -141,7 +140,7 @@ public class EventManipulator implements Module, Listener
 				listeners.add(listener);
 			}
 			
-			Collections.sort(listeners, new DependencySorter(applicableManipulators));
+			listeners.sort(new DependencySorter(applicableManipulators));
 			
 			for(RegisteredListener listener : listeners)
 			{
@@ -217,7 +216,7 @@ public class EventManipulator implements Module, Listener
 				if(Event.class.isAssignableFrom(clazz))
 					mEventClass = clazz.asSubclass(Event.class);
 			}
-			catch(ClassNotFoundException e)
+			catch(ClassNotFoundException ignored)
 			{
 			}
 			

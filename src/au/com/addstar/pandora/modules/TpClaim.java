@@ -2,6 +2,7 @@ package au.com.addstar.pandora.modules;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import me.ryanhamshire.GriefPrevention.Claim;
 import me.ryanhamshire.GriefPrevention.GriefPrevention;
@@ -18,7 +19,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 
 import au.com.addstar.pandora.MasterPlugin;
@@ -70,12 +70,14 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 	@Override
 	public boolean onCommand( CommandSender sender, Command command, String label, String[] args )
 	{
-		if (command.getName().equals("tpclaim"))
-			return onTPClaim(sender, label, args);
-		else if (command.getName().equals("claimslist"))
-			return onClaimsList(sender, label, args);
-		else
-			return false;
+		switch (command.getName()) {
+			case "tpclaim":
+				return onTPClaim(sender, label, args);
+			case "claimslist":
+				return onClaimsList(sender, label, args);
+			default:
+				return false;
+		}
 	}
 	//todo Needs refactor to use a Monolith lookup rather than offline Player
 	@SuppressWarnings("deprecation")
@@ -178,7 +180,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 								return true;
 							}
 						}
-						catch(NumberFormatException e)
+						catch(NumberFormatException ignored)
 						{
 						}
 					}
@@ -247,7 +249,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		if(world != null)
 		{
 			final World fWorld = world;
-			claims = Lists.newArrayList(Iterables.filter(claims, claim -> (claim.getLesserBoundaryCorner().getWorld().equals(fWorld))));
+			claims = Lists.newArrayList(claims.stream().filter(claim -> (claim.getLesserBoundaryCorner().getWorld().equals(fWorld))).collect(Collectors.toList()));
 		}
 		
 		List<GPClaimData> data = GPExtended.getClaimManager().getData(claims);
@@ -410,7 +412,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 		if (world != null)
 		{
 			final World fWorld = world;
-			claims = Lists.newArrayList(Iterables.filter(claims, claim -> (claim.getLesserBoundaryCorner().getWorld().equals(fWorld))));
+			claims = Lists.newArrayList(claims.stream().filter(claim -> (claim.getLesserBoundaryCorner().getWorld().equals(fWorld))).collect(Collectors.toList()));
 		}
 		
 		List<GPClaimData> data = GPExtended.getClaimManager().getData(claims);
@@ -441,7 +443,7 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter
 			sender.sendMessage(ChatColor.WHITE + ChatColor.ITALIC.toString() + " Your level of access is displayed in the square brackets []");
 		
 		if (target.equals(sender))
-			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&f&o Use &e/tpclaim <number> &f&oor &e<name> &f&oto teleport to a claim.\n&7&o <number>&f&o is the number to the left of the claim to teleport to.")));
+			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&f&o Use &e/tpclaim <number> &f&oor &e<name> &f&oto teleport to a claim.\n&7&o <number>&f&o is the number to the left of the claim to teleport to."));
 		else
 			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', String.format("&f&o Use &e/tpclaim %s <number> &f&oor &e<name> &f&oto teleport to a claim.\n&7&o <number>&f&o is the number to the left of the claim to teleport to.", target.getName())));
 		

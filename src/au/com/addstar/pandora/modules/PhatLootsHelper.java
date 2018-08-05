@@ -487,7 +487,7 @@ public class PhatLootsHelper implements Module, Listener {
         }
     }
 
-    private void validateAccessTimesFileExists() throws Exception {
+    private void validateAccessTimesFileExists() {
         if (!mPlayerLootAccessFile.exists()) {
             mPlayerLootAccessFile.getParentFile().mkdirs();
             copy(mPlugin.getResource(ACCESS_TIMES_FILE), mPlayerLootAccessFile);
