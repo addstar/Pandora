@@ -4,14 +4,13 @@ import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
-
-import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.protection.events.DisallowedPVPEvent;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.events.DisallowedPVPEvent;
-import com.sk89q.worldguard.protection.flags.DefaultFlag;
+import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-
-import org.bukkit.Bukkit;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -37,7 +36,7 @@ import java.util.List;
 public class PVPHandler implements Module, Listener
 {
 	private HashSet<PotionEffectType> mBadEffects = new HashSet<>();
-	private WorldGuardPlugin mWorldGuard;
+	private RegionContainer worldGaurdRegions;
 	
 	private Config mConfig;
 	
@@ -80,8 +79,8 @@ public class PVPHandler implements Module, Listener
 			return;
 		
 		boolean warned = false;
-		
-		RegionManager manager = mWorldGuard.getRegionManager(event.getPotion().getWorld());
+		RegionManager manager =
+                worldGaurdRegions.get(BukkitAdapter.adapt(event.getPotion().getWorld()));
 		if(manager == null)
 			return;
 		
@@ -96,8 +95,9 @@ public class PVPHandler implements Module, Listener
 			if(ent.hasPermission("pandora.pvphandler.ignore"))
 				continue;
 			
-			ApplicableRegionSet regions = manager.getApplicableRegions(ent.getLocation());
-			if(!regions.testState(null,DefaultFlag.PVP))
+			ApplicableRegionSet regions =
+					manager.getApplicableRegions(BukkitAdapter.asVector(ent.getLocation()));
+			if(!regions.testState(null,Flags.PVP))
 			{
 				if(!warned)
 				{
@@ -125,7 +125,9 @@ public class PVPHandler implements Module, Listener
 			return;
 
 		boolean warned = false;
-		RegionManager manager = mWorldGuard.getRegionManager(event.getEntity().getWorld());
+		
+		RegionManager manager =
+                worldGaurdRegions.get(BukkitAdapter.adapt((event.getEntity().getWorld())));
 		if (manager == null)
 			return;
 		List<LivingEntity> removals = new ArrayList<>();
@@ -139,8 +141,9 @@ public class PVPHandler implements Module, Listener
 			if (ent.hasPermission("pandora.pvphandler.ignore"))
 				continue;
 
-			ApplicableRegionSet regions = manager.getApplicableRegions(ent.getLocation());
-			if (!regions.testState(null, DefaultFlag.PVP)) {
+			ApplicableRegionSet regions =
+                    manager.getApplicableRegions(BukkitAdapter.asVector(ent.getLocation()));
+			if (!regions.testState(null, Flags.PVP)) {
 				if (!warned) {
 					thrower.sendMessage(ChatColor.RED + "PVP is not allowed in this area");
 					warned = true;
@@ -156,7 +159,7 @@ public class PVPHandler implements Module, Listener
 	
 	private boolean handleBlockPlace(Block block, Player player, Material placeMaterial)
 	{
-		RegionManager manager = mWorldGuard.getRegionManager(block.getWorld());
+		RegionManager manager = worldGaurdRegions.get(BukkitAdapter.adapt(block.getWorld()));
 		if(manager == null)
 			return false;
 		
@@ -166,8 +169,9 @@ public class PVPHandler implements Module, Listener
 		Location playerLoc = new Location(null, 0, 0, 0);
 		Location blockLoc = block.getLocation();
 		
-		ApplicableRegionSet regions = manager.getApplicableRegions(blockLoc);
-		if(regions.testState(null,DefaultFlag.PVP))
+		ApplicableRegionSet regions =
+                manager.getApplicableRegions(BukkitAdapter.asVector(blockLoc));
+		if(regions.testState(null,Flags.PVP))
 			return false;
 		
 		List<Entity> entities = player.getNearbyEntities(mSearchRadius, mSearchRadius, mSearchRadius);
@@ -224,7 +228,7 @@ public class PVPHandler implements Module, Listener
 	@Override
 	public void onEnable()
 	{
-		mWorldGuard = (WorldGuardPlugin)Bukkit.getPluginManager().getPlugin("WorldGuard");
+		worldGaurdRegions = WorldGuard.getInstance().getPlatform().getRegionContainer();
 		if(mConfig.load())
 			mConfig.save();
 		else

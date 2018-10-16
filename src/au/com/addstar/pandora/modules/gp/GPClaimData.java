@@ -1,16 +1,15 @@
 package au.com.addstar.pandora.modules.gp;
 
-import java.io.File;
-import java.io.IOException;
-
+import com.google.common.base.Preconditions;
 import me.ryanhamshire.GriefPrevention.Claim;
-
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import com.google.common.base.Preconditions;
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 
 public class GPClaimData
 {
@@ -20,6 +19,16 @@ public class GPClaimData
 	private String name;
 	
 	private Location teleportLocation;
+    
+    public Date getCreationdate() {
+        return new Date(creationdate);
+    }
+    
+    public void setCreationdate(Long creationdate) {
+        this.creationdate = creationdate;
+    }
+    
+    private Long creationdate;
 	
 	public GPClaimData(Claim claim, File file)
 	{
@@ -57,6 +66,7 @@ public class GPClaimData
 			);
 	}
 	
+	
 	public void setTeleport(Location location)
 	{
 		Preconditions.checkNotNull(location);
@@ -86,6 +96,10 @@ public class GPClaimData
 			warpSection.set("yaw", teleportLocation.getYaw());
 			warpSection.set("pitch", teleportLocation.getPitch());
 		}
+		
+		if(creationdate != null){
+		    config.set("creationdate",creationdate);
+        }
 		
 		try
 		{
@@ -118,6 +132,10 @@ public class GPClaimData
 		{
 			ConfigurationSection warpSection = config.getConfigurationSection("warp");
 			teleportLocation = new Location(null, warpSection.getDouble("x"), warpSection.getDouble("y"), warpSection.getDouble("z"), (float)warpSection.getDouble("yaw"), (float)warpSection.getDouble("pitch"));
+   
 		}
+		if(config.contains("creationDate")){
+		    creationdate = config.getLong("creationDate");
+        }
 	}
 }

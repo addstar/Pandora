@@ -1,28 +1,25 @@
 package au.com.addstar.pandora.modules;
 
-import java.lang.reflect.Field;
-import java.util.Iterator;
-import java.util.logging.Logger;
-
+import au.com.addstar.pandora.LookCloseSafe;
+import au.com.addstar.pandora.MasterPlugin;
+import au.com.addstar.pandora.Module;
+import au.com.addstar.pandora.VanishUtil;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.ai.speech.Talkable;
 import net.citizensnpcs.api.ai.speech.event.SpeechBystanderEvent;
 import net.citizensnpcs.api.ai.speech.event.SpeechEvent;
 import net.citizensnpcs.api.ai.speech.event.SpeechTargetedEvent;
 import net.citizensnpcs.api.trait.TraitInfo;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import au.com.addstar.pandora.LookCloseSafe;
-import au.com.addstar.pandora.MasterPlugin;
-import au.com.addstar.pandora.Module;
-import au.com.addstar.pandora.VanishUtil;
+import java.lang.reflect.Field;
+import java.util.Iterator;
+import java.util.logging.Logger;
 
-public class VanishCitizensIO implements Listener, Module
-{
+public class VanishCitizensIO implements Listener, Module {
 	private Field mTalkableField;
 	
 	@Override
