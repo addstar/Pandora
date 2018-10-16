@@ -5,7 +5,6 @@ import au.com.addstar.monolith.lookup.Lookup;
 import au.com.addstar.monolith.util.nbtapi.NBTItem;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -16,6 +15,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
@@ -46,14 +46,15 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
         String mcName = Lookup.findMinecraftNameByItem(item.getType());
         if(mcName != null)
             sender.sendMessage(ChatColor.GOLD + "Minecraft Name: " + ChatColor.RED + mcName);
-        Short dur = item.getDurability();
-        Short maxdur = item.getType().getMaxDurability();
-        if (maxdur > 0){
-            sender.sendMessage(ChatColor.GOLD + " Durability: "+ ChatColor.RED + (maxdur-dur) + " / " + maxdur);
+        ItemMeta imeta = item.getItemMeta();
+        if(imeta instanceof Damageable) {
+            int maxDura = item.getType().getMaxDurability();
+            int uses = maxDura + 1 - ((Damageable) imeta).getDamage();
+            sender.sendMessage(ChatColor.GOLD + "Durability: " + ChatColor.RED + ((Damageable) imeta).getDamage()+ " / " + (maxDura+1) + " (" + uses + " uses)");
         }
         if(item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION){
             StringBuilder msg = new StringBuilder(" **Potion** \n");
-            PotionMeta meta = (PotionMeta) item.getItemMeta();
+            PotionMeta meta = (PotionMeta) imeta;
             if (meta != null) {
                 msg.append(" Main type: ");
                 if (meta.getCustomEffects().get(0) != null) {
@@ -78,7 +79,6 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
         }
 
         if(item.hasItemMeta()){
-            ItemMeta imeta = item.getItemMeta();
             if(imeta.hasLore()) {
                 for (String slore : imeta.getLore()) {
                      sender.sendMessage(ChatColor.GOLD+"Lore: " + slore);
@@ -87,7 +87,7 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
             if (imeta.hasDisplayName()) sender.sendMessage(ChatColor.GOLD +"DisplayName: "+imeta.getDisplayName());
             if (imeta.hasEnchants()) {
                 for (Map.Entry<Enchantment, Integer> entry : imeta.getEnchants().entrySet()) {
-                    sender.sendMessage(ChatColor.GOLD +"Enchantment: " + entry.getKey().getName() + " Level: " + entry.getValue());
+                    sender.sendMessage(ChatColor.GOLD +"Enchantment: " + entry.toString() + " Level: " + entry.getValue());
                 }
             }
             Set<ItemFlag> flags = imeta.getItemFlags();

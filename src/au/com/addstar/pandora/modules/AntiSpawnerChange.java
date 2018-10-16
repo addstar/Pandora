@@ -2,7 +2,6 @@ package au.com.addstar.pandora.modules;
 
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.Event.Result;
@@ -50,7 +49,6 @@ public class AntiSpawnerChange implements Module, Listener
 
 	private static List<Material> eggs = new ArrayList<>();
 	static{
-		eggs.add(Material.LEGACY_MONSTER_EGG);
 		eggs.add(Material.ELDER_GUARDIAN_SPAWN_EGG);
 		eggs.add(Material.BAT_SPAWN_EGG);
 		eggs.add(Material.BLAZE_SPAWN_EGG);

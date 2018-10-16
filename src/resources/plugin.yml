@@ -1,6 +1,6 @@
 name: ${project.name}
 version: ${plugin.version}
-api-version:
+api-version: ${spigot.api.version}
 description: ${project.description}
 
 main: ${mainClass}

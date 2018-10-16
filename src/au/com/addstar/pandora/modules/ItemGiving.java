@@ -1,9 +1,10 @@
 package au.com.addstar.pandora.modules;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
-
+import au.com.addstar.monolith.StringTranslator;
+import au.com.addstar.pandora.MasterPlugin;
+import au.com.addstar.pandora.Module;
+import au.com.addstar.pandora.Utilities;
+import com.google.common.collect.Sets;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
@@ -14,12 +15,9 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.google.common.collect.Sets;
-
-import au.com.addstar.monolith.StringTranslator;
-import au.com.addstar.pandora.MasterPlugin;
-import au.com.addstar.pandora.Module;
-import au.com.addstar.pandora.Utilities;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 public class ItemGiving implements Module, CommandExecutor, TabCompleter
 {
@@ -83,7 +81,7 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 
 		String name = StringTranslator.getName(item);
 		if(name.equals("Unknown"))
-			name = item.getType().name().toLowerCase() + ":" + item.getDurability();
+			name = item.getType().name().toLowerCase();
 		
 		if(added > 0)
 			sender.sendMessage(ChatColor.GOLD + "Giving " + ChatColor.RED + added + ChatColor.GOLD + " of " + ChatColor.RED + name);
@@ -114,7 +112,7 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 
 		String name = StringTranslator.getName(item);
 		if(name.equals("Unknown"))
-			name = item.getType().name().toLowerCase() + ":" + item.getDurability();
+			name = item.getType().name().toLowerCase();
 		
 		if(added > 0){
 			sender.sendMessage(ChatColor.GOLD + "Giving " + ChatColor.RED + added + ChatColor.GOLD + " of " + ChatColor.RED + name + ChatColor.GOLD + " to " + ChatColor.RED + destination.getDisplayName());
@@ -141,7 +139,7 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		
 		String name = StringTranslator.getName(item);
 		if(name.equals("Unknown"))
-			name = item.getType().name().toLowerCase() + ":" + item.getDurability();
+			name = item.getType().name().toLowerCase();
 		sender.sendMessage(ChatColor.GOLD + "Giving " + ChatColor.RED + item.getAmount() + ChatColor.GOLD + " of " + ChatColor.RED + name + ChatColor.GOLD + " to " + ChatColor.RED + "everyone");
 		
 		for(Player player : Bukkit.getOnlinePlayers())
@@ -212,7 +210,7 @@ public class ItemGiving implements Module, CommandExecutor, TabCompleter
 		
 		String name = StringTranslator.getName(item);
 		if(name.equals("Unknown"))
-			name = item.getType().name().toLowerCase() + ":" + item.getDurability();
+			name = item.getType().name().toLowerCase();
 		sender.sendMessage(ChatColor.GOLD + "Giving " + ChatColor.RED + item.getAmount() + ChatColor.GOLD + " of " + ChatColor.RED + name + ChatColor.GOLD + " to " + ChatColor.RED + "everyone" + ChatColor.GOLD + " in specified worlds");
 		
 		for(Player player : Bukkit.getOnlinePlayers())
