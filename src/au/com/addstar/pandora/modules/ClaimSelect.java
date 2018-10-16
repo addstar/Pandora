@@ -1,7 +1,14 @@
 package au.com.addstar.pandora.modules;
 
-import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
+import au.com.addstar.pandora.MasterPlugin;
+import au.com.addstar.pandora.Module;
+
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldedit.regions.RegionSelector;
+import com.sk89q.worldedit.regions.selector.CuboidRegionSelector;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -11,15 +18,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.sk89q.worldedit.LocalSession;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
-import com.sk89q.worldedit.bukkit.selections.Selection;
-import com.sk89q.worldedit.regions.RegionSelector;
-
-import au.com.addstar.pandora.MasterPlugin;
-import au.com.addstar.pandora.Module;
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 
 public class ClaimSelect implements Module, CommandExecutor
 {
@@ -53,11 +53,10 @@ public class ClaimSelect implements Module, CommandExecutor
 			// Claim is found
 			Location loc1 = claim.getLesserBoundaryCorner();
 			Location loc2 = claim.getGreaterBoundaryCorner();
-			Selection sel = new CuboidSelection(player.getWorld(), loc1, loc2);
+			RegionSelector sel = new CuboidRegionSelector(BukkitAdapter.adapt(player.getWorld()), BukkitAdapter.asVector(loc1), BukkitAdapter.asVector(loc2));
 			WorldEditPlugin wep = (WorldEditPlugin) mPlugin.getServer().getPluginManager().getPlugin("WorldEdit");
 			LocalSession sess = wep.getSession(player);
-			RegionSelector selector = sel.getRegionSelector();
-			sess.setRegionSelector(new BukkitWorld(player.getWorld()),selector);
+			sess.setRegionSelector(new BukkitWorld(player.getWorld()),sel);
 			sess.dispatchCUISelection(wep.wrapPlayer(player));
 			sender.sendMessage(ChatColor.GREEN + "Claim of selected with WorldEdit (" + sel.getArea() + " blocks)");
 		} else {
