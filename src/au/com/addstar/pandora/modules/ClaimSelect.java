@@ -2,14 +2,14 @@ package au.com.addstar.pandora.modules;
 
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
-
 import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldedit.regions.selector.CuboidRegionSelector;
-
+import me.ryanhamshire.GriefPrevention.Claim;
+import me.ryanhamshire.GriefPrevention.GriefPrevention;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -17,9 +17,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-
-import me.ryanhamshire.GriefPrevention.Claim;
-import me.ryanhamshire.GriefPrevention.GriefPrevention;
 
 public class ClaimSelect implements Module, CommandExecutor
 {
@@ -53,7 +50,7 @@ public class ClaimSelect implements Module, CommandExecutor
 			// Claim is found
 			Location loc1 = claim.getLesserBoundaryCorner();
 			Location loc2 = claim.getGreaterBoundaryCorner();
-			RegionSelector sel = new CuboidRegionSelector(BukkitAdapter.adapt(player.getWorld()), BukkitAdapter.asVector(loc1), BukkitAdapter.asVector(loc2));
+			RegionSelector sel = new CuboidRegionSelector(BukkitAdapter.adapt(player.getWorld()), BukkitAdapter.asBlockVector(loc1), BukkitAdapter.asBlockVector(loc2));
 			WorldEditPlugin wep = (WorldEditPlugin) mPlugin.getServer().getPluginManager().getPlugin("WorldEdit");
 			LocalSession sess = wep.getSession(player);
 			sess.setRegionSelector(new BukkitWorld(player.getWorld()),sel);
