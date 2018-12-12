@@ -340,7 +340,7 @@ public class MasterPlugin extends JavaPlugin {
      * @return the boolean
      */
     public boolean registerBungeeChat() {
-        bungeeChatAvailable = registerMessageChannel("BungeeChat");
+        bungeeChatAvailable = registerMessageChannel("bungeechat:chat");
         
         //  try {
         // Class clazz = this.getClassLoader().loadClass("au.com.addstar.bc.BungeeChat"); //force a class loader error if no BungeeChat
@@ -372,7 +372,7 @@ public class MasterPlugin extends JavaPlugin {
      * Deregister bungee chat.
      */
     public void deregisterBungeeChat() {
-        deregisterMessagechannel("BungeeChat");
+        deregisterMessagechannel("bungeechat:chat");
         bungeeChatAvailable = false;
     }
     
