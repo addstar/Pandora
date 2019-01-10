@@ -1,13 +1,8 @@
 package au.com.addstar.pandora.modules;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import au.com.addstar.pandora.AbstractModule;
 import au.com.addstar.pandora.MasterPlugin;
+
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,6 +13,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityEvent;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * Created for the AddstarMC Project. Created by Narimm on 10/01/2019.
@@ -39,12 +40,15 @@ public class ActionBlocker extends AbstractModule implements Listener {
     
     @Override
     public void onDisable() {
-    
+        mPlugin = null;
+        WorldLimits.clear();
+        blockedEvents.clear();
+
     }
     
     @Override
     public void setPandoraInstance(MasterPlugin plugin) {
-    
+        mPlugin = plugin;
     }
     
     public boolean disableListener(){
