@@ -1,0 +1,20 @@
+#
+# Configuration file for ActionBlocker
+# This file contains the world build height limits (minimum Y level + maximum Y level)
+# Actions or Events you can block must extend EntityEvent and must implement Cancellable.
+#
+
+#debug: true
+#
+#worlds:
+#  World1:
+#    minY: 0
+#    maxY: 100
+#    actions:
+#      - PlayerRiptideEvent
+#  World2:
+#    minY: 65
+#    maxY: 150
+#  World3:
+#    minY: 20
+#    maxY: 65
