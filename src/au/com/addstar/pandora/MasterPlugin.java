@@ -1,16 +1,16 @@
 package au.com.addstar.pandora;
 
+import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import java.io.File;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
-
-import org.bukkit.Bukkit;
-import org.bukkit.event.HandlerList;
-import org.bukkit.event.Listener;
-import org.bukkit.plugin.java.JavaPlugin;
 
 /**
  * The type Master plugin.
@@ -117,7 +117,7 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("PhatLootsHelper", "au.com.addstar.pandora.modules.PhatLootsHelper", "PhatLoots");
         registerModule("SlimeChunk", "au.com.addstar.pandora.modules.SlimeChunk");
         registerModule("DeathInterceptor", "au.com.addstar.pandora.modules.DeathInterceptor");
-        registerModule("ActionBlocker", " au.com.addstar.pandora.modules.ActionBlocker");
+        registerModule("ActionBlocker", "au.com.addstar.pandora.modules.ActionBlocker");
         //TODO: Register additional modules here
     }
     
