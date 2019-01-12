@@ -25,7 +25,8 @@ public class SurvivalGamesBroadcaster implements Module, Listener
 		if(mConfig.load())
 			mConfig.save();
 
-		bungeechatenabled = mPlugin.isBungeeChatAvailable();
+		bungeechatenabled = mPlugin.registerBungeeChat();
+		if (!bungeechatenabled) mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
 	}
 
 	@Override

@@ -29,6 +29,7 @@ public class BlockhuntBroadcaster implements Module, Listener
 			mConfig.save();
 
 		bungeechatenabled = mPlugin.registerBungeeChat();
+		if (!bungeechatenabled) mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
 	}
 
 	@Override

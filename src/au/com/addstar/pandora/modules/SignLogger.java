@@ -58,7 +58,8 @@ public class SignLogger implements Module, Listener{
         if(mConfig.load())
             mConfig.save();
         if(!(mConfig.channel.length() > 1)) {
-            bungeechatenabled = mPlugin.isBungeeChatAvailable();
+            bungeechatenabled = mPlugin.registerBungeeChat();
+            if (!bungeechatenabled) mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
         }
     }
 
