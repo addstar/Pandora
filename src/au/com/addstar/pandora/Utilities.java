@@ -4,6 +4,8 @@ import au.com.addstar.monolith.ItemMetaBuilder;
 import au.com.addstar.monolith.lookup.EntityDefinition;
 import au.com.addstar.monolith.lookup.Lookup;
 
+import net.minecraft.server.v1_13_R2.ResourceKeyInvalidException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -249,20 +251,36 @@ public class Utilities
 	{
 		// Get Material
 		Material mat = null;
-		EntityDefinition edef = null;
-		mat = Lookup.findByMinecraftName(args[start]);
+		if(args[start].contains(":")){
+			String[] splitArg = args[start].split(":");
+			args[start] = splitArg[0];
+			try {
+				mat = Lookup.findByMinecraftName(args[start]);
+			}catch (ResourceKeyInvalidException e ){
+				throw new IllegalArgumentException("Attempted to pass an illegal string to the minecraft find by key command");
+			}
+			if(mat == null){
+				throw new IllegalArgumentException("Using integers and data values is no longer supported");
+			}
+		} else {
+			try {
+				mat = Lookup.findByMinecraftName(args[start]);
+			}catch (ResourceKeyInvalidException e ){
+				throw new IllegalArgumentException("Attempted to pass an illegal string to the minecraft find by key command");
+			}
+		}
 		int index = start;
 		if(mat == null ) {
-			if (args[index].contains(":"))
-			{
+			if (args[index].contains(":")) {
 				throw new IllegalArgumentException("Using integers and data values is no longer supported");
-			} else mat = getMaterial(args[index]);
-			
+			} else {
+				mat = getMaterial(args[index]);
+
+			}
 			if (mat == null)
 				throw new IllegalArgumentException("Unknown material " + args[index]);
 			index++;
 		}
-		
 		// Parse amount
 		int amount = mat.getMaxStackSize();
 		if(args.length > index)
