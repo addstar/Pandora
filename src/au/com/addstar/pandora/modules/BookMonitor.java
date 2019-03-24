@@ -59,7 +59,7 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
             map.remove(playerUUID);
             map.put(playerUUID,list);
             String title = meta.getTitle();
-            StringBuilder text = null;
+            StringBuilder text = new StringBuilder();
             if (meta.hasPages()) {
                 int i=1;
                 for (String page : meta.getPages()) {
@@ -68,7 +68,8 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
                 }
             }
             Logger log = plugin.getLogger();
-            log.info(player.getName()+ " Wrote Book: " + "Title:" + title);
+            log.info(player.getName()+ " Wrote Book: " + "Title:" + title );
+            log.info(player.getName()+ " Wrote Book: " + "Text:" + text.toString() );
             if(bConfig.getBoolean("offline.savereports",true)) {
             saveBook(player, meta);
             }
