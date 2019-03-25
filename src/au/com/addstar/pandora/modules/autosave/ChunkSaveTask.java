@@ -125,7 +125,7 @@ public class ChunkSaveTask implements Runnable
 		
 		private void saveChunk(Chunk chunk)
 		{
-			((CraftWorld)chunk.getWorld()).getHandle().getChunkProviderServer().saveChunk(((CraftChunk)chunk).getHandle(),false);
+			((CraftWorld)chunk.getWorld()).getHandle().getChunkProvider().saveChunk(((CraftChunk)chunk).getHandle(),false);
 		}
 	}
 }
