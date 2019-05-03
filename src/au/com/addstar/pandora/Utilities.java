@@ -4,7 +4,7 @@ import au.com.addstar.monolith.ItemMetaBuilder;
 import au.com.addstar.monolith.lookup.EntityDefinition;
 import au.com.addstar.monolith.lookup.Lookup;
 
-import net.minecraft.server.v1_13_R2.ResourceKeyInvalidException;
+import net.minecraft.server.v1_14_R1.ResourceKeyInvalidException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -181,8 +181,18 @@ public class Utilities
 			case SUNFLOWER:
 
 		case DEAD_BUSH:
-			case SIGN:
-		case WALL_SIGN:
+			case SPRUCE_SIGN:
+			case SPRUCE_WALL_SIGN:
+			case ACACIA_WALL_SIGN:
+			case ACACIA_SIGN:
+			case BIRCH_SIGN:
+			case BIRCH_WALL_SIGN:
+			case DARK_OAK_SIGN:
+			case DARK_OAK_WALL_SIGN:
+			case JUNGLE_SIGN:
+			case JUNGLE_WALL_SIGN:
+			case OAK_SIGN:
+			case OAK_WALL_SIGN:
 			return true;
 		default:
 			return false;
