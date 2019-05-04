@@ -4,8 +4,9 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_13_R2.CraftChunk;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.CraftChunk;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.LinkedList;
@@ -65,7 +66,7 @@ public class ChunkSaveTask implements Runnable
 	
 	private boolean needsSaving(Chunk chunk)
 	{
-		return ((CraftChunk)chunk).getHandle().c(false); // Chunk.needsSaving(bool)
+		return ((CraftChunk)chunk).getHandle().isNeedsSaving();
 	}
 	
 	private class ProgressiveSaveTask implements Runnable
@@ -125,7 +126,7 @@ public class ChunkSaveTask implements Runnable
 		
 		private void saveChunk(Chunk chunk)
 		{
-			((CraftWorld)chunk.getWorld()).getHandle().getChunkProvider().saveChunk(((CraftChunk)chunk).getHandle(),false);
+			((CraftWorld)chunk.getWorld()).getHandle().getChunkProvider().save(false);
 		}
 	}
 }
