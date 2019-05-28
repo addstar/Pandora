@@ -13,7 +13,7 @@
         <mainClass>au.com.addstar.pandora.MasterPlugin</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.api.version>1.14</spigot.api.version>
-        <spigot.version>${spigot.api.version}-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>${spigot.api.version}.2-R0.1-SNAPSHOT</spigot.version>
         <monolith.version>1.6.0-SNAPSHOT</monolith.version>
     </properties>
     <scm>

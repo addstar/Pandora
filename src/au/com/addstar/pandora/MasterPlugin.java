@@ -90,8 +90,6 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("MinigameBCast", "au.com.addstar.pandora.modules.MinigameBroadcaster",
                 "Minigames", "BungeeChatBukkit");
         registerModule("AntiBuild", "au.com.addstar.pandora.modules.AntiBuild");
-        registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver",
-                "1_13_R2");
         registerModule("ItemDB", "au.com.addstar.pandora.modules.ItemDB", "Monolith");
         registerModule("ItemMetaReporter", "au.com.addstar.pandora.modules.ItemMetaReporter");
         registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving",
@@ -108,7 +106,6 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("Sparklers", "au.com.addstar.pandora.modules.Sparklers");
         registerModule("GPExtended", "au.com.addstar.pandora.modules.GPExtended", "GriefPrevention");
         registerModule("MinigameLocks", "au.com.addstar.pandora.modules.MinigameLocks", "Minigames");
-        registerNMSModule("UndesiredMovementBlocker", "au.com.addstar.pandora.modules.UndesiredMovementBlocker", "1_13_R2", "ProtocolLib");
         registerModule("PlayerLocationLimit", "au.com.addstar.pandora.modules.PlayerLocationLimit");
         registerModule("BlockhuntBroadcaster", "au.com.addstar.pandora.modules.BlockhuntBroadcaster", "BlockHunt", "BungeeChatBukkit");
         registerModule("BookMonitor", "au.com.addstar.pandora.modules.BookMonitor", "Monolith");
@@ -119,6 +116,9 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("DeathInterceptor", "au.com.addstar.pandora.modules.DeathInterceptor");
         registerModule("ActionBlocker", "au.com.addstar.pandora.modules.ActionBlocker");
         //TODO: Register additional modules here
+        registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver",
+                "1_14_R1");
+        registerNMSModule("UndesiredMovementBlocker", "au.com.addstar.pandora.modules.UndesiredMovementBlocker", "1_14_R1", "ProtocolLib");
     }
     
     @Override
