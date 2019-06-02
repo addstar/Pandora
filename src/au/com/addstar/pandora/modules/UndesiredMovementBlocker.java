@@ -110,7 +110,7 @@ public class UndesiredMovementBlocker implements Module, Listener, PacketListene
 		PacketContainer packet = new PacketContainer(PacketType.Play.Server.SCOREBOARD_TEAM);
 		packet.getStrings().write(0, FakeTeamName);
 		packet.getIntegers().write(1, 0); // Set create mode
-		packet.getStrings().write(5, "never"); // Push type
+		packet.getStrings().write(4, "never"); // Push type
 		
 		Collection<String> names = packet.getSpecificModifier(Collection.class).read(0);
 		names.add(player.getName());
