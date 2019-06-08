@@ -2,7 +2,6 @@ package au.com.addstar.pandora.modules.autosave;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.List;
@@ -33,7 +32,7 @@ public class RegionFileFlusher implements Runnable
 			return;
 		
 		mIsRunning = true;
-		Bukkit.getScheduler().runTaskAsynchronously(mModule.getPlugin(), new SavingTask(Bukkit.getWorlds()));
+		Bukkit.getScheduler().runTask(mModule.getPlugin(), new SavingTask(Bukkit.getWorlds()));
 	}
 	
 	private class SavingTask implements Runnable
