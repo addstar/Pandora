@@ -13,7 +13,7 @@
         <mainClass>au.com.addstar.pandora.MasterPlugin</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.api.version>1.14</spigot.api.version>
-        <spigot.version>${spigot.api.version}.2-R0.1-SNAPSHOT</spigot.version>
+        <spigot.version>${spigot.api.version}.3-SNAPSHOT</spigot.version>
         <monolith.version>1.6.0-SNAPSHOT</monolith.version>
     </properties>
     <scm>
@@ -161,7 +161,7 @@
         <dependency>
             <groupId>com.github.TechFortress</groupId>
             <artifactId>griefprevention</artifactId>
-            <version>16.9.alpha</version>
+            <version>16.12.alpha</version>
             <scope>provided</scope>
             <optional>true</optional>
             <exclusions>
