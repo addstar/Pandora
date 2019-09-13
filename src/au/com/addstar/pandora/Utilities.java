@@ -259,58 +259,39 @@ public class Utilities
 	
 	public static ItemStack getItem(String[] args, int start) throws IllegalArgumentException
 	{
-		// Get Material
+		// Attempt to match an item by exact Minecraft key
 		Material mat = null;
-		if(args[start].contains(":")){
-			String[] splitArg = args[start].split(":");
-			args[start] = splitArg[0];
-			try {
-				mat = Lookup.findByMinecraftName(args[start]);
-			}catch (ResourceKeyInvalidException e ){
-				throw new IllegalArgumentException("Attempted to pass an illegal string to the minecraft find by key command");
-			}
-			if(mat == null){
-				throw new IllegalArgumentException("Using integers and data values is no longer supported");
-			}
-		} else {
-			try {
-				mat = Lookup.findByMinecraftName(args[start]);
-			}catch (ResourceKeyInvalidException e ){
-				throw new IllegalArgumentException("Attempted to pass an illegal string to the minecraft find by key command");
-			}
+		try {
+			mat = Lookup.findByMinecraftName(args[start]);
+		}catch (ResourceKeyInvalidException e ){
+			throw new IllegalArgumentException("Attempted to pass an illegal string to the minecraft find by key command");
 		}
+
 		int index = start;
 		if(mat == null ) {
-			if (args[index].contains(":")) {
-				throw new IllegalArgumentException("Using integers and data values is no longer supported");
-			} else {
-				mat = getMaterial(args[index]);
-
-			}
+			// No match by Minecraft name - attempt MATERIAL match
+			mat = getMaterial(args[index]);
 			if (mat == null)
 				throw new IllegalArgumentException("Unknown material " + args[index]);
-			index++;
 		}
-		// Parse amount
+		index++;
+
+		// Parse amount (if given)
 		int amount = mat.getMaxStackSize();
 		if(args.length > index)
 		{
-			try
-			{
+			try {
 				amount = Integer.parseInt(args[index]);
 				if (amount < 0)
 					throw new IllegalArgumentException("Amount value cannot be less than 0");
-			}
-			catch(NumberFormatException e)
-			{
+			} catch (NumberFormatException e) {
 				throw new IllegalArgumentException("Unable to parse amount value " + args[index]);
 			}
-			
 			++index;
 		}
-
 		ItemStack item = new ItemStack(mat,amount);
-		// Parse Meta
+
+		// Parse Meta (if given)
 		if (args.length > index)
 		{
 			ItemMetaBuilder builder = new ItemMetaBuilder(item);
@@ -319,10 +300,9 @@ public class Utilities
 				String definition = args[i].replace('_', ' ');
 				builder.accept(definition);
 			}
-			
 			item.setItemMeta(builder.build());
 		}
-		
+
 		return item;
 	}
 }
