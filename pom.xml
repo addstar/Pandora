@@ -2,19 +2,25 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.com.addstar</groupId>
     <artifactId>Pandora</artifactId>
-    <version>1.0.7-SNAPSHOT</version>
+    <version>1.0.8-SNAPSHOT</version>
     <name>Pandora</name>
-    <description>Multi Module plugin for NMS VERSION ${spigot.version} and MonoLith ${monolith.version} designed
+    <description>Multi Module plugin for NMS VERSION ${spigot.version} and Monolith ${monolith.version} designed
         for AddstarMC
     </description>
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
     <properties>
         <build.number />
         <plugin.version>${project.version}-${build.number}</plugin.version>
         <mainClass>au.com.addstar.pandora.MasterPlugin</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.api.version>1.14</spigot.api.version>
-        <spigot.version>${spigot.api.version}.4-R0.1-SNAPSHOT</spigot.version>
-        <monolith.version>1.6.0-SNAPSHOT</monolith.version>
+        <spigot.api.version>1.15</spigot.api.version>
+        <spigot.version>${spigot.api.version}-R0.1-SNAPSHOT</spigot.version>
+        <monolith.version>1.6.1-SNAPSHOT</monolith.version>
     </properties>
     <scm>
         <connection>scm:git:git@github.com:AddstarMC/Pandora.git</connection>

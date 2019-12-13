@@ -4,7 +4,7 @@ import au.com.addstar.monolith.ItemMetaBuilder;
 import au.com.addstar.monolith.lookup.EntityDefinition;
 import au.com.addstar.monolith.lookup.Lookup;
 
-import net.minecraft.server.v1_14_R1.ResourceKeyInvalidException;
+import net.minecraft.server.v1_15_R1.ResourceKeyInvalidException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
