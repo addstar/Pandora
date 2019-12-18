@@ -124,6 +124,12 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+
+        <!-- MurderMystery, BuildBattle and VillageDefense -->
+        <repository>
+            <id>plajerlair-repo</id>
+            <url>https://maven.plajer.xyz/minecraft</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -395,6 +401,30 @@
             </exclusions>
             <scope>provided</scope>
             <optional>true</optional>
+        </dependency>
+
+        <!-- MurderMystery -->
+        <dependency>
+            <groupId>pl.plajer</groupId>
+            <artifactId>murdermystery</artifactId>
+            <version>1.4.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- BuildBattle -->
+        <dependency>
+            <groupId>pl.plajer</groupId>
+            <artifactId>buildbattle</artifactId>
+            <version>4.2.0</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- VillageDefense -->
+        <dependency>
+            <groupId>pl.plajer</groupId>
+            <artifactId>villagedefense</artifactId>
+            <version>4.3.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
