@@ -71,7 +71,8 @@ public class Limbo implements Module, Listener {
     private void hideOtherPlayers(Player p) {
         for (Player other : Bukkit.getOnlinePlayers()) {
             if (!p.equals(other)) {
-                if (mConfig.debug) mPlugin.getLogger().info("[LIMBO]   hideOtherPlayers: hiding " + p.getName() + " from " + other.getName());
+                if (mConfig.debug)
+                    mPlugin.getLogger().info("[LIMBO]   hideOtherPlayers: hiding " + p.getName() + " from " + other.getName());
                 other.hidePlayer(mPlugin, p);
             }
         }
@@ -81,7 +82,8 @@ public class Limbo implements Module, Listener {
     private void hideThisPlayer(Player p) {
         for (Player other : Bukkit.getOnlinePlayers()) {
             if (!p.equals(other)) {
-                if (mConfig.debug) mPlugin.getLogger().info("[LIMBO]   hideThisPlayer: hiding " + other.getName() + " from " + p.getName());
+                if (mConfig.debug)
+                    mPlugin.getLogger().info("[LIMBO]   hideThisPlayer: hiding " + other.getName() + " from " + p.getName());
                 p.hidePlayer(mPlugin, other);
             }
         }
