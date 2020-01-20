@@ -131,7 +131,7 @@ public class MasterPlugin extends JavaPlugin {
     registerModule("SlimeChunk", "au.com.addstar.pandora.modules.SlimeChunk");
     registerModule("DeathInterceptor", "au.com.addstar.pandora.modules.DeathInterceptor");
     registerModule("ActionBlocker", "au.com.addstar.pandora.modules.ActionBlocker");
-    //TODO: Register additional modules here
+    registerModule("Limbo", "au.com.addstar.pandora.modules.Limbo");
     registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver",
         "1_14_R1");
     registerNMSModule("UndesiredMovementBlocker", "au.com.addstar.pandora.modules.UndesiredMovementBlocker", "1_14_R1", "ProtocolLib");

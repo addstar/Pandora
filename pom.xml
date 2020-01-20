@@ -108,10 +108,17 @@
             <url>http://repo.dmulloy2.net/content/groups/public/</url>
         </repository>
 
+        <!-- item-nbt-api -->
+        <repository>
+            <id>codemc-repo</id>
+            <url>https://repo.codemc.org/repository/maven-public/</url>
+            <layout>default</layout>
+        </repository>
+
         <!-- Maven central -->
         <repository>
             <id>maven-central</id>
-            <url>http://repo1.maven.org/maven2/</url>
+            <url>https://repo1.maven.org/maven2/</url>
         </repository>
         <repository>
             <id>jitpack.io</id>
