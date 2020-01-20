@@ -4,6 +4,7 @@ import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -30,7 +31,7 @@ public class Limbo implements Module, Listener {
 
         if (mConfig.enabled) {
             spawnWorld = Bukkit.getWorld(mConfig.limboworld);
-            spawnLoc = new Location(spawnWorld, 0, 65, 0);
+            spawnLoc = new Location(spawnWorld, 0.5, 65, 0.5, 180, 0);
         }
     }
 
@@ -47,15 +48,42 @@ public class Limbo implements Module, Listener {
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onPlayerSpawn(PlayerSpawnLocationEvent e) {
         if (mConfig.enabled) {
+            if (mConfig.debug) mPlugin.getLogger().info("[LIMBO] PlayerSpawnLocationEvent start");
+            hideThisPlayer(e.getPlayer());
             hideOtherPlayers(e.getPlayer());
             e.setSpawnLocation(spawnLoc);
+            e.getPlayer().setFlying(false);
+            if (mConfig.debug) mPlugin.getLogger().info("[LIMBO] PlayerSpawnLocationEvent end");
         }
     }
 
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        if (mConfig.enabled) {
+            if (mConfig.debug) mPlugin.getLogger().info("[LIMBO] PlayerJoinEvent start");
+            hideThisPlayer(e.getPlayer());
+            hideOtherPlayers(e.getPlayer());
+            if (mConfig.debug) mPlugin.getLogger().info("[LIMBO] PlayerJoinEvent end");
+        }
+    }
+
+    // Make all other players hidden from this player (others become invisible)
     private void hideOtherPlayers(Player p) {
-        // Make all other players hidden from this player (others become invisible)
         for (Player other : Bukkit.getOnlinePlayers()) {
-            other.hidePlayer(mPlugin, p);
+            if (!p.equals(other)) {
+                if (mConfig.debug) mPlugin.getLogger().info("[LIMBO]   hideOtherPlayers: hiding " + p.getName() + " from " + other.getName());
+                other.hidePlayer(mPlugin, p);
+            }
+        }
+    }
+
+    // Make this player hidden from all other players (player become invisible)
+    private void hideThisPlayer(Player p) {
+        for (Player other : Bukkit.getOnlinePlayers()) {
+            if (!p.equals(other)) {
+                if (mConfig.debug) mPlugin.getLogger().info("[LIMBO]   hideThisPlayer: hiding " + other.getName() + " from " + p.getName());
+                p.hidePlayer(mPlugin, other);
+            }
         }
     }
 
@@ -65,7 +93,10 @@ public class Limbo implements Module, Listener {
         }
 
         @ConfigField(comment = "Should Limbo be enabled on this server?")
-        public Boolean enabled = false;
+        public boolean debug = false;
+
+        @ConfigField(comment = "Should Limbo be enabled on this server?")
+        public boolean enabled = false;
 
         @ConfigField(comment = "The name of the limbo world")
         public String limboworld = "limbo";
