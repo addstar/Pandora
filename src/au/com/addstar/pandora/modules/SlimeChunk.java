@@ -29,13 +29,13 @@ public class SlimeChunk implements Module, CommandExecutor {
 
     @Override
     public void setPandoraInstance(MasterPlugin plugin) {
-        this.mPlugin =  plugin;
+        this.mPlugin = plugin;
 
     }
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if(commandSender instanceof Player){
+        if (commandSender instanceof Player) {
             if (commandSender.hasPermission("Pandora.slimechunk.show")) {
                 Chunk chunk = ((Player) commandSender).getLocation().getChunk();
                 if (chunk.isSlimeChunk()) {
@@ -43,11 +43,11 @@ public class SlimeChunk implements Module, CommandExecutor {
                 } else {
                     commandSender.sendMessage("This chunk is NOT a Slime Chunk");
                 }
-            }else{
+            } else {
                 commandSender.sendMessage("You do not have permission for that command.");
             }
             return true;
-        }else{
+        } else {
             return false;
         }
     }

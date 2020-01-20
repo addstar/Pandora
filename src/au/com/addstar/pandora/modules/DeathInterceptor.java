@@ -31,13 +31,13 @@ public class DeathInterceptor implements Listener, Module {
         mPlugin = plugin;
     }
 
-    @EventHandler(priority = EventPriority.LOW,ignoreCancelled = true)
-    public void onDeath(PlayerDeathEvent event){
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
+    public void onDeath(PlayerDeathEvent event) {
         String message = event.getDeathMessage();
-        Player player  = event.getEntity();
+        Player player = event.getEntity();
         message = StringUtils.replaceOnce(message, player.getName(), player.getDisplayName());
         Player killer = player.getKiller();
-        if(killer != null) {
+        if (killer != null) {
             message = StringUtils.replaceOnce(message, killer.getName(), killer.getDisplayName());
         }
         event.setDeathMessage(message);

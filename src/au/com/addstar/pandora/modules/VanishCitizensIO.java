@@ -21,71 +21,72 @@ import java.util.logging.Logger;
 
 public class VanishCitizensIO implements Listener, Module {
 
-  private Field mTalkableField;
+    private Field mTalkableField;
 
-  @Override
-  public void onEnable() {
-    if (CitizensAPI.getTraitFactory().getTrait("lookclosesafe") == null)
-      CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(LookCloseSafe.class).withName("lookclosesafe"));
-    else
-      Logger.getLogger("Pandora").warning("Could not register the trait lookclosesafe. It already exists.");
+    @Override
+    public void onEnable() {
+        if (CitizensAPI.getTraitFactory().getTrait("lookclosesafe") == null)
+            CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(LookCloseSafe.class).withName("lookclosesafe"));
+        else
+            Logger.getLogger("Pandora").warning("Could not register the trait lookclosesafe. It already exists.");
 
-    try {
-      mTalkableField = SpeechEvent.class.getDeclaredField("target");
-      mTalkableField.setAccessible(true);
-    } catch (NoSuchFieldException | SecurityException e) {
-      e.printStackTrace();
-    }
-  }
-
-  /**
-   * Cancel NPC talking to vanished players
-   * @param event SpeechTargetedEvent
-   */
-  @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-  private void onNCPTalk(SpeechTargetedEvent event) {
-    try {
-      Talkable talkable = (Talkable) mTalkableField.get(event);
-
-      if (talkable.getEntity() instanceof Player) {
-        Player player = (Player) talkable.getEntity();
-
-        if (!CitizensAPI.getNPCRegistry().isNPC(player) && VanishUtil.isPlayerVanished(player))
-          event.setCancelled(true);
-      }
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
-  }
-
-  @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
-  private void onNCPTalk(SpeechBystanderEvent event) {
-    try {
-      Iterator<Talkable> it = event.getContext().iterator();
-
-      while (it.hasNext()) {
-        Talkable t = it.next();
-
-        if (t.getEntity() instanceof Player) {
-          Player player = (Player) t.getEntity();
-          if (!CitizensAPI.getNPCRegistry().isNPC(player) && VanishUtil.isPlayerVanished(player))
-            it.remove();
+        try {
+            mTalkableField = SpeechEvent.class.getDeclaredField("target");
+            mTalkableField.setAccessible(true);
+        } catch (NoSuchFieldException | SecurityException e) {
+            e.printStackTrace();
         }
-      }
-
-      if (!event.getContext().hasRecipients())
-        event.setCancelled(true);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
     }
-  }
 
-  @Override
-  public void onDisable() {
-  }
+    /**
+     * Cancel NPC talking to vanished players
+     *
+     * @param event SpeechTargetedEvent
+     */
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    private void onNCPTalk(SpeechTargetedEvent event) {
+        try {
+            Talkable talkable = (Talkable) mTalkableField.get(event);
 
-  @Override
-  public void setPandoraInstance(MasterPlugin plugin) {
-  }
+            if (talkable.getEntity() instanceof Player) {
+                Player player = (Player) talkable.getEntity();
+
+                if (!CitizensAPI.getNPCRegistry().isNPC(player) && VanishUtil.isPlayerVanished(player))
+                    event.setCancelled(true);
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
+    private void onNCPTalk(SpeechBystanderEvent event) {
+        try {
+            Iterator<Talkable> it = event.getContext().iterator();
+
+            while (it.hasNext()) {
+                Talkable t = it.next();
+
+                if (t.getEntity() instanceof Player) {
+                    Player player = (Player) t.getEntity();
+                    if (!CitizensAPI.getNPCRegistry().isNPC(player) && VanishUtil.isPlayerVanished(player))
+                        it.remove();
+                }
+            }
+
+            if (!event.getContext().hasRecipients())
+                event.setCancelled(true);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void onDisable() {
+    }
+
+    @Override
+    public void setPandoraInstance(MasterPlugin plugin) {
+    }
 
 }

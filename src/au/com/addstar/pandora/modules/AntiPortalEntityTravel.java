@@ -9,29 +9,29 @@ import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 
 public class AntiPortalEntityTravel implements Module, Listener {
-	
-	private MasterPlugin mPlugin;
-	
-	@Override
-	public void onEnable() {
-	}
 
-	@Override
-	public void onDisable() {
-	}
+    private MasterPlugin mPlugin;
 
-	@Override
-	public void setPandoraInstance(MasterPlugin plugin) {
-		mPlugin = plugin;
-	}
-	
-	@EventHandler
-	private void entityEnterPortal(EntityPortalEvent event) {
-		Location l = event.getFrom();
-		if (!(event.getEntityType().isAlive())) {
-			System.out.println("Blocked portal entity travel at: " + l.getWorld().getName() + " " + l.getBlockX() + " " + l.getBlockY() + " " + l.getBlockZ());
-			event.getEntity().remove();
-			event.setCancelled(true);
-		}
-	}
+    @Override
+    public void onEnable() {
+    }
+
+    @Override
+    public void onDisable() {
+    }
+
+    @Override
+    public void setPandoraInstance(MasterPlugin plugin) {
+        mPlugin = plugin;
+    }
+
+    @EventHandler
+    private void entityEnterPortal(EntityPortalEvent event) {
+        Location l = event.getFrom();
+        if (!(event.getEntityType().isAlive())) {
+            System.out.println("Blocked portal entity travel at: " + l.getWorld().getName() + " " + l.getBlockX() + " " + l.getBlockY() + " " + l.getBlockZ());
+            event.getEntity().remove();
+            event.setCancelled(true);
+        }
+    }
 }

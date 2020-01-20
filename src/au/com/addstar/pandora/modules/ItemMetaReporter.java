@@ -32,27 +32,27 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
         Player sender;
-        if(!(commandSender instanceof Player)) {
+        if (!(commandSender instanceof Player)) {
             commandSender.sendMessage("&cPlayer only command.");
             return false;
-        }else{
+        } else {
             sender = (Player) commandSender;
         }
 
         ItemStack item = sender.getInventory().getItemInMainHand();
         Material mat = item.getType();
-        sender.sendMessage(ChatColor.GOLD +"Item Name: " +ChatColor.RED+ StringTranslator.getName(item));
-        sender.sendMessage(ChatColor.GOLD +"Item Type: "+ ChatColor.RED + item.getType().toString());
+        sender.sendMessage(ChatColor.GOLD + "Item Name: " + ChatColor.RED + StringTranslator.getName(item));
+        sender.sendMessage(ChatColor.GOLD + "Item Type: " + ChatColor.RED + item.getType().toString());
         String mcName = Lookup.findMinecraftNameByItem(item.getType());
-        if(mcName != null)
+        if (mcName != null)
             sender.sendMessage(ChatColor.GOLD + "Minecraft Name: " + ChatColor.RED + mcName);
         ItemMeta imeta = item.getItemMeta();
-        if(imeta instanceof Damageable) {
+        if (imeta instanceof Damageable) {
             int maxDura = item.getType().getMaxDurability();
             int uses = maxDura + 1 - ((Damageable) imeta).getDamage();
-            sender.sendMessage(ChatColor.GOLD + "Durability: " + ChatColor.RED + ((Damageable) imeta).getDamage()+ " / " + (maxDura+1) + " (" + uses + " uses)");
+            sender.sendMessage(ChatColor.GOLD + "Durability: " + ChatColor.RED + ((Damageable) imeta).getDamage() + " / " + (maxDura + 1) + " (" + uses + " uses)");
         }
-        if(item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION){
+        if (item.getType() == Material.POTION || item.getType() == Material.SPLASH_POTION || item.getType() == Material.LINGERING_POTION) {
             StringBuilder msg = new StringBuilder(" **Potion** \n");
             PotionMeta meta = (PotionMeta) imeta;
             if (meta != null) {
@@ -67,9 +67,9 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
                 } else {
                     msg.append("  Custom Potion - could not be cast to a real potion.");
                 }
-                if(meta.getCustomEffects() != null){
-                    for(PotionEffect e : meta.getCustomEffects()) {
-                        msg.append( "  Subtype: ").append(e.getType().toString()).append(" Strength: ").append(e.getAmplifier()).append(" Duration: ").append(e.getDuration());
+                if (meta.getCustomEffects() != null) {
+                    for (PotionEffect e : meta.getCustomEffects()) {
+                        msg.append("  Subtype: ").append(e.getType().toString()).append(" Strength: ").append(e.getAmplifier()).append(" Duration: ").append(e.getDuration());
                     }
                 }
             }
@@ -78,44 +78,44 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
 
         }
 
-        if(item.hasItemMeta()){
-            if(imeta.hasLore()) {
+        if (item.hasItemMeta()) {
+            if (imeta.hasLore()) {
                 for (String slore : imeta.getLore()) {
-                     sender.sendMessage(ChatColor.GOLD+"Lore: " + slore);
+                    sender.sendMessage(ChatColor.GOLD + "Lore: " + slore);
                 }
             }
-            if (imeta.hasDisplayName()) sender.sendMessage(ChatColor.GOLD +"DisplayName: "+imeta.getDisplayName());
+            if (imeta.hasDisplayName()) sender.sendMessage(ChatColor.GOLD + "DisplayName: " + imeta.getDisplayName());
             if (imeta.hasEnchants()) {
                 for (Map.Entry<Enchantment, Integer> entry : imeta.getEnchants().entrySet()) {
-                    sender.sendMessage(ChatColor.GOLD +"Enchantment: " + entry.toString() + " Level: " + entry.getValue());
+                    sender.sendMessage(ChatColor.GOLD + "Enchantment: " + entry.toString() + " Level: " + entry.getValue());
                 }
             }
             Set<ItemFlag> flags = imeta.getItemFlags();
-            if(flags != null && flags.size() > 0){
+            if (flags != null && flags.size() > 0) {
                 StringBuilder msg = new StringBuilder("Flags: ");
-                for(ItemFlag flag : imeta.getItemFlags()) {
+                for (ItemFlag flag : imeta.getItemFlags()) {
                     msg.append(flag.toString());
                     msg.append(" ");
                 }
                 sender.sendMessage(ChatColor.GOLD + msg.toString());
             }
-            if(imeta instanceof PotionMeta){
+            if (imeta instanceof PotionMeta) {
                 PotionMeta pmeta = (PotionMeta) imeta;
                 StringBuilder msg = new StringBuilder();
-                for(PotionEffect e : pmeta.getCustomEffects()) {
-                     msg.append("  Meta Subtype: ").append(e.getType().toString()).append(" Strength: ").append(e.getAmplifier()).append(" Duration: ").append(e.getDuration());
+                for (PotionEffect e : pmeta.getCustomEffects()) {
+                    msg.append("  Meta Subtype: ").append(e.getType().toString()).append(" Strength: ").append(e.getAmplifier()).append(" Duration: ").append(e.getDuration());
                 }
                 sender.sendMessage(msg.toString());
             }
 
-            sender.sendMessage(ChatColor.GOLD  +"  Raw META: " + imeta.toString()); //raw imeta data dump
+            sender.sendMessage(ChatColor.GOLD + "  Raw META: " + imeta.toString()); //raw imeta data dump
         }
-        if(args.length >0 ){
-            if(args[0].equalsIgnoreCase("nbt")){
+        if (args.length > 0) {
+            if (args[0].equalsIgnoreCase("nbt")) {
                 NBTItem nbtItem = new NBTItem(item);
-                if(nbtItem.hasNBTData()){
-                    sender.sendMessage(ChatColor.RED + "NBT Tag: "+ChatColor.GOLD  + NBTItem.convertItemtoNBT(item).getParent().asNBTString());
-                    sender.sendMessage(ChatColor.RED + "NBT Tag as String: " +ChatColor.GOLD + NBTItem.convertItemtoNBT(item).getParent().toString());
+                if (nbtItem.hasNBTData()) {
+                    sender.sendMessage(ChatColor.RED + "NBT Tag: " + ChatColor.GOLD + NBTItem.convertItemtoNBT(item).getParent().asNBTString());
+                    sender.sendMessage(ChatColor.RED + "NBT Tag as String: " + ChatColor.GOLD + NBTItem.convertItemtoNBT(item).getParent().toString());
                 }
             }
         }

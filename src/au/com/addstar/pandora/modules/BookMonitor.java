@@ -42,36 +42,36 @@ import java.util.logging.Logger;
  */
 public class BookMonitor implements Module, CommandExecutor, Listener {
     MasterPlugin plugin;
-    Map<UUID,List<BookMeta>> map;
+    Map<UUID, List<BookMeta>> map;
     private File bFile;
     private FileConfiguration bConfig;
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onEditBook(PlayerEditBookEvent event){
+    public void onEditBook(PlayerEditBookEvent event) {
 
-        if(!event.getPlayer().hasPermission("pandora.booklogger.bypass")){
-            Player player =  event.getPlayer();
+        if (!event.getPlayer().hasPermission("pandora.booklogger.bypass")) {
+            Player player = event.getPlayer();
             UUID playerUUID = player.getUniqueId();
             BookMeta meta = event.getNewBookMeta();
             List<BookMeta> list = map.get(playerUUID);
-            if(list ==null) list = new ArrayList<>();
+            if (list == null) list = new ArrayList<>();
             list.add(meta);
             map.remove(playerUUID);
-            map.put(playerUUID,list);
+            map.put(playerUUID, list);
             String title = meta.getTitle();
             StringBuilder text = new StringBuilder();
             if (meta.hasPages()) {
-                int i=1;
+                int i = 1;
                 for (String page : meta.getPages()) {
                     text.append("Page ").append(i).append(" ").append(page).append("/n");
                     i++;
                 }
             }
             Logger log = plugin.getLogger();
-            log.info(player.getName()+ " Wrote Book: " + "Title:" + title );
-            log.info(player.getName()+ " Wrote Book: " + "Text:" + text.toString() );
-            if(bConfig.getBoolean("offline.savereports",true)) {
-            saveBook(player, meta);
+            log.info(player.getName() + " Wrote Book: " + "Title:" + title);
+            log.info(player.getName() + " Wrote Book: " + "Text:" + text.toString());
+            if (bConfig.getBoolean("offline.savereports", true)) {
+                saveBook(player, meta);
             }
         }
     }
@@ -80,25 +80,25 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
         FileWriter fw;
         BufferedWriter bw;
         PrintWriter out = null;
-        try{
-        File parent = new File(plugin.getDataFolder(), "bookreports");
-        parent.mkdirs();
-        File dest = new File(parent, player.getUniqueId() + ".txt");
-        fw = new FileWriter(dest, true);
-        bw = new BufferedWriter(fw);
-        out = new PrintWriter(bw);
-        out.println("-----------------------------------------");
-        out.println("  Book report: " + meta.getTitle() + " Author:" + meta.getAuthor());
-        out.println("  Completed " + DateFormat.getDateTimeInstance().format(new Date()));
-        int i =1;
-        for (String page:meta.getPages()) {
-            out.println("Page:" +i);
-            out.println(page);
-        }
-        out.flush();
-        }catch (IOException e){
+        try {
+            File parent = new File(plugin.getDataFolder(), "bookreports");
+            parent.mkdirs();
+            File dest = new File(parent, player.getUniqueId() + ".txt");
+            fw = new FileWriter(dest, true);
+            bw = new BufferedWriter(fw);
+            out = new PrintWriter(bw);
+            out.println("-----------------------------------------");
+            out.println("  Book report: " + meta.getTitle() + " Author:" + meta.getAuthor());
+            out.println("  Completed " + DateFormat.getDateTimeInstance().format(new Date()));
+            int i = 1;
+            for (String page : meta.getPages()) {
+                out.println("Page:" + i);
+                out.println(page);
+            }
+            out.flush();
+        } catch (IOException e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             if (out != null) {
                 out.close();
             }
@@ -107,8 +107,7 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
 
     private boolean loadConfig() {
         // Load the config
-        try
-        {
+        try {
             bFile = new File(plugin.getDataFolder(), "BookMonitor.yml");
             if (!bFile.exists())
                 plugin.saveResource("BookMonitor.yml", false);
@@ -116,9 +115,7 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
             bConfig = YamlConfiguration.loadConfiguration(bFile);
             if (bFile.exists())
                 bConfig.load(bFile);
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -126,11 +123,10 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
     }
 
 
-
     @Override
     public void onEnable() {
         loadConfig();
-        int count = bConfig.getInt("booklogcount",10);
+        int count = bConfig.getInt("booklogcount", 10);
         map = createLRUMap(count);
     }
 
@@ -144,13 +140,13 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
 
     @Override
     public void setPandoraInstance(MasterPlugin plugin) {
-        this.plugin =  plugin;
+        this.plugin = plugin;
         plugin.getCommand("bookreport").setExecutor(this);
 
     }
 
     public static <K, V> Map<K, V> createLRUMap(final int maxEntries) {
-        return new LinkedHashMap<K, V>(maxEntries*10/7, 0.7f, true) {
+        return new LinkedHashMap<K, V>(maxEntries * 10 / 7, 0.7f, true) {
             @Override
             protected boolean removeEldestEntry(Map.Entry<K, V> eldest) {
                 return size() > maxEntries;
@@ -161,53 +157,53 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
     @Override
     @SuppressWarnings("unchecked")
     public boolean onCommand(CommandSender sender, Command command, String s, String[] args) {
-        if (sender.hasPermission("Pandora.booklogger.readbooks")){
-            if(args.length > 0){
-                Player target =  Bukkit.getPlayer(args[0]);
+        if (sender.hasPermission("Pandora.booklogger.readbooks")) {
+            if (args.length > 0) {
+                Player target = Bukkit.getPlayer(args[0]);
                 int report = 0;
-                if(args.length > 1){
-                  report =  Integer.parseInt(args[1]);
+                if (args.length > 1) {
+                    report = Integer.parseInt(args[1]);
                 }
-                if (target == null){
-                    BookMonitorCallback callback =  new BookMonitorCallback(sender,report);
-                    Lookup.lookupPlayerName(args[0],callback);
+                if (target == null) {
+                    BookMonitorCallback callback = new BookMonitorCallback(sender, report);
+                    Lookup.lookupPlayerName(args[0], callback);
                     return true;
-                }else{
-                    UUID targetUUID =  target.getUniqueId();
-                    reportresult(sender,targetUUID,report);
+                } else {
+                    UUID targetUUID = target.getUniqueId();
+                    reportresult(sender, targetUUID, report);
                     return true;
                 }
 
-            }else{
+            } else {
                 sender.sendMessage("Usage: /bookreport player integer");
                 sender.sendMessage("The integer will refer to the number of the book that is stored that you want to read or view");
                 return true;
             }
 
-        }else{
+        } else {
             sender.sendMessage(ChatColor.RED + "You have no permission for that command");
         }
 
         return false;
     }
 
-    private void reportresult(CommandSender sender, UUID uuid, int report){
-        List<BookMeta> resultList =  map.get(uuid);
-        if(resultList == null){
-            if(bConfig.getBoolean("offline.savereports")){
-                        offlinereporter(sender,uuid);
-            }else{
+    private void reportresult(CommandSender sender, UUID uuid, int report) {
+        List<BookMeta> resultList = map.get(uuid);
+        if (resultList == null) {
+            if (bConfig.getBoolean("offline.savereports")) {
+                offlinereporter(sender, uuid);
+            } else {
                 sender.sendMessage(ChatColor.RED + "No report available for that player.");
             }
-        }else{
-            if(report>0){
-                int index = report-1;
+        } else {
+            if (report > 0) {
+                int index = report - 1;
                 BookMeta meta = resultList.get(index);
                 sender.sendMessage("Book report: " + meta.getTitle() + " Author:" + meta.getAuthor());
                 sender.sendMessage("     Page Count: " + meta.getPageCount());
                 int i = 1;
-                for (String page:meta.getPages()) {
-                    sender.sendMessage("  Page:"+i);
+                for (String page : meta.getPages()) {
+                    sender.sendMessage("  Page:" + i);
                     sender.sendMessage("    " + page);
                     i++;
                 }
@@ -215,39 +211,40 @@ public class BookMonitor implements Module, CommandExecutor, Listener {
         }
     }
 
-    private void offlinereporter(CommandSender sender, UUID uuid){
+    private void offlinereporter(CommandSender sender, UUID uuid) {
         File parent = new File(plugin.getDataFolder(), "bookreports");
         File target = new File(parent, uuid + ".txt");
-        if(target.isFile()){
+        if (target.isFile()) {
             try (BufferedReader br = new BufferedReader(new FileReader(target))) {
                 String line;
                 sender.sendMessage("Reading books from " + target.getName());
                 while ((line = br.readLine()) != null) {
                     sender.sendMessage(line);
                 }
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
 
-        }else{
+        } else {
             sender.sendMessage("No Book reports found for player either in memory or in the filesystem");
         }
     }
 
-    private class BookMonitorCallback implements LookupCallback{
+    private class BookMonitorCallback implements LookupCallback {
         private CommandSender sender;
         private int report;
 
-        private BookMonitorCallback(CommandSender sender, int reportNum){
+        private BookMonitorCallback(CommandSender sender, int reportNum) {
             super();
             this.sender = sender;
             this.report = reportNum;
         }
+
         @Override
         public void onResult(boolean success, Object value, Throwable error) {
-            PlayerDefinition result =  (PlayerDefinition)value;
-            UUID targetUUID =  result.getUniqueId();
-            reportresult(sender, targetUUID,report);
+            PlayerDefinition result = (PlayerDefinition) value;
+            UUID targetUUID = result.getUniqueId();
+            reportresult(sender, targetUUID, report);
         }
     }
 }

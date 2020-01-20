@@ -12,50 +12,44 @@ import org.bukkit.event.Listener;
 
 import java.io.File;
 
-public class MinigameBroadcaster implements Module, Listener
-{
-	private MasterPlugin mPlugin;
-	
-	private Config mConfig;
+public class MinigameBroadcaster implements Module, Listener {
+    private MasterPlugin mPlugin;
 
-	private boolean bungeechatenabled = false;
-	
-	@Override
-	public void onEnable()
-	{
-		if(mConfig.load())
-			mConfig.save();
+    private Config mConfig;
 
-		bungeechatenabled = mPlugin.registerBungeeChat();
-		if (!bungeechatenabled) mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
-	}
+    private boolean bungeechatenabled = false;
 
-	@Override
-	public void onDisable()
-	{
-	}
+    @Override
+    public void onEnable() {
+        if (mConfig.load())
+            mConfig.save();
 
-	@Override
-	public void setPandoraInstance( MasterPlugin plugin )
-	{
-		mConfig = new Config(new File(plugin.getDataFolder(), "MinigameBroadcast.yml"));
-		mPlugin = plugin;
-	}
+        bungeechatenabled = mPlugin.registerBungeeChat();
+        if (!bungeechatenabled)
+            mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
+    }
 
-	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-	public void onMinigameBroadcast(MinigamesBroadcastEvent event)
-	{
-		if(bungeechatenabled)BungeeChat.mirrorChat(event.getMessageWithPrefix(), mConfig.channel);
-	}
-	
-	private class Config extends AutoConfig
-	{
-		public Config(File file)
-		{
-			super(file);
-		}
-		
-		@ConfigField(comment="The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
-		public String channel = "~BC";
-	}
+    @Override
+    public void onDisable() {
+    }
+
+    @Override
+    public void setPandoraInstance(MasterPlugin plugin) {
+        mConfig = new Config(new File(plugin.getDataFolder(), "MinigameBroadcast.yml"));
+        mPlugin = plugin;
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onMinigameBroadcast(MinigamesBroadcastEvent event) {
+        if (bungeechatenabled) BungeeChat.mirrorChat(event.getMessageWithPrefix(), mConfig.channel);
+    }
+
+    private class Config extends AutoConfig {
+        public Config(File file) {
+            super(file);
+        }
+
+        @ConfigField(comment = "The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
+        public String channel = "~BC";
+    }
 }

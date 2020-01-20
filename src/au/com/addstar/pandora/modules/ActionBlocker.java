@@ -31,7 +31,7 @@ import java.util.Set;
  * Created for the AddstarMC Project. Created by Narimm on 10/01/2019.
  */
 public class ActionBlocker extends AbstractModule implements Listener {
-    
+
     private File mFile;
     private MasterPlugin mPlugin;
     private FileConfiguration mConfig;
@@ -45,13 +45,14 @@ public class ActionBlocker extends AbstractModule implements Listener {
         RegisteredListener registeredListener = new RegisteredListener(this, (listener, event) -> {
             try {
                 listener.getClass().getDeclaredMethod("onAction", Event.class).invoke(listener, event);
-            }catch (NoSuchMethodException|IllegalAccessException|InvocationTargetException e){}
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            }
         }, EventPriority.NORMAL, mPlugin, false);
         EntityInteractEvent.getHandlerList().register(registeredListener);
-        for(String eventName:allEvents){
+        for (String eventName : allEvents) {
             try {
                 Class clazz = Class.forName(eventName);
-                if(clazz.isAssignableFrom(EntityEvent.class)){
+                if (clazz.isAssignableFrom(EntityEvent.class)) {
                     HandlerList list = getHandlerList(clazz);
                     list.register(registeredListener);
                 }
@@ -60,7 +61,7 @@ public class ActionBlocker extends AbstractModule implements Listener {
             }
         }
     }
-    
+
     @Override
     public void onDisable() {
         mPlugin = null;
@@ -68,30 +69,29 @@ public class ActionBlocker extends AbstractModule implements Listener {
         blockedEvents.clear();
 
     }
-    
+
     @Override
     public void setPandoraInstance(MasterPlugin plugin) {
         mPlugin = plugin;
     }
-    
-    public boolean disableListener(){
-        if(WorldLimits.isEmpty() && blockedEvents.isEmpty())return true;
+
+    public boolean disableListener() {
+        if (WorldLimits.isEmpty() && blockedEvents.isEmpty()) return true;
         debugLog("Listener is disabled...");
         return false;
     }
-    
-    private boolean loadConfig(){
-        try
-        {
+
+    private boolean loadConfig() {
+        try {
             mFile = new File(mPlugin.getDataFolder(), "ActionBlocker.yml");
             if (!mFile.exists())
                 mPlugin.saveResource("ActionBlocker.yml", false);
             mConfig = YamlConfiguration.loadConfiguration(mFile);
             if (mFile.exists())
                 mConfig.load(mFile);
-        
+
             debug = mConfig.getBoolean("debug", false);
-        
+
             if ((mConfig != null) && (mConfig.isConfigurationSection("worlds"))) {
                 Set<String> worlds = mConfig.getConfigurationSection("worlds").getKeys(false);
                 debugLog("Loading world configs...");
@@ -103,13 +103,13 @@ public class ActionBlocker extends AbstractModule implements Listener {
                         int minY = wsection.getInt("minY", 0);
                         int maxY = wsection.getInt("maxY", 255);
                         List<String> events = wsection.getStringList("actions");
-                        blockedEvents.put(world,events);
-                        for(String e:events){
+                        blockedEvents.put(world, events);
+                        for (String e : events) {
                             boolean exists = false;
-                            for(String a:allEvents){
-                                if(a.equals(e))exists = true;
+                            for (String a : allEvents) {
+                                if (a.equals(e)) exists = true;
                             }
-                            if(!exists)allEvents.add(e);
+                            if (!exists) allEvents.add(e);
                         }
                         WorldLimits.put(world, new Integer[]{minY, maxY});
                     } else {
@@ -126,45 +126,44 @@ public class ActionBlocker extends AbstractModule implements Listener {
                     }
                 }
                 debugLog("==============================================");
-                }
-        }
-        catch(Exception e)
-        {
+            }
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
         return true;
     }
-    public void onAction(Event e){
-        if(!(e instanceof EntityEvent))return;
+
+    public void onAction(Event e) {
+        if (!(e instanceof EntityEvent)) return;
         EntityEvent event = (EntityEvent) e;
-        if(!blockedEvents.containsKey(event.getEntity().getWorld()))return;
-            World  world = event.getEntity().getWorld();
-            debugLog(event.getClass().getName() + " is being checked for world "+ world.getName());
-            if (!(event.getEntity().getLocation().getY() > WorldLimits.get(world)[1]) || !(event.getEntity().getLocation().getY() < WorldLimits.get(world)[0]) ){
-                debugLog(event.getClass().getName() + " was inside world  Y limits");
+        if (!blockedEvents.containsKey(event.getEntity().getWorld())) return;
+        World world = event.getEntity().getWorld();
+        debugLog(event.getClass().getName() + " is being checked for world " + world.getName());
+        if (!(event.getEntity().getLocation().getY() > WorldLimits.get(world)[1]) || !(event.getEntity().getLocation().getY() < WorldLimits.get(world)[0])) {
+            debugLog(event.getClass().getName() + " was inside world  Y limits");
+            return;
+        }
+        debugLog(event.getClass().getName() + " is being checked...");
+        List<String> events = blockedEvents.get(event.getEntity().getWorld());
+        if (events.contains(event.getClass().getName())) {
+            if (event instanceof Cancellable) {
+                ((Cancellable) event).setCancelled(true);
+                debugLog(event.getClass().getName() + " was cancelled by Action Blocker");
+                return;
+            } else {
+                debugLog("Event:" + event.getClass().getName() + " does not implement cancellable and could not be cancelled...");
                 return;
             }
-            debugLog(event.getClass().getName() + " is being checked...");
-            List<String> events =  blockedEvents.get(event.getEntity().getWorld());
-            if(events.contains(event.getClass().getName())) {
-                if (event instanceof Cancellable) {
-                    ((Cancellable) event).setCancelled(true);
-                    debugLog(event.getClass().getName() + " was cancelled by Action Blocker");
-                    return;
-                } else {
-                    debugLog("Event:" + event.getClass().getName() + " does not implement cancellable and could not be cancelled...");
-                    return;
-                }
-            }
+        }
     }
 
     private static HandlerList getHandlerList(Class<? extends Event> clazz) {
-        while(clazz.getSuperclass() != null && Event.class.isAssignableFrom(clazz.getSuperclass())) {
+        while (clazz.getSuperclass() != null && Event.class.isAssignableFrom(clazz.getSuperclass())) {
             try {
                 Method method = clazz.getDeclaredMethod("getHandlerList");
                 method.setAccessible(true);
-                return (HandlerList)method.invoke(null);
+                return (HandlerList) method.invoke(null);
             } catch (NoSuchMethodException var2) {
                 clazz = clazz.getSuperclass().asSubclass(Event.class);
             } catch (Exception var3) {

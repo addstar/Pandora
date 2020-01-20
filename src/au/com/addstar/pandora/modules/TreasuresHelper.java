@@ -20,104 +20,100 @@ import org.bukkit.inventory.PlayerInventory;
 
 import java.io.File;
 
-public class TreasuresHelper implements Module, Listener
-{
-	private MasterPlugin mPlugin;
-	private Config mConfig;
-	private boolean bungeechatenabled = false;
+public class TreasuresHelper implements Module, Listener {
+    private MasterPlugin mPlugin;
+    private Config mConfig;
+    private boolean bungeechatenabled = false;
 
 
-	@Override
-	public void onEnable()
-	{
-		if(mConfig.load())
-			mConfig.save();
+    @Override
+    public void onEnable() {
+        if (mConfig.load())
+            mConfig.save();
 
-		bungeechatenabled = mPlugin.registerBungeeChat();
-		if (!bungeechatenabled) mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
-	}
+        bungeechatenabled = mPlugin.registerBungeeChat();
+        if (!bungeechatenabled)
+            mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
+    }
 
-	@Override
-	public void onDisable()
-	{
-		mPlugin.deregisterBungeeChat();
-		bungeechatenabled = false;
-	}
+    @Override
+    public void onDisable() {
+        mPlugin.deregisterBungeeChat();
+        bungeechatenabled = false;
+    }
 
-	@Override
-	public void setPandoraInstance( MasterPlugin plugin )
-	{
-		mConfig = new Config(new File(plugin.getDataFolder(), "TreasuresHelper.yml"));
-		mPlugin = plugin;
-	}
+    @Override
+    public void setPandoraInstance(MasterPlugin plugin) {
+        mConfig = new Config(new File(plugin.getDataFolder(), "TreasuresHelper.yml"));
+        mPlugin = plugin;
+    }
 
-	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-	public void onTreasureOpen(TreasuresChestOpenEvent event)
-	{
-		// Ignore the event unless the event is successful (only successful events use up keys or give rewards)
-		if (event.getResult() != TreasuresChestOpenResult.SUCCESS)
-			return;
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onTreasureOpen(TreasuresChestOpenEvent event) {
+        // Ignore the event unless the event is successful (only successful events use up keys or give rewards)
+        if (event.getResult() != TreasuresChestOpenResult.SUCCESS)
+            return;
 
-		Player p = event.getPlayer();
-		PlayerInventory inv = p.getInventory();
-		if (mConfig.debug) System.out.println("[DEBUG] TreasuresChestOpenEvent called for " + p.getName());
+        Player p = event.getPlayer();
+        PlayerInventory inv = p.getInventory();
+        if (mConfig.debug) System.out.println("[DEBUG] TreasuresChestOpenEvent called for " + p.getName());
 
-		// Check how many (normal) inventory slots are free (excluding armour)
-		int free = 0;
-		for (int x = 0; x < 35; x++) {
-			ItemStack is = inv.getItem(x);
-			if (is == null) {
-				free++;
-			}
-		}
-		if (mConfig.debug) System.out.println("[DEBUG] " + p.getName() + " has " + free + " inventory slots free.");
+        // Check how many (normal) inventory slots are free (excluding armour)
+        int free = 0;
+        for (int x = 0; x < 35; x++) {
+            ItemStack is = inv.getItem(x);
+            if (is == null) {
+                free++;
+            }
+        }
+        if (mConfig.debug) System.out.println("[DEBUG] " + p.getName() + " has " + free + " inventory slots free.");
 
-		// Check if the player has required number of free slots
-		if (free < mConfig.min_free_slots) {
-			if (mConfig.debug) System.out.println("[DEBUG] Cancelling event for " + p.getName());
-			p.sendMessage(ChatColor.translateAlternateColorCodes('&', mConfig.not_enough_room_msg).replace("%slots%", String.valueOf(mConfig.min_free_slots)));
-			event.setCancelled(true);
-			event.getPlayer().closeInventory();
-			TreasuresKeys.addKey(event.getPlayer().getUniqueId().toString(), event.getChestName(), 1);
-		}
-		if(mConfig.verboseChests) mPlugin.getLogger().info(event.getPlayer().getDisplayName()+" opened a  "+ event.getChestName());
-	}
+        // Check if the player has required number of free slots
+        if (free < mConfig.min_free_slots) {
+            if (mConfig.debug) System.out.println("[DEBUG] Cancelling event for " + p.getName());
+            p.sendMessage(ChatColor.translateAlternateColorCodes('&', mConfig.not_enough_room_msg).replace("%slots%", String.valueOf(mConfig.min_free_slots)));
+            event.setCancelled(true);
+            event.getPlayer().closeInventory();
+            TreasuresKeys.addKey(event.getPlayer().getUniqueId().toString(), event.getChestName(), 1);
+        }
+        if (mConfig.verboseChests)
+            mPlugin.getLogger().info(event.getPlayer().getDisplayName() + " opened a  " + event.getChestName());
+    }
 
-	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-	public void onTreasureReward(TreasuresFindRewardEvent event)
-	{
-		if (mConfig.debug) System.out.println("[DEBUG] TreasuresFindRewardEvent called for " + event.getPlayer().getName());
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onTreasureReward(TreasuresFindRewardEvent event) {
+        if (mConfig.debug)
+            System.out.println("[DEBUG] TreasuresFindRewardEvent called for " + event.getPlayer().getName());
 
-		// Look for a message associated with the reward
-		String msg = event.getBroadcastMessage();
-		if (Strings.isNullOrEmpty(msg) || msg.equals("null")) return;
+        // Look for a message associated with the reward
+        String msg = event.getBroadcastMessage();
+        if (Strings.isNullOrEmpty(msg) || msg.equals("null")) return;
 
-		if (mConfig.debug) System.out.println("[DEBUG] " + msg);
+        if (mConfig.debug) System.out.println("[DEBUG] " + msg);
 
-		// Broadcast the message across other servers
-		String colouredMsg = ChatColor.translateAlternateColorCodes('&', msg);
-		if(bungeechatenabled)BungeeChat.mirrorChat(colouredMsg, mConfig.broadcast_channel);
-        if(mConfig.verboseChests) mPlugin.getLogger().info(event.getPlayer().getDisplayName()+" recieved a  "+ event.getRewardName() + "( " + event.getRarity() +")");
-	}
-	
-	private class Config extends AutoConfig
-	{
-		public Config(File file)
-		{
-			super(file);
-		}
-		
-		@ConfigField(comment="Enable debug messages")
-		public boolean debug = false;
-		@ConfigField(comment = "Verbose reporting of chest opens")
+        // Broadcast the message across other servers
+        String colouredMsg = ChatColor.translateAlternateColorCodes('&', msg);
+        if (bungeechatenabled) BungeeChat.mirrorChat(colouredMsg, mConfig.broadcast_channel);
+        if (mConfig.verboseChests)
+            mPlugin.getLogger().info(event.getPlayer().getDisplayName() + " recieved a  " + event.getRewardName() + "( " + event.getRarity() + ")");
+    }
+
+    private class Config extends AutoConfig {
+        public Config(File file) {
+            super(file);
+        }
+
+        @ConfigField(comment = "Enable debug messages")
+        public boolean debug = false;
+        @ConfigField(comment = "Verbose reporting of chest opens")
         public boolean verboseChests = false;
-		@ConfigField(comment="The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
-		public String broadcast_channel = "~BC";
+        @ConfigField(comment = "The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
+        public String broadcast_channel = "~BC";
 
-		@ConfigField(comment="The minimum number of slots required to be free to use a key")
-		public int min_free_slots = 3;
+        @ConfigField(comment = "The minimum number of slots required to be free to use a key")
+        public int min_free_slots = 3;
 
-		@ConfigField(comment="The message players see when they don't have enough slots free")
-		public String not_enough_room_msg = "&cSorry, you must have %slots% inventory slots free to use this.";
-	}
+        @ConfigField(comment = "The message players see when they don't have enough slots free")
+        public String not_enough_room_msg = "&cSorry, you must have %slots% inventory slots free to use this.";
+    }
 }

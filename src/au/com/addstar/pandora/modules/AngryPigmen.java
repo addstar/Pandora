@@ -14,41 +14,33 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 import java.util.List;
 
-public class AngryPigmen implements Module, Listener
-{
-	@Override
-	public void onEnable()
-	{
-	}
+public class AngryPigmen implements Module, Listener {
+    @Override
+    public void onEnable() {
+    }
 
-	@Override
-	public void onDisable()
-	{
-	}
+    @Override
+    public void onDisable() {
+    }
 
-	@Override
-	public void setPandoraInstance( MasterPlugin plugin )
-	{
-	}
+    @Override
+    public void setPandoraInstance(MasterPlugin plugin) {
+    }
 
-	@EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
-	private void onEat(PlayerItemConsumeEvent event)
-	{
-		if (event.getPlayer().getWorld().getEnvironment() != Environment.NETHER)
-			return;
-		
-		if (event.getItem().getType() == Material.COOKED_PORKCHOP || event.getItem().getType() == Material.PORKCHOP)
-		{
-			List<Entity> entities = event.getPlayer().getNearbyEntities(30, 30, 30);
-			for (Entity entity : entities)
-			{
-				if (entity instanceof PigZombie)
-				{
-					((PigZombie)entity).setAngry(true);
-					((PigZombie)entity).setTarget(event.getPlayer());
-				}
-			}
-		}
-	}
-			
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    private void onEat(PlayerItemConsumeEvent event) {
+        if (event.getPlayer().getWorld().getEnvironment() != Environment.NETHER)
+            return;
+
+        if (event.getItem().getType() == Material.COOKED_PORKCHOP || event.getItem().getType() == Material.PORKCHOP) {
+            List<Entity> entities = event.getPlayer().getNearbyEntities(30, 30, 30);
+            for (Entity entity : entities) {
+                if (entity instanceof PigZombie) {
+                    ((PigZombie) entity).setAngry(true);
+                    ((PigZombie) entity).setTarget(event.getPlayer());
+                }
+            }
+        }
+    }
+
 }

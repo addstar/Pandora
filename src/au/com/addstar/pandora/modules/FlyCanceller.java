@@ -7,25 +7,26 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 
-public class FlyCanceller implements Module, Listener
-{
-	@EventHandler(ignoreCancelled=true)
-	private void onPlayerChangeWorld(PlayerChangedWorldEvent event)
-	{
-		if(event.getPlayer().hasPermission("pandora.flycancel.bypass"))
-			return;
-		
-		event.getPlayer().setAllowFlight(false);
-		event.getPlayer().setFlying(false);
-	}
-	
-	@Override
-	public void onEnable() {}
+public class FlyCanceller implements Module, Listener {
+    @EventHandler(ignoreCancelled = true)
+    private void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
+        if (event.getPlayer().hasPermission("pandora.flycancel.bypass"))
+            return;
 
-	@Override
-	public void onDisable() {}
+        event.getPlayer().setAllowFlight(false);
+        event.getPlayer().setFlying(false);
+    }
 
-	@Override
-	public void setPandoraInstance( MasterPlugin plugin ) {}
+    @Override
+    public void onEnable() {
+    }
+
+    @Override
+    public void onDisable() {
+    }
+
+    @Override
+    public void setPandoraInstance(MasterPlugin plugin) {
+    }
 
 }

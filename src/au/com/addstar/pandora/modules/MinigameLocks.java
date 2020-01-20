@@ -32,8 +32,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.io.File;
 import java.util.*;
 
-public class MinigameLocks implements Module, Listener, CommandExecutor
-{
+public class MinigameLocks implements Module, Listener, CommandExecutor {
     private int Debug = 0;
     private MasterPlugin mPlugin;
     private File mFile;
@@ -68,7 +67,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
     }
 
     @Override
-    public boolean onCommand( CommandSender sender, Command command, String label, String[] args ) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0)
             return false;
 
@@ -83,8 +82,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
                 sender.sendMessage(ChatColor.RED + "You do not have permission for this.");
             }
             return true;
-        }
-        else if (args[0].equalsIgnoreCase("enable") && args.length == 2) {
+        } else if (args[0].equalsIgnoreCase("enable") && args.length == 2) {
             if (sender.hasPermission("pandora.minigamelocks.admin")) {
                 Minigame mg = Minigames.getPlugin().getMinigameManager().getMinigame(args[1]);
                 if (mg != null) {
@@ -121,8 +119,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
     }
 
     private boolean loadConfig() {
-        try
-        {
+        try {
             mFile = new File(mPlugin.getDataFolder(), "MinigameLocks.yml");
             if (!mFile.exists())
                 mPlugin.saveResource("MinigameLocks.yml", false);
@@ -181,9 +178,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
                     System.out.println("==============================================");
                 }
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
@@ -260,7 +255,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
     }
 
     // Clear locks when a game finishes
-    @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMinigameEnd(EndMinigameEvent event) {
         Minigame mg = event.getMinigame();
         ClearMinigameLocks(mg);
@@ -268,7 +263,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
     }
 
     // Clear locks when a game finishes
-    @EventHandler(priority=EventPriority.MONITOR, ignoreCancelled=true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMinigameStart(StartMinigameEvent event) {
         Minigame mg = event.getMinigame();
         ClearMinigameLocks(mg);
@@ -276,7 +271,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
     }
 
     // Lock an item when the player places it
-    @EventHandler(ignoreCancelled=true)
+    @EventHandler(ignoreCancelled = true)
     public void onBlockPlace(BlockPlaceEvent event) {
         // Exit early if this block can't be locked
         if (!LockableMaterials.contains(event.getBlock().getType())) return;
@@ -284,8 +279,9 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
         MinigamePlayer mgp = Minigames.getPlugin().getPlayerManager().getMinigamePlayer(event.getPlayer());
         if ((mgp != null) && (mgp.isInMinigame())) {
             Minigame mg = mgp.getMinigame();
-            if (mg == null) DebugMsg(2, "[onBlockPlace] Player \"" + event.getPlayer().getName() + "\" not in a Minigame");
-            if (DisabledMinigames.containsKey(mg)) return;	// ignore locks if game is disabled
+            if (mg == null)
+                DebugMsg(2, "[onBlockPlace] Player \"" + event.getPlayer().getName() + "\" not in a Minigame");
+            if (DisabledMinigames.containsKey(mg)) return;    // ignore locks if game is disabled
 
             if (CanLock(mg, event.getBlock().getType())) {
                 AddLock(mg, event.getBlock(), event.getPlayer());
@@ -296,19 +292,19 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
     }
 
     // Don't allow breaking locked things
-    @EventHandler(ignoreCancelled=true)
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBreak(BlockBreakEvent event) {
         // Early exit if there are no locks at all or this isnt a lockable type
         if (Locks.isEmpty()) return;
         if (!LockableMaterials.contains(event.getBlock().getType())) return;
 
         Lockable lock = GetLockable(event.getBlock().getLocation());
-        if (lock == null) return;									// block is not locked
-        if (DisabledMinigames.containsKey(lock.minigame)) return;	// ignore locks if game is disabled
+        if (lock == null) return;                                    // block is not locked
+        if (DisabledMinigames.containsKey(lock.minigame)) return;    // ignore locks if game is disabled
 
         Location loc = lock.location;
         if (!HasBlockAccess(lock, event.getPlayer())) {
-            event.getPlayer().sendMessage(ChatColor.RED  + "That is locked by " + lock.ownername);
+            event.getPlayer().sendMessage(ChatColor.RED + "That is locked by " + lock.ownername);
             event.setCancelled(true);
             DebugMsg(3, "Denying \"" + event.getPlayer().getName() + "\" to break " + NiceItemName(event.getBlock().getType()) +
                     " owned by \"" + lock.ownername + "\" " +
@@ -322,7 +318,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
     }
 
     // Don't allow players to interact with locked things they don't own
-    @EventHandler(priority=EventPriority.HIGHEST, ignoreCancelled=true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerInteract(PlayerInteractEvent event) {
         // Right clicking crafting table (create personal workbench for each player)
         Block b = event.getClickedBlock();
@@ -338,13 +334,13 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
         if (!LockableMaterials.contains(event.getClickedBlock().getType())) return;
 
         Lockable lock = GetLockable(event.getClickedBlock().getLocation());
-        if (lock == null) return;									// block is not locked
-        if (DisabledMinigames.containsKey(lock.minigame)) return;	// ignore locks if game is disabled
+        if (lock == null) return;                                    // block is not locked
+        if (DisabledMinigames.containsKey(lock.minigame)) return;    // ignore locks if game is disabled
 
         Location loc = lock.location;
         if (!HasBlockAccess(lock, event.getPlayer())) {
             // Player does not have access
-            event.getPlayer().sendMessage(ChatColor.RED  + "That is locked by " + lock.ownername);
+            event.getPlayer().sendMessage(ChatColor.RED + "That is locked by " + lock.ownername);
             event.setCancelled(true);
             DebugMsg(3, "Denying \"" + event.getPlayer().getName() + "\" to access " + NiceItemName(b.getType()) +
                     " owned by \"" + lock.ownername + "\" " +
@@ -358,7 +354,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
     }
 
     // Clear locks of a player when they quit the game
-    @EventHandler(ignoreCancelled=true)
+    @EventHandler(ignoreCancelled = true)
     public void onPlayerQuitMinigame(QuitMinigameEvent event) {
         // Early exit if there are no locks at all
         if (Locks.isEmpty()) return;
@@ -371,7 +367,7 @@ public class MinigameLocks implements Module, Listener, CommandExecutor
     }
 
     // Clear locks of a player when they disconnect
-    @EventHandler(priority=EventPriority.LOWEST, ignoreCancelled=true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerDisconnect(PlayerQuitEvent event) {
         // Early exit if there are no locks at all
         if (Locks.isEmpty()) return;
