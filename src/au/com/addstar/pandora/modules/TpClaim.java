@@ -418,7 +418,11 @@ public class TpClaim implements Module, CommandExecutor, TabCompleter {
                 sender.sendMessage(String.format("Teleport Location: " + teleport.getBlockX() +
                         " " + teleport.getBlockY() + " " + teleport.getBlockY() + " world: " + teleport.getWorld().getName()));
             }
-            sender.sendMessage("Creation Date:" + SimpleDateFormat.getInstance().format(d.getCreationdate()));
+            if (d.getCreationdate() == null) {
+                sender.sendMessage("Creation Date: unknown");
+            } else {
+                sender.sendMessage("Creation Date: " + SimpleDateFormat.getInstance().format(d.getCreationdate()));
+            }
         }
     }
 

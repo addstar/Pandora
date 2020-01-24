@@ -29,6 +29,7 @@ public class GPClaimData {
     }
 
     public Date getCreationdate() {
+        if (creationdate == null) return null;
         return new Date(creationdate);
     }
 
