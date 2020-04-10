@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <module org.jetbrains.idea.maven.project.MavenProjectsManager.isMavenModule="true" type="JAVA_MODULE" version="4">
+  <component name="FacetManager">
+    <facet type="minecraft" name="Minecraft">
+      <configuration>
+        <autoDetectTypes>
+          <platformType>SPIGOT</platformType>
+        </autoDetectTypes>
+      </configuration>
+    </facet>
+  </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/target/classes" />
     <output-test url="file://$MODULE_DIR$/target/test-classes" />
@@ -41,7 +50,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.google.j2objc:j2objc-annotations:1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.codehaus.mojo:animal-sniffer-annotations:1.14" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: au.com.addstar:Monolith:1.15.1-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: de.tr7zw:item-nbt-api:2.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: de.tr7zw:item-nbt-api:2.2.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.sk89q.worldguard:worldguard-legacy:7.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.sk89q.worldguard:worldguard-core:7.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.sk89q.intake:intake:4.2-SNAPSHOT" level="project" />
@@ -54,8 +63,8 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.vexsoftware:votifier:1.9" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: au.com.addstar:BungeeChat-Bukkit:1.3.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: au.com.mineauz:Minigames:1.13-ALPHA" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: pl.plajer:murdermystery:1.4.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: pl.plajer:buildbattle:4.2.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: pl.plajer:villagedefense:4.3.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: pl.plajer:murdermystery:1.5.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: pl.plajer:buildbattle:4.3.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: pl.plajer:villagedefense:4.4.2" level="project" />
   </component>
 </module>
