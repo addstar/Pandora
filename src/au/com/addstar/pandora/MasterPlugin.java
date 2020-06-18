@@ -132,9 +132,6 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("DeathInterceptor", "au.com.addstar.pandora.modules.DeathInterceptor");
         registerModule("ActionBlocker", "au.com.addstar.pandora.modules.ActionBlocker");
         registerModule("Limbo", "au.com.addstar.pandora.modules.Limbo");
-        registerNMSModule("Autosaver", "au.com.addstar.pandora.modules.autosave.Autosaver",
-                "1_15_R1");
-        registerNMSModule("UndesiredMovementBlocker", "au.com.addstar.pandora.modules.UndesiredMovementBlocker", "1_15_R1", "ProtocolLib");
         registerModule("BuildBattleBroadcaster", "au.com.addstar.pandora.modules.BuildBattleBroadcaster", "BuildBattle", "BungeeChatBukkit");
         registerModule("MurderMysteryBroadcaster", "au.com.addstar.pandora.modules.MurderMysteryBroadcaster", "MurderMystery", "BungeeChatBukkit");
         registerModule("LagSpikeDetector", "au.com.addstar.pandora.modules.LagSpikeDetector");

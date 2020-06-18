@@ -1,10 +1,8 @@
 package au.com.addstar.pandora;
 
 import au.com.addstar.monolith.ItemMetaBuilder;
-import au.com.addstar.monolith.lookup.EntityDefinition;
 import au.com.addstar.monolith.lookup.Lookup;
 
-import net.minecraft.server.v1_15_R1.ResourceKeyInvalidException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -242,7 +240,7 @@ public class Utilities {
         Material mat = null;
         try {
             mat = Lookup.findByMinecraftName(args[start]);
-        } catch (ResourceKeyInvalidException e) {
+        } catch (Exception e) {
             throw new IllegalArgumentException("Attempted to pass an illegal string to the minecraft find by key command");
         }
 

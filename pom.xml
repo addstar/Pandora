@@ -142,7 +142,7 @@
         <!-- We use Spigot now, not Bukkit -->
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
+            <artifactId>spigot-api</artifactId>
             <version>${spigot.version}</version>
             <scope>provided</scope>
         </dependency>
