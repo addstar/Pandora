@@ -73,6 +73,7 @@ public class AntiSpawnerChange implements Module, Listener {
         eggs.add(Material.PIG_SPAWN_EGG);
         eggs.add(Material.POLAR_BEAR_SPAWN_EGG);
         eggs.add(Material.PUFFERFISH_SPAWN_EGG);
+        eggs.add(Material.PILLAGER_SPAWN_EGG);
         eggs.add(Material.RABBIT_SPAWN_EGG);
         eggs.add(Material.SALMON_SPAWN_EGG);
         eggs.add(Material.SHEEP_SPAWN_EGG);
@@ -93,10 +94,18 @@ public class AntiSpawnerChange implements Module, Listener {
         eggs.add(Material.WITHER_SKELETON_SPAWN_EGG);
         eggs.add(Material.WOLF_SPAWN_EGG);
         eggs.add(Material.ZOMBIE_HORSE_SPAWN_EGG);
-        eggs.add(Material.ZOMBIE_PIGMAN_SPAWN_EGG);
+        eggs.add(Material.ZOMBIFIED_PIGLIN_SPAWN_EGG);
         eggs.add(Material.ZOMBIE_SPAWN_EGG);
         eggs.add(Material.ZOMBIE_VILLAGER_SPAWN_EGG);
-
+        eggs.add(Material.FOX_SPAWN_EGG);
+        eggs.add(Material.HOGLIN_SPAWN_EGG);
+        eggs.add(Material.PIGLIN_SPAWN_EGG);
+        eggs.add(Material.STRIDER_SPAWN_EGG);
+        eggs.add(Material.WANDERING_TRADER_SPAWN_EGG);
+        eggs.add(Material.BEE_SPAWN_EGG);
+        eggs.add(Material.COD_SPAWN_EGG);
+        eggs.add(Material.RAVAGER_SPAWN_EGG);
+        eggs.add(Material.ZOGLIN_SPAWN_EGG);
     }
 
 }
