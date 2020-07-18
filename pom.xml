@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.com.addstar</groupId>
     <artifactId>Pandora</artifactId>
-    <version>1.16.1-SNAPSHOT</version>
+    <version>1.16.2-SNAPSHOT</version>
     <name>Pandora</name>
     <description>Multi Module plugin for NMS VERSION ${spigot.version} and Monolith ${monolith.version} designed
         for AddstarMC
@@ -372,7 +372,7 @@
         <dependency>
             <groupId>au.com.addstar</groupId>
             <artifactId>BungeeChat-Bukkit</artifactId>
-            <version>1.3.0-SNAPSHOT</version>
+            <version>1.4.0-SNAPSHOT</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.bukkit</groupId>

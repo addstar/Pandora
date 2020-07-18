@@ -102,7 +102,6 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("BeaconFix", "au.com.addstar.pandora.modules.BeaconFix",
                 "ProtocolLib");
         registerModule("AntiPortalEntityTravel", "au.com.addstar.pandora.modules.AntiPortalEntityTravel");
-        registerModule("SignColour", "au.com.addstar.pandora.modules.SignColour");
         registerModule("MinigameBCast", "au.com.addstar.pandora.modules.MinigameBroadcaster",
                 "Minigames", "BungeeChatBukkit");
         registerModule("AntiBuild", "au.com.addstar.pandora.modules.AntiBuild");
