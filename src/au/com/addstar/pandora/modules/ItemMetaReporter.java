@@ -2,7 +2,7 @@ package au.com.addstar.pandora.modules;
 
 import au.com.addstar.monolith.StringTranslator;
 import au.com.addstar.monolith.lookup.Lookup;
-import au.com.addstar.monolith.util.nbtapi.NBTItem;
+import au.com.addstar.monolith.util.nbtapi.nbtapi.NBTItem;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import org.bukkit.ChatColor;

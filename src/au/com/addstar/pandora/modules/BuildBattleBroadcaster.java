@@ -1,12 +1,13 @@
 package au.com.addstar.pandora.modules;
 
 import au.com.addstar.bc.BungeeChat;
+import au.com.addstar.monolith.util.Messenger;
+import au.com.addstar.monolith.util.kyori.adventure.text.Component;
+import au.com.addstar.monolith.util.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -72,18 +73,18 @@ public class BuildBattleBroadcaster implements Module, Listener {
         // Ensure at least one person has points
         if (highestPoints > 0) {
             // Build the message to broadcast
-            String msg = ChatColor.translateAlternateColorCodes('&', mConfig.winmsg
-                    .replaceAll("%MAPNAME%", mapname)
-                    .replaceAll("%PLAYER%", winner)
-                    .replaceAll("%THEME%", arena.getTheme())
-                    .replaceAll("%SCORE%", String.valueOf(highestPoints)));
-
+            String msg = mConfig.winmsg
+                  .replaceAll("%MAPNAME%", mapname)
+                  .replaceAll("%PLAYER%", winner)
+                  .replaceAll("%THEME%", arena.getTheme())
+                  .replaceAll("%SCORE%", String.valueOf(highestPoints));
+            Component message = Messenger.parseString(msg);
             // Local server broadcast
-            Bukkit.getServer().broadcastMessage(msg);
-
+            Messenger.sendMessageAll(message);
             // Broadcast the message to other servers
-            if ((bungeechatenabled) && (msg != null) && (!msg.isEmpty()))
-                BungeeChat.mirrorChat(msg, mConfig.channel);
+            if ((bungeechatenabled) && (msg != null) && (!msg.isEmpty())) {
+                BungeeChat.mirrorChat(LegacyComponentSerializer.legacySection().serialize(message), mConfig.channel);
+            }
         }
     }
 
@@ -96,6 +97,6 @@ public class BuildBattleBroadcaster implements Module, Listener {
         public String channel = "~BC";
 
         @ConfigField(comment = "The broadcast message for winner of the game")
-        public String winmsg = "&6[&eBuildBattle&6] &b%PLAYER% &6won theme &b%THEME%";
+        public String winmsg = "<gold>[<yellow>BuildBattle</yellow>] <aqua>%PLAYER%</aqua> won theme <aqua>%THEME%</aqua>";
     }
 }
