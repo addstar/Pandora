@@ -1,10 +1,10 @@
 package au.com.addstar.pandora.modules;
 
-import au.com.addstar.monolith.StringTranslator;
 import au.com.addstar.monolith.lookup.Lookup;
-import au.com.addstar.monolith.util.nbtapi.NBTItem;
+import au.com.addstar.monolith.util.ItemUtil;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
+import au.com.addstar.pandora.Utilities;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -40,8 +40,7 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
         }
 
         ItemStack item = sender.getInventory().getItemInMainHand();
-        Material mat = item.getType();
-        sender.sendMessage(ChatColor.GOLD + "Item Name: " + ChatColor.RED + StringTranslator.getName(item));
+        sender.sendMessage(ChatColor.GOLD + "Item Name: " + ChatColor.RED + Utilities.getName(item));
         sender.sendMessage(ChatColor.GOLD + "Item Type: " + ChatColor.RED + item.getType().toString());
         String mcName = Lookup.findMinecraftNameByItem(item.getType());
         if (mcName != null)
@@ -112,11 +111,8 @@ public class ItemMetaReporter implements Module, CommandExecutor, TabCompleter {
         }
         if (args.length > 0) {
             if (args[0].equalsIgnoreCase("nbt")) {
-                NBTItem nbtItem = new NBTItem(item);
-                if (nbtItem.hasNBTData()) {
-                    sender.sendMessage(ChatColor.RED + "NBT Tag: " + ChatColor.GOLD + NBTItem.convertItemtoNBT(item).getParent().asNBTString());
-                    sender.sendMessage(ChatColor.RED + "NBT Tag as String: " + ChatColor.GOLD + NBTItem.convertItemtoNBT(item).getParent().toString());
-                }
+                String nbtString =  ItemUtil.getItemNbtString(item);
+                sender.sendMessage(ChatColor.RED + "NBT Tag: " + ChatColor.GOLD + nbtString);
             }
         }
 

@@ -13,8 +13,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.MapMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredListener;
+import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -278,5 +282,151 @@ public class Utilities {
         }
 
         return item;
+    }
+
+    public static String getName(ItemStack i) {
+        if (i.getType() == Material.POTION) {
+            ItemMeta meta = i.getItemMeta();
+            String name = null;
+            if (meta instanceof PotionMeta) {
+                name = getPotionName(i);
+            }
+            if (name != null) {
+                return name;
+            }
+        } else if (i.getType().isRecord()) {
+            return getRecordName(i.getType());
+        } else if (i.getType() == Material.MAP) {
+            ItemMeta meta = i.getItemMeta();
+            if (meta instanceof MapMeta) {
+                if (((MapMeta) meta).getMapView() == null) {
+                    return "Empty Map";
+                }
+                if (((MapMeta) meta).getMapView().isVirtual()) {
+                    return "Virtual Map";
+                }
+                int x = ((MapMeta) meta).getMapView().getCenterX();
+                int y = ((MapMeta) meta).getMapView().getCenterX();
+                String world = ((MapMeta) meta).getMapView().getWorld().getName();
+                return String.format("Map of %1s centered on %2d, %3d", world, x, y);
+            }
+
+        }
+        return prettifyText(i.getType().getKey().getKey());
+    }
+
+    private static String prettifyText(String ugly) {
+        if (!ugly.contains("_") && (!ugly.equals(ugly.toUpperCase()))) {
+            return ugly;
+        }
+        StringBuilder fin = new StringBuilder();
+        ugly = ugly.toLowerCase();
+        if (ugly.contains("_")) {
+            final String[] splt = ugly.split("_");
+            int i = 0;
+            for (final String s : splt) {
+                i += 1;
+                if (s.isEmpty()) {
+                    continue;
+                }
+
+                if (s.length() == 1) {
+                    fin.append(Character.toUpperCase(s.charAt(0)));
+                } else {
+                    fin.append(Character.toUpperCase(s.charAt(0))).append(s.substring(1));
+                }
+
+                if (i < splt.length) {
+                    fin.append(" ");
+                }
+            }
+        } else {
+            fin.append(Character.toUpperCase(ugly.charAt(0))).append(ugly.substring(1));
+        }
+        return fin.toString();
+    }
+
+    private static String getRecordName(Material record) {
+        switch (record) {
+            case MUSIC_DISC_13:
+                return "Record - 13";
+            case MUSIC_DISC_CAT:
+                return "Record - cat";
+            case MUSIC_DISC_BLOCKS:
+                return "Record - blocks";
+            case MUSIC_DISC_CHIRP:
+                return "Record - chirp";
+            case MUSIC_DISC_FAR:
+                return "Record - far";
+            case MUSIC_DISC_MALL:
+                return "Record - mall";
+            case MUSIC_DISC_MELLOHI:
+                return "Record - mellohi";
+            case MUSIC_DISC_STAL:
+                return "Record - stal";
+            case MUSIC_DISC_STRAD:
+                return "Record - strad";
+            case MUSIC_DISC_WARD:
+                return "Record - ward";
+            case MUSIC_DISC_11:
+                return "Record - 11";
+            case MUSIC_DISC_WAIT:
+                return "Record - wait";
+            default:
+                throw new AssertionError("Unknown record " + record);
+        }
+    }
+
+
+    private static String getPotionName(ItemStack item) {
+        PotionMeta meta = null;
+        String prefix = "MAIN-";
+        if (item.getType() == Material.POTION) {
+            if (item.getItemMeta() instanceof PotionMeta) {
+                meta = (PotionMeta) item.getItemMeta();
+                prefix += "Potion";
+            } else {
+                return "Water Bottle";
+            }
+        }
+        if (item.getType() == Material.SPLASH_POTION) {
+            if (item.getItemMeta() instanceof PotionMeta) {
+                meta = (PotionMeta) item.getItemMeta();
+                prefix += "Splash Potion";
+            } else {
+                return "Splasn Water Bottle";
+            }
+        }
+        if (item.getType() == Material.LINGERING_POTION) {
+            if (item.getItemMeta() instanceof PotionMeta) {
+                meta = (PotionMeta) item.getItemMeta();
+                prefix += "Lingering Potion";
+            } else {
+                return "Lingering Water Bottle";
+            }
+        }
+        if (meta == null) {
+            return prefix + "NO Potion Data ";
+        }
+        if (meta.getBasePotionData().isExtended()) {
+            prefix += "Extended Duration ";
+        }
+        if (meta.getBasePotionData().isUpgraded()) {
+            prefix += "Amplified Effect ";
+        }
+        prefix += meta.getDisplayName();
+        boolean noEffects;
+        List<PotionEffect> potionEffects = meta.getCustomEffects();
+        noEffects = potionEffects.isEmpty();
+        if (!noEffects) {
+            PotionEffect maineffect = potionEffects.get(0);
+            prefix += maineffect.getType().getName() + ",Duration=" + maineffect.getDuration() + "Amplifier=" + maineffect.getAmplifier();
+            StringBuilder effects = new StringBuilder("Full Effect List -- ");
+            for (final PotionEffect effect : potionEffects) {
+                effects.append(" Effect:").append(effect.getType().getName()).append(" Amp:").append(effect.getAmplifier()).append(" Dur:").append(effect.getDuration());
+            }
+            return prefix + effects;
+        }
+        return null;
     }
 }
