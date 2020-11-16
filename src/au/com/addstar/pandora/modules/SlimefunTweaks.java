@@ -6,13 +6,13 @@ import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import io.github.thebusybiscuit.slimefun4.api.events.AutoDisenchantEvent;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.File;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 public class SlimefunTweaks implements Module, Listener {
 
@@ -34,6 +34,7 @@ public class SlimefunTweaks implements Module, Listener {
         mConfig = new Config(new File(plugin.getDataFolder(), "SlimefunTweaks.yml"));
     }
 
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void disenchantEvent(AutoDisenchantEvent event) {
         ItemStack stack = event.getItem();
         String name = stack.getItemMeta().getDisplayName();
