@@ -135,6 +135,7 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("BuildBattleBroadcaster", "au.com.addstar.pandora.modules.BuildBattleBroadcaster", "BuildBattle", "BungeeChatBukkit");
         registerModule("MurderMysteryBroadcaster", "au.com.addstar.pandora.modules.MurderMysteryBroadcaster", "MurderMystery", "BungeeChatBukkit");
         registerModule("LagSpikeDetector", "au.com.addstar.pandora.modules.LagSpikeDetector");
+        registerModule("SlimefunTweaks", "au.com.addstar.pandora.modules.SlimefunTweaks", "Slimefun");
     }
 
     @Override
