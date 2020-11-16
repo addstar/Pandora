@@ -47,14 +47,17 @@ public class SlimefunTweaks implements Module, Listener {
             // If the max level for this enchant is too high, cancel the event
             if (level > mConfig.maxDisenchantLevel) {
                 event.setCancelled(true);
-                mPlugin.getLogger().warning("Slimefun disenchanting denied: "
+                if (mConfig.debug)
+                    mPlugin.getLogger().warning("Slimefun disenchanting denied: "
                         + stack.getType() + " (\"" + name + "\":" + enchant + ":" + level + ")");
                 break;
             }
         }
         // Event wasn't cancelled so all enchants are ok
-        if (!event.isCancelled()) {
-            mPlugin.getLogger().info("Slimefun disenchanting allowed: " + stack.getType() + " (\"" + name + "\")");
+        if (mConfig.debug) {
+            if (!event.isCancelled()) {
+                mPlugin.getLogger().info("Slimefun disenchanting allowed: " + stack.getType() + " (\"" + name + "\")");
+            }
         }
     }
 
@@ -62,6 +65,9 @@ public class SlimefunTweaks implements Module, Listener {
         public Config(File file) {
             super(file);
         }
+
+        @ConfigField(comment = "Enable debugging for troubleshooting - Note this can be VERY spammy")
+        public boolean debug = false;
 
         @ConfigField(comment = "Max allowed enchant level for the Slimefun Disenchanter")
         public int maxDisenchantLevel = 6;
