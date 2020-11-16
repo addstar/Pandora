@@ -11,10 +11,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import pl.plajer.buildbattle.api.event.game.BBGameEndEvent;
-import pl.plajer.buildbattle.arena.ArenaState;
-import pl.plajer.buildbattle.arena.impl.BaseArena;
-import pl.plajer.buildbattle.arena.managers.plots.PlotManager;
+import plugily.projects.buildbattle.api.event.game.BBGameEndEvent;
+import plugily.projects.buildbattle.arena.ArenaState;
+import plugily.projects.buildbattle.arena.impl.BaseArena;
+import plugily.projects.buildbattle.arena.managers.plots.PlotManager;
 
 import java.io.File;
 import java.util.List;

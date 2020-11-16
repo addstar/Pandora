@@ -146,6 +146,7 @@
             <version>${spigot.version}</version>
             <scope>provided</scope>
         </dependency>
+
         <!-- Used for Economy interop -->
         <dependency>
             <groupId>net.milkbowl.vault</groupId>
@@ -248,6 +249,14 @@
             <type>jar</type>
             <scope>provided</scope>
             <optional>true</optional>
+        </dependency>
+
+        <!-- Slimefun API -->
+        <dependency>
+            <groupId>io.github.thebusybiscuit</groupId>
+            <artifactId>Slimefun4</artifactId>
+            <version>DEV-622</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- SurvivalGames -->
@@ -419,9 +428,9 @@
 
         <!-- BuildBattle -->
         <dependency>
-            <groupId>pl.plajer</groupId>
+            <groupId>plugily.projects</groupId>
             <artifactId>buildbattle</artifactId>
-            <version>4.3.2</version>
+            <version>4.4.1</version>
             <scope>provided</scope>
         </dependency>
 
