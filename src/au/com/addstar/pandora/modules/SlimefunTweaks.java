@@ -37,7 +37,9 @@ public class SlimefunTweaks implements Module, Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
     public void disenchantEvent(AutoDisenchantEvent event) {
         ItemStack stack = event.getItem();
-        String name = stack.getItemMeta().getDisplayName();
+        if (stack == null) return;
+        String name = stack.getItemMeta().getDisplayName() != null ? stack.getItemMeta().getDisplayName() : "";
+
         for (Map.Entry<Enchantment, Integer> entry : stack.getEnchantments().entrySet()) {
             int level = entry.getValue();
             Enchantment enchant = entry.getKey();
@@ -51,7 +53,7 @@ public class SlimefunTweaks implements Module, Listener {
         }
         // Event wasn't cancelled so all enchants are ok
         if (!event.isCancelled()) {
-            mPlugin.getLogger().info("Slimefun disenchanting allowed: " + stack.getType() + " \"" + name + "\"");
+            mPlugin.getLogger().info("Slimefun disenchanting allowed: " + stack.getType() + " (\"" + name + "\")");
         }
     }
 
