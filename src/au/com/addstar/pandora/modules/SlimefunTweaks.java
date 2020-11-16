@@ -36,15 +36,21 @@ public class SlimefunTweaks implements Module, Listener {
 
     public void disenchantEvent(AutoDisenchantEvent event) {
         ItemStack stack = event.getItem();
-        for (Map.Entry<Enchantment, Integer> enchant : stack.getEnchantments().entrySet()) {
-            if (enchant.getValue() > mConfig.maxDisenchantLevel) {
+        String name = stack.getItemMeta().getDisplayName();
+        for (Map.Entry<Enchantment, Integer> entry : stack.getEnchantments().entrySet()) {
+            int level = entry.getValue();
+            Enchantment enchant = entry.getKey();
+            // If the max level for this enchant is too high, cancel the event
+            if (level > mConfig.maxDisenchantLevel) {
                 event.setCancelled(true);
-                mPlugin.getLogger().warning("Slimefun disenchanting denied: " + enchant.getKey());
+                mPlugin.getLogger().warning("Slimefun disenchanting denied: "
+                        + stack.getType() + " (\"" + name + "\":" + enchant + ":" + level + ")");
                 break;
             }
         }
+        // Event wasn't cancelled so all enchants are ok
         if (!event.isCancelled()) {
-            mPlugin.getLogger().warning("Slimefun disenchanting allowed.");
+            mPlugin.getLogger().info("Slimefun disenchanting allowed: " + stack.getType() + " \"" + name + "\"");
         }
     }
 
