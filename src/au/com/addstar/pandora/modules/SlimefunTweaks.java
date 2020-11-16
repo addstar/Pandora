@@ -32,6 +32,7 @@ public class SlimefunTweaks implements Module, Listener {
     @Override
     public void setPandoraInstance(MasterPlugin plugin) {
         mConfig = new Config(new File(plugin.getDataFolder(), "SlimefunTweaks.yml"));
+        mPlugin = plugin;
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = false)
