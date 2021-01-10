@@ -255,7 +255,7 @@
         <dependency>
             <groupId>io.github.thebusybiscuit</groupId>
             <artifactId>Slimefun4</artifactId>
-            <version>DEV-622</version>
+            <version>DEV-774</version>
             <scope>provided</scope>
         </dependency>
 
@@ -439,6 +439,14 @@
             <groupId>pl.plajer</groupId>
             <artifactId>villagedefense</artifactId>
             <version>4.4.2</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Craftconomy3 -->
+        <dependency>
+            <groupId>com.greatmancode</groupId>
+            <artifactId>craftconomy3</artifactId>
+            <version>3.4.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

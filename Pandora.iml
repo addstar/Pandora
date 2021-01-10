@@ -49,9 +49,6 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.java.truecommons:truecommons-services:2.5.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.java.truecommons:truecommons-logging:2.5.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: javax.inject:javax.inject:1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpclient:4.5.10" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpcore:4.4.12" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: commons-codec:commons-codec:1.11" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.slf4j:jcl-over-slf4j:1.7.28" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.java.truevfs:truevfs-driver-odf:0.12.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.java.truevfs:truevfs-comp-zipdriver:0.12.1" level="project" />
@@ -97,7 +94,16 @@
     <orderEntry type="library" name="Maven: me.robifoxx.treasures:Treasures:3.0.21" level="project" />
     <orderEntry type="library" name="Maven: org.kitteh:VanishNoPacket:3.21-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.citizensnpcs:citizens:2.0.16-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: io.github.thebusybiscuit:Slimefun4:DEV-622" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: io.github.thebusybiscuit:Slimefun4:DEV-774" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.github.TheBusyBiscuit:CS-CoreLib2:0.27.4" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.konghq:unirest-java:3.11.09" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpclient:4.5.13" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpcore:4.4.13" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: commons-logging:commons-logging:1.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: commons-codec:commons-codec:1.11" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpmime:4.5.13" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpcore-nio:4.4.13" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.apache.httpcomponents:httpasyncclient:4.1.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: org.mcsg:SurvivalGames:1.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: nl.Steffion:BlockHunt:0.4.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.griefcraft.lwc:Modern-LWC:2.1.5" level="project" />
@@ -106,12 +112,13 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:examination-api:1.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:examination-string:1.0.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-legacy:4.1.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-platform-api:4.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-craftbukkit:4.0.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-gson-legacy-impl:4.3.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-bungeecord:4.0.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-nbt:4.1.1" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-gson:4.1.1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-legacy:4.3.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-nbt:4.3.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-gson:4.3.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-platform-facet:4.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-platform-viaversion:4.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-minimessage:3.0.0-SNAPSHOT" level="project" />
@@ -130,5 +137,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: pl.plajer:murdermystery:1.5.5" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: plugily.projects:buildbattle:4.4.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: pl.plajer:villagedefense:4.4.2" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: com.greatmancode:craftconomy3:3.4.0-SNAPSHOT" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: org.projectlombok:lombok:1.18.4" level="project" />
   </component>
 </module>
