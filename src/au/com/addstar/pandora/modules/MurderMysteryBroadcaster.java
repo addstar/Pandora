@@ -10,9 +10,9 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import pl.plajer.murdermystery.api.events.game.MMGameStateChangeEvent;
-import pl.plajer.murdermystery.arena.Arena;
-import pl.plajer.murdermystery.arena.ArenaState;
+import plugily.projects.murdermystery.api.events.game.MMGameStateChangeEvent;
+import plugily.projects.murdermystery.arena.Arena;
+import plugily.projects.murdermystery.arena.ArenaState;
 
 import java.io.File;
 
@@ -48,8 +48,7 @@ public class MurderMysteryBroadcaster implements Module, Listener {
         Arena arena = event.getArena();
         ArenaState state = event.getArenaState();
         String mapname = arena.getMapName();
-        int remaining = arena.getPlayersLeft().size();
-        String msg = null;
+        String msg;
 
         if (state == ArenaState.ENDING) {
             if (arena.aliveMurderer() > 0) {
@@ -66,12 +65,12 @@ public class MurderMysteryBroadcaster implements Module, Listener {
             Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', msg));
 
             // Broadcast the message to other servers
-            if ((bungeechatenabled) && (msg != null) && (!msg.isEmpty()))
+            if ((bungeechatenabled) && (!msg.isEmpty()))
                 BungeeChat.mirrorChat(ChatColor.translateAlternateColorCodes('&', msg), mConfig.channel);
         }
     }
 
-    private class Config extends AutoConfig {
+    private static class Config extends AutoConfig {
         public Config(File file) {
             super(file);
         }

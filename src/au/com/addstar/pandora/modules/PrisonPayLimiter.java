@@ -11,8 +11,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 
-import java.io.File;
-
 public class PrisonPayLimiter implements Module, Listener {
     private MasterPlugin mPlugin;
 
@@ -57,7 +55,7 @@ public class PrisonPayLimiter implements Module, Listener {
     // Check the highest prestige level for a player
     private int getPrestigeLevel(Player p) {
         for (int x = 10; x > 0; x--) {
-            String perm = "autosell.multipliers.prestige" + String.valueOf(x);
+            String perm = "autosell.multipliers.prestige" + x;
             if (p.hasPermission(perm)) {
                 // Return the highest prestige level found
                 return x;

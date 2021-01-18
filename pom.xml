@@ -420,9 +420,9 @@
 
         <!-- MurderMystery -->
         <dependency>
-            <groupId>pl.plajer</groupId>
+            <groupId>plugily.projects</groupId>
             <artifactId>murdermystery</artifactId>
-            <version>1.5.5</version>
+            <version>1.7.2</version>
             <scope>provided</scope>
         </dependency>
 

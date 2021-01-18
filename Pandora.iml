@@ -114,11 +114,11 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-platform-bukkit:4.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-platform-api:4.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-craftbukkit:4.0.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-gson-legacy-impl:4.3.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-gson-legacy-impl:4.4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-bungeecord:4.0.0-SNAPSHOT" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-legacy:4.3.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-nbt:4.3.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-gson:4.3.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-legacy:4.4.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-nbt:4.4.0" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-serializer-gson:4.4.0" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-platform-facet:4.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-platform-viaversion:4.0.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: net.kyori:adventure-text-minimessage:3.0.0-SNAPSHOT" level="project" />
@@ -134,7 +134,7 @@
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.vexsoftware:votifier:1.9" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: au.com.addstar:BungeeChat-Bukkit:1.3.0-SNAPSHOT" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: au.com.mineauz:Minigames:1.13-ALPHA" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Maven: pl.plajer:murdermystery:1.5.5" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Maven: plugily.projects:murdermystery:1.7.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: plugily.projects:buildbattle:4.4.1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: pl.plajer:villagedefense:4.4.2" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Maven: com.greatmancode:craftconomy3:3.4.0-SNAPSHOT" level="project" />
