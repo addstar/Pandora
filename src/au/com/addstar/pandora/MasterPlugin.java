@@ -52,7 +52,6 @@ public class MasterPlugin extends JavaPlugin {
      * The config
      */
     private Config mConfig;
-    private boolean bungeeChatAvailable = false;
     private String mCBVersion = null;
 
     /**
@@ -74,47 +73,34 @@ public class MasterPlugin extends JavaPlugin {
         return mInstance;
     }
 
-    public boolean isBungeeChatAvailable() {
-        return bungeeChatAvailable;
-    }
-
     private void registerModules() {
         // TrustedHomes also depends on geSuitHomes; explicit dependency removed due to the Redis refactor of geSuit
-        registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes",
-                "GriefPrevention");
+        registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes","GriefPrevention");
         registerModule("Quickshop-Griefprevention-Interop", "au.com.addstar.pandora.modules.QuickshopGPInterop",
                 "GriefPrevention", "QuickShop");
         registerModule("Vanish-Citizens-Interop", "au.com.addstar.pandora.modules.VanishCitizensIO",
                 "VanishNoPacket", "Citizens");
         registerModule("AntiChatRepeater", "au.com.addstar.pandora.modules.AntiChatRepeater");
-        registerModule("SignLogger", "au.com.addstar.pandora.modules.SignLogger",
-                "BungeeChatBukkit");
         registerModule("KickBanner", "au.com.addstar.pandora.modules.KickBanner");
         registerModule("AntiPortalTrap", "au.com.addstar.pandora.modules.AntiPortalTrap");
         registerModule("LWC-GP-Interop", "au.com.addstar.pandora.modules.LWCGPInterop",
                 "LWC", "GriefPrevention");
-        registerModule("TPClaim", "au.com.addstar.pandora.modules.TpClaim",
-                "GriefPrevention");
+        registerModule("TPClaim", "au.com.addstar.pandora.modules.TpClaim","GriefPrevention");
         registerModule("FlyCanceller", "au.com.addstar.pandora.modules.FlyCanceller");
-        registerModule("PVPHandler", "au.com.addstar.pandora.modules.PVPHandler",
-                "WorldGuard");
+        registerModule("PVPHandler", "au.com.addstar.pandora.modules.PVPHandler","WorldGuard");
         registerModule("EventManipulator", "au.com.addstar.pandora.modules.EventManipulator");
-        registerModule("BeaconFix", "au.com.addstar.pandora.modules.BeaconFix",
-                "ProtocolLib");
+        registerModule("BeaconFix", "au.com.addstar.pandora.modules.BeaconFix","ProtocolLib");
         registerModule("AntiPortalEntityTravel", "au.com.addstar.pandora.modules.AntiPortalEntityTravel");
         registerModule("SignColour", "au.com.addstar.pandora.modules.SignColour");
-        registerModule("MinigameBCast", "au.com.addstar.pandora.modules.MinigameBroadcaster",
-                "Minigames", "BungeeChatBukkit");
+        registerModule("MinigameBCast", "au.com.addstar.pandora.modules.MinigameBroadcaster","Minigames", "ChatControlRed");
         registerModule("AntiBuild", "au.com.addstar.pandora.modules.AntiBuild");
         registerModule("ItemDB", "au.com.addstar.pandora.modules.ItemDB", "Monolith");
         registerModule("ItemMetaReporter", "au.com.addstar.pandora.modules.ItemMetaReporter");
-        registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving",
-                "Monolith");
+        registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving","Monolith");
         registerModule("LobbyProtection", "au.com.addstar.pandora.modules.LobbyProtection");
         registerModule("SurvivalGamesBCast", "au.com.addstar.pandora.modules.SurvivalGamesBroadcaster",
-                "SurvivalGames", "BungeeChatBukkit");
-        registerModule("PlayerList", "au.com.addstar.pandora.modules.PlayerListing",
-                "BungeeChatBukkit");
+                "SurvivalGames", "ChatControlRed");
+        registerModule("PlayerList", "au.com.addstar.pandora.modules.PlayerListing","BungeeChatBukkit");
         registerModule("MemoryCleaner", "au.com.addstar.pandora.modules.MemoryCleaner");
         registerModule("AngryPigmen", "au.com.addstar.pandora.modules.AngryPigmen");
         registerModule("ClaimSelect", "au.com.addstar.pandora.modules.ClaimSelect", "GriefPrevention", "WorldEdit");
@@ -123,7 +109,7 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("GPExtended", "au.com.addstar.pandora.modules.GPExtended", "GriefPrevention");
         registerModule("MinigameLocks", "au.com.addstar.pandora.modules.MinigameLocks", "Minigames");
         registerModule("PlayerLocationLimit", "au.com.addstar.pandora.modules.PlayerLocationLimit");
-        registerModule("BlockhuntBroadcaster", "au.com.addstar.pandora.modules.BlockhuntBroadcaster", "BlockHunt", "BungeeChatBukkit");
+        registerModule("BlockhuntBroadcaster", "au.com.addstar.pandora.modules.BlockhuntBroadcaster", "BlockHunt", "ChatControlRed");
         registerModule("BookMonitor", "au.com.addstar.pandora.modules.BookMonitor", "Monolith");
         registerModule("TreasureHelper", "au.com.addstar.pandora.modules.TreasuresHelper", "Treasures");
         registerModule("AntiSwim", "au.com.addstar.pandora.modules.AntiSwim");
@@ -132,11 +118,13 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("DeathInterceptor", "au.com.addstar.pandora.modules.DeathInterceptor");
         registerModule("ActionBlocker", "au.com.addstar.pandora.modules.ActionBlocker");
         registerModule("Limbo", "au.com.addstar.pandora.modules.Limbo");
-        registerModule("BuildBattleBroadcaster", "au.com.addstar.pandora.modules.BuildBattleBroadcaster", "BuildBattle", "BungeeChatBukkit");
-        registerModule("MurderMysteryBroadcaster", "au.com.addstar.pandora.modules.MurderMysteryBroadcaster", "MurderMystery", "BungeeChatBukkit");
+        registerModule("BuildBattleBroadcaster", "au.com.addstar.pandora.modules.BuildBattleBroadcaster", "BuildBattle", "ChatControlRed");
+        registerModule("MurderMysteryBroadcaster", "au.com.addstar.pandora.modules.MurderMysteryBroadcaster", "MurderMystery", "ChatControlRed");
         registerModule("LagSpikeDetector", "au.com.addstar.pandora.modules.LagSpikeDetector");
         registerModule("SlimefunTweaks", "au.com.addstar.pandora.modules.SlimefunTweaks", "Slimefun");
         registerModule("PrisonPayLimiter", "au.com.addstar.pandora.modules.PrisonPayLimiter", "PrisonMines");
+        registerModule("ChatControlHelper", "au.com.addstar.pandora.modules.ChatControlHelper", "ChatControlRed");
+        registerModule("StaffChat", "au.com.addstar.pandora.modules.StaffChat", "ChatControlRed");
     }
 
     @Override
@@ -167,7 +155,6 @@ public class MasterPlugin extends JavaPlugin {
                 e.printStackTrace();
             }
         }
-        deregisterBungeeChat();
         mLoadedModules.clear();
         mAvailableModules.clear();
         mAvailableModulesByName.clear();
@@ -348,23 +335,6 @@ public class MasterPlugin extends JavaPlugin {
     }
 
     /**
-     * Register bungee chat boolean.
-     *
-     * @return the boolean
-     */
-    public boolean registerBungeeChat() {
-        bungeeChatAvailable = registerMessageChannel("bungeechat:chat");
-
-        //  try {
-        // Class clazz = this.getClassLoader().loadClass("au.com.addstar.bc.BungeeChat"); //force a class loader error if no BungeeChat
-        return bungeeChatAvailable;
-        // }catch (ClassNotFoundException exception){
-        //     this.getLogger().warning("Attempt to Register a Bungee Chat Channel with no BungeeChat installed.");
-        //  }
-        //  return false;
-    }
-
-    /**
      * Register message channel boolean.
      *
      * @param channel the channel
@@ -379,15 +349,6 @@ public class MasterPlugin extends JavaPlugin {
             return true;
         }
     }
-
-    /**
-     * Deregister bungee chat.
-     */
-    public void deregisterBungeeChat() {
-        deregisterMessagechannel("bungeechat:chat");
-        bungeeChatAvailable = false;
-    }
-
 
     /**
      * Deregister messagechannel.

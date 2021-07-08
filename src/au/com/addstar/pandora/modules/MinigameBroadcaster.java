@@ -1,32 +1,26 @@
 package au.com.addstar.pandora.modules;
 
-import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import au.com.mineauz.minigames.events.MinigamesBroadcastEvent;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.mineacademy.chatcontrol.api.ChatControlAPI;
 
 import java.io.File;
 
 public class MinigameBroadcaster implements Module, Listener {
     private MasterPlugin mPlugin;
-
     private Config mConfig;
-
-    private boolean bungeechatenabled = false;
 
     @Override
     public void onEnable() {
         if (mConfig.load())
             mConfig.save();
-
-        bungeechatenabled = mPlugin.registerBungeeChat();
-        if (!bungeechatenabled)
-            mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
     }
 
     @Override
@@ -41,7 +35,8 @@ public class MinigameBroadcaster implements Module, Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMinigameBroadcast(MinigamesBroadcastEvent event) {
-        if (bungeechatenabled) BungeeChat.mirrorChat(event.getMessageWithPrefix(), mConfig.channel);
+        ChatControlAPI.sendMessage(mConfig.channel, ChatColor.translateAlternateColorCodes('&',
+                event.getMessageWithPrefix()));
     }
 
     private class Config extends AutoConfig {
@@ -49,7 +44,7 @@ public class MinigameBroadcaster implements Module, Listener {
             super(file);
         }
 
-        @ConfigField(comment = "The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
-        public String channel = "~BC";
+        @ConfigField(comment = "The Chat Control channel to broadcast on.")
+        public String channel = "GamesBCast";
     }
 }

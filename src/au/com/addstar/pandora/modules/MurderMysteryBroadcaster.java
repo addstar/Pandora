@@ -1,6 +1,5 @@
 package au.com.addstar.pandora.modules;
 
-import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
@@ -10,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.mineacademy.chatcontrol.api.ChatControlAPI;
 import plugily.projects.murdermystery.api.events.game.MMGameStateChangeEvent;
 import plugily.projects.murdermystery.arena.Arena;
 import plugily.projects.murdermystery.arena.ArenaState;
@@ -18,23 +18,16 @@ import java.io.File;
 
 public class MurderMysteryBroadcaster implements Module, Listener {
     private MasterPlugin mPlugin;
-
     private Config mConfig;
-    private boolean bungeechatenabled = false;
 
     @Override
     public void onEnable() {
         if (mConfig.load())
             mConfig.save();
-
-        bungeechatenabled = mPlugin.registerBungeeChat();
-        if (!bungeechatenabled)
-            mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
     }
 
     @Override
     public void onDisable() {
-        bungeechatenabled = false;
     }
 
     @Override
@@ -65,8 +58,8 @@ public class MurderMysteryBroadcaster implements Module, Listener {
             Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', msg));
 
             // Broadcast the message to other servers
-            if ((bungeechatenabled) && (!msg.isEmpty()))
-                BungeeChat.mirrorChat(ChatColor.translateAlternateColorCodes('&', msg), mConfig.channel);
+            if (!msg.isEmpty())
+                ChatControlAPI.sendMessage(mConfig.channel, ChatColor.translateAlternateColorCodes('&', msg));
         }
     }
 
@@ -75,8 +68,8 @@ public class MurderMysteryBroadcaster implements Module, Listener {
             super(file);
         }
 
-        @ConfigField(comment = "The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
-        public String channel = "~BC";
+        @ConfigField(comment = "The Chat Control channel to broadcast on.")
+        public String channel = "GamesBCast";
 
         @ConfigField(comment = "The broadcast message when the murderer wins")
         public String murdererWin = "&4[&cMurderMystery&4]&b The &cmurderer &bhas won &a%MAPNAME%&b!";

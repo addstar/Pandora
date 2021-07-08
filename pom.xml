@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.com.addstar</groupId>
     <artifactId>Pandora</artifactId>
-    <version>1.16.1-SNAPSHOT</version>
+    <version>1.16.5-SNAPSHOT</version>
     <name>Pandora</name>
     <description>Multi Module plugin for NMS VERSION ${spigot.version} and Monolith ${monolith.version} designed
         for AddstarMC
@@ -397,6 +397,18 @@
         </dependency>
 
         <dependency>
+            <groupId>org.mineacademy</groupId>
+            <artifactId>ChatControl-Red</artifactId>
+            <version>10.4.9</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.mineacademy</groupId>
+                    <artifactId>Foundation</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
             <groupId>au.com.mineauz</groupId>
             <artifactId>Minigames</artifactId>
             <version>1.13-ALPHA</version>
@@ -422,7 +434,7 @@
         <dependency>
             <groupId>plugily.projects</groupId>
             <artifactId>murdermystery</artifactId>
-            <version>1.7.2</version>
+            <version>1.7.8</version>
             <scope>provided</scope>
         </dependency>
 
@@ -430,7 +442,7 @@
         <dependency>
             <groupId>plugily.projects</groupId>
             <artifactId>buildbattle</artifactId>
-            <version>4.4.1</version>
+            <version>4.5.0</version>
             <scope>provided</scope>
         </dependency>
 

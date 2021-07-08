@@ -1,6 +1,5 @@
 package au.com.addstar.pandora.modules;
 
-import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
@@ -11,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.mineacademy.chatcontrol.api.ChatControlAPI;
 import plugily.projects.buildbattle.api.event.game.BBGameEndEvent;
 import plugily.projects.buildbattle.arena.ArenaState;
 import plugily.projects.buildbattle.arena.impl.BaseArena;
@@ -21,23 +21,16 @@ import java.util.List;
 
 public class BuildBattleBroadcaster implements Module, Listener {
     private MasterPlugin mPlugin;
-
     private Config mConfig;
-    private boolean bungeechatenabled = false;
 
     @Override
     public void onEnable() {
         if (mConfig.load())
             mConfig.save();
-
-        bungeechatenabled = mPlugin.registerBungeeChat();
-        if (!bungeechatenabled)
-            mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
     }
 
     @Override
     public void onDisable() {
-        bungeechatenabled = false;
     }
 
     @Override
@@ -82,8 +75,8 @@ public class BuildBattleBroadcaster implements Module, Listener {
             Bukkit.getServer().broadcastMessage(msg);
 
             // Broadcast the message to other servers
-            if ((bungeechatenabled) && (msg != null) && (!msg.isEmpty()))
-                BungeeChat.mirrorChat(msg, mConfig.channel);
+            if ((msg != null) && (!msg.isEmpty()))
+                ChatControlAPI.sendMessage(mConfig.channel, ChatColor.translateAlternateColorCodes('&', msg));
         }
     }
 
@@ -92,8 +85,8 @@ public class BuildBattleBroadcaster implements Module, Listener {
             super(file);
         }
 
-        @ConfigField(comment = "The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
-        public String channel = "~BC";
+        @ConfigField(comment = "The Chat Control channel to broadcast on.")
+        public String channel = "GamesBCast";
 
         @ConfigField(comment = "The broadcast message for winner of the game")
         public String winmsg = "&6[&eBuildBattle&6] &b%PLAYER% &6won theme &b%THEME%";

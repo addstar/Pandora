@@ -5,7 +5,7 @@ description: ${project.description}
 
 main: ${mainClass}
 
-softdepend: [Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier, Monolith, Minigames, MurderMystery, BuildBattle, VillageDefense, PrisonMines]
+softdepend: [Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier, Monolith, Minigames, MurderMystery, BuildBattle, VillageDefense, PrisonMines, ChatControlRed]
 
 loadbefore: [CommandHelper]
 
@@ -177,3 +177,18 @@ commands:
   slimechunk:
     usage: /<command>
     permission: pandora.slimechunk.show
+  mc:
+    usage: /<command>
+    permission: addstar.modchat
+  hmc:
+    usage: /<command>
+    permission: addstar.headmodchat
+  ac:
+    usage: /<command>
+    permission: addstar.adminchat
+  broady:
+    usage: /<command>
+    permission: addstar.broady
+  rawbcast:
+    usage: /<command>
+    permission: addstar.rawbcast

@@ -1,6 +1,5 @@
 package au.com.addstar.pandora.modules;
 
-import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
@@ -11,6 +10,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.mineacademy.chatcontrol.api.ChatControlAPI;
 
 import java.io.File;
 
@@ -19,22 +19,14 @@ public class BlockhuntBroadcaster implements Module, Listener {
 
     private Config mConfig;
 
-    private boolean bungeechatenabled = false;
-
     @Override
     public void onEnable() {
         if (mConfig.load())
             mConfig.save();
-
-        bungeechatenabled = mPlugin.registerBungeeChat();
-        if (!bungeechatenabled)
-            mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
     }
 
     @Override
     public void onDisable() {
-        mPlugin.deregisterBungeeChat();
-        bungeechatenabled = false;
     }
 
     @Override
@@ -66,7 +58,7 @@ public class BlockhuntBroadcaster implements Module, Listener {
                     .replaceAll("%LOSETEAM%", "Seekers")
                     .replaceAll("%ARENA%", event.getArena().arenaName);
         }
-        if (bungeechatenabled) BungeeChat.mirrorChat(ChatColor.translateAlternateColorCodes('&', msg), mConfig.channel);
+        ChatControlAPI.sendMessage(mConfig.channel, ChatColor.translateAlternateColorCodes('&', msg));
     }
 
     private class Config extends AutoConfig {
@@ -74,8 +66,8 @@ public class BlockhuntBroadcaster implements Module, Listener {
             super(file);
         }
 
-        @ConfigField(comment = "The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
-        public String channel = "~BC";
+        @ConfigField(comment = "The Chat Control channel to broadcast on.")
+        public String channel = "GamesBCast";
 
         @ConfigField(comment = "The broadcast message when seekers win")
         public String message = "&9[BlockHunt]&b The &e%WINTEAM%&b have won in &e%ARENA%&b!";

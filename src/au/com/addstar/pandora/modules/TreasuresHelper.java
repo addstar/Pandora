@@ -1,6 +1,5 @@
 package au.com.addstar.pandora.modules;
 
-import au.com.addstar.bc.BungeeChat;
 import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
@@ -17,29 +16,22 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.mineacademy.chatcontrol.api.ChatControlAPI;
 
 import java.io.File;
 
 public class TreasuresHelper implements Module, Listener {
     private MasterPlugin mPlugin;
     private Config mConfig;
-    private boolean bungeechatenabled = false;
-
 
     @Override
     public void onEnable() {
         if (mConfig.load())
             mConfig.save();
-
-        bungeechatenabled = mPlugin.registerBungeeChat();
-        if (!bungeechatenabled)
-            mPlugin.getLogger().warning("BungeeChat is NOT enabled! Cross-server messages will be disabled.");
     }
 
     @Override
     public void onDisable() {
-        mPlugin.deregisterBungeeChat();
-        bungeechatenabled = false;
     }
 
     @Override
@@ -93,7 +85,7 @@ public class TreasuresHelper implements Module, Listener {
 
         // Broadcast the message across other servers
         String colouredMsg = ChatColor.translateAlternateColorCodes('&', msg);
-        if (bungeechatenabled) BungeeChat.mirrorChat(colouredMsg, mConfig.broadcast_channel);
+        ChatControlAPI.sendMessage(mConfig.broadcast_channel, ChatColor.translateAlternateColorCodes('&', colouredMsg));
         if (mConfig.verboseChests)
             mPlugin.getLogger().info(event.getPlayer().getDisplayName() + " recieved a  " + event.getRewardName() + "( " + event.getRarity() + ")");
     }
@@ -107,8 +99,8 @@ public class TreasuresHelper implements Module, Listener {
         public boolean debug = false;
         @ConfigField(comment = "Verbose reporting of chest opens")
         public boolean verboseChests = false;
-        @ConfigField(comment = "The bungee chat channel to broadcast on. Default is '~BC' (the reserved broadcast channel)")
-        public String broadcast_channel = "~BC";
+        @ConfigField(comment = "The Chat Control channel to broadcast on.")
+        public String broadcast_channel = "GamesBCast";
 
         @ConfigField(comment = "The minimum number of slots required to be free to use a key")
         public int min_free_slots = 3;
