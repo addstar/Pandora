@@ -4,12 +4,11 @@ import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 import org.jetbrains.annotations.NotNull;
-import org.mineacademy.chatcontrol.api.ChatControlAPI;
 
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
@@ -66,7 +65,7 @@ public class ChatControlHelper implements Module, Listener {
                 } else {
                     // default to string format
                     String msg = in.readUTF();
-                    ChatControlAPI.sendMessage(channel, ChatColor.translateAlternateColorCodes('&', msg));
+                    mPlugin.sendChatControlMessage(Bukkit.getConsoleSender(), channel, msg);
                 }
             } catch (IOException e) {
                 mPlugin.getLogger().warning("[ChatControlHelper] Failed to handle plugin message!");

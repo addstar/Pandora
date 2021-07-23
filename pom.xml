@@ -19,8 +19,8 @@
         <mainClass>au.com.addstar.pandora.MasterPlugin</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <spigot.api.version>1.16</spigot.api.version>
-        <spigot.version>${spigot.api.version}.1-R0.1-SNAPSHOT</spigot.version>
-        <monolith.version>1.16.1-SNAPSHOT</monolith.version>
+        <spigot.version>${spigot.api.version}.5-R0.1-SNAPSHOT</spigot.version>
+        <monolith.version>1.16.3-SNAPSHOT</monolith.version>
     </properties>
     <scm>
         <connection>scm:git:git@github.com:AddstarMC/Pandora.git</connection>
@@ -399,7 +399,7 @@
         <dependency>
             <groupId>org.mineacademy</groupId>
             <artifactId>ChatControl-Red</artifactId>
-            <version>10.4.9</version>
+            <version>10.5.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.mineacademy</groupId>

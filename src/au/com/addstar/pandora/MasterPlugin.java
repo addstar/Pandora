@@ -17,16 +17,16 @@
 package au.com.addstar.pandora;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mineacademy.chatcontrol.model.Channel;
 
 import java.io.File;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 /**
  * The type Master plugin.
@@ -83,8 +83,7 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("AntiChatRepeater", "au.com.addstar.pandora.modules.AntiChatRepeater");
         registerModule("KickBanner", "au.com.addstar.pandora.modules.KickBanner");
         registerModule("AntiPortalTrap", "au.com.addstar.pandora.modules.AntiPortalTrap");
-        registerModule("LWC-GP-Interop", "au.com.addstar.pandora.modules.LWCGPInterop",
-                "LWC", "GriefPrevention");
+        registerModule("LWC-GP-Interop", "au.com.addstar.pandora.modules.LWCGPInterop","LWC", "GriefPrevention");
         registerModule("TPClaim", "au.com.addstar.pandora.modules.TpClaim","GriefPrevention");
         registerModule("FlyCanceller", "au.com.addstar.pandora.modules.FlyCanceller");
         registerModule("PVPHandler", "au.com.addstar.pandora.modules.PVPHandler","WorldGuard");
@@ -98,9 +97,7 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("ItemMetaReporter", "au.com.addstar.pandora.modules.ItemMetaReporter");
         registerModule("ItemGiving", "au.com.addstar.pandora.modules.ItemGiving","Monolith");
         registerModule("LobbyProtection", "au.com.addstar.pandora.modules.LobbyProtection");
-        registerModule("SurvivalGamesBCast", "au.com.addstar.pandora.modules.SurvivalGamesBroadcaster",
-                "SurvivalGames", "ChatControlRed");
-        registerModule("PlayerList", "au.com.addstar.pandora.modules.PlayerListing","BungeeChatBukkit");
+        registerModule("SurvivalGamesBCast", "au.com.addstar.pandora.modules.SurvivalGamesBroadcaster","SurvivalGames", "ChatControlRed");
         registerModule("MemoryCleaner", "au.com.addstar.pandora.modules.MemoryCleaner");
         registerModule("AngryPigmen", "au.com.addstar.pandora.modules.AngryPigmen");
         registerModule("ClaimSelect", "au.com.addstar.pandora.modules.ClaimSelect", "GriefPrevention", "WorldEdit");
@@ -362,6 +359,16 @@ public class MasterPlugin extends JavaPlugin {
         }
     }
 
+    public void sendChatControlMessage(CommandSender sender, String channel, String msg) {
+        if (Channel.isChannelLoaded(channel)) {
+            Channel realchannel = Channel.findChannel(channel);
+            String colourmsg = ChatColor.translateAlternateColorCodes('&', msg);
+            realchannel.sendMessage(sender, msg, true);
+        } else {
+            getLogger().warning("[Pandora] Invalid channel \"" + channel + "\"");
+            Thread.dumpStack();
+        }
+    }
 
     private Module createModule(String name, String moduleClass) {
         try {

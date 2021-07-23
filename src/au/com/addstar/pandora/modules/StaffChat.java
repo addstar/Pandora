@@ -2,19 +2,20 @@ package au.com.addstar.pandora.modules;
 
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
+import org.apache.commons.lang.ArrayUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.mineacademy.chatcontrol.api.ChatControlAPI;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class StaffChat implements Module, CommandExecutor {
     private MasterPlugin mPlugin;
-
+    private static final String[] prefixChannels = {"Mod", "HeadMod", "Admin"};
     private static Map<String,String> validCommands = new HashMap<String, String>();
     static {
         validCommands.put("mc","Mod");
@@ -56,7 +57,14 @@ public class StaffChat implements Module, CommandExecutor {
                 return false;
             }
             String msg = String.join(" ", params);
-            ChatControlAPI.sendMessage(commandSender, channel, ChatColor.translateAlternateColorCodes('&', msg));
+            if ((ArrayUtils.contains(prefixChannels, channel)) && (commandSender instanceof ConsoleCommandSender)) {
+                ConsoleCommandSender con = (ConsoleCommandSender) commandSender;
+                if (con.getName() != null && !con.getName().isEmpty() && !con.getName().equalsIgnoreCase("CONSOLE")) {
+                    // Prepend the rcon user to message
+                    msg = ChatColor.GRAY + "[" + ChatColor.RED + con.getName() + ChatColor.GRAY + "]: " + ChatColor.WHITE + msg;
+                }
+            }
+            mPlugin.sendChatControlMessage(commandSender, channel, msg);
         } else {
             mPlugin.getLogger().warning("[StaffChat] Command " + command.getName() + " unknown!");
             return false;
