@@ -5,11 +5,11 @@ import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import au.com.mineauz.minigames.events.MinigamesBroadcastEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.mineacademy.chatcontrol.api.ChatControlAPI;
 
 import java.io.File;
 
@@ -35,8 +35,10 @@ public class MinigameBroadcaster implements Module, Listener {
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMinigameBroadcast(MinigamesBroadcastEvent event) {
-        ChatControlAPI.sendMessage(mConfig.channel, ChatColor.translateAlternateColorCodes('&',
-                event.getMessageWithPrefix()));
+        mPlugin.sendChatControlMessage(Bukkit.getConsoleSender(), mConfig.channel, event.getMessageWithPrefix());
+
+        // Cancel event to prevent double broadcasts on local server
+        event.setCancelled(true);
     }
 
     private class Config extends AutoConfig {

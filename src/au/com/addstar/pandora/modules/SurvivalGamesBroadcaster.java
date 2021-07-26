@@ -4,12 +4,12 @@ import au.com.addstar.pandora.AutoConfig;
 import au.com.addstar.pandora.ConfigField;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.mcsg.survivalgames.api.PlayerWinEvent;
-import org.mineacademy.chatcontrol.api.ChatControlAPI;
 
 import java.io.File;
 
@@ -35,7 +35,7 @@ public class SurvivalGamesBroadcaster implements Module, Listener {
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
     public void onSurvivalGamesWin(PlayerWinEvent event) {
-        ChatControlAPI.sendMessage(mConfig.channel, ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+        mPlugin.sendChatControlMessage(Bukkit.getConsoleSender(), mConfig.channel, event.getMessage());
     }
 
     private class Config extends AutoConfig {

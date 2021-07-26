@@ -9,6 +9,7 @@ import me.robifoxx.treasures.api.TreasuresChestOpenEvent;
 import me.robifoxx.treasures.api.TreasuresChestOpenResult;
 import me.robifoxx.treasures.api.TreasuresFindRewardEvent;
 import me.robifoxx.treasures.api.TreasuresKeys;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,7 +17,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
-import org.mineacademy.chatcontrol.api.ChatControlAPI;
 
 import java.io.File;
 
@@ -84,8 +84,7 @@ public class TreasuresHelper implements Module, Listener {
         if (mConfig.debug) System.out.println("[DEBUG] " + msg);
 
         // Broadcast the message across other servers
-        String colouredMsg = ChatColor.translateAlternateColorCodes('&', msg);
-        ChatControlAPI.sendMessage(mConfig.broadcast_channel, ChatColor.translateAlternateColorCodes('&', colouredMsg));
+        mPlugin.sendChatControlMessage(Bukkit.getConsoleSender(), mConfig.broadcast_channel, msg);
         if (mConfig.verboseChests)
             mPlugin.getLogger().info(event.getPlayer().getDisplayName() + " recieved a  " + event.getRewardName() + "( " + event.getRarity() + ")");
     }

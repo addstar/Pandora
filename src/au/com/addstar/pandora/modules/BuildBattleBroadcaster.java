@@ -10,7 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.mineacademy.chatcontrol.api.ChatControlAPI;
 import plugily.projects.buildbattle.api.event.game.BBGameEndEvent;
 import plugily.projects.buildbattle.arena.ArenaState;
 import plugily.projects.buildbattle.arena.impl.BaseArena;
@@ -65,18 +64,15 @@ public class BuildBattleBroadcaster implements Module, Listener {
         // Ensure at least one person has points
         if (highestPoints > 0) {
             // Build the message to broadcast
-            String msg = ChatColor.translateAlternateColorCodes('&', mConfig.winmsg
+            String msg = mConfig.winmsg
                     .replaceAll("%MAPNAME%", mapname)
                     .replaceAll("%PLAYER%", winner)
                     .replaceAll("%THEME%", arena.getTheme())
-                    .replaceAll("%SCORE%", String.valueOf(highestPoints)));
-
-            // Local server broadcast
-            Bukkit.getServer().broadcastMessage(msg);
+                    .replaceAll("%SCORE%", String.valueOf(highestPoints));
 
             // Broadcast the message to other servers
             if ((msg != null) && (!msg.isEmpty()))
-                ChatControlAPI.sendMessage(mConfig.channel, ChatColor.translateAlternateColorCodes('&', msg));
+                mPlugin.sendChatControlMessage(Bukkit.getConsoleSender(), mConfig.channel, msg);
         }
     }
 

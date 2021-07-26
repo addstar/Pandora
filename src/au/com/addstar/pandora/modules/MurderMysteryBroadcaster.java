@@ -9,7 +9,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.mineacademy.chatcontrol.api.ChatControlAPI;
 import plugily.projects.murdermystery.api.events.game.MMGameStateChangeEvent;
 import plugily.projects.murdermystery.arena.Arena;
 import plugily.projects.murdermystery.arena.ArenaState;
@@ -54,12 +53,9 @@ public class MurderMysteryBroadcaster implements Module, Listener {
                         .replaceAll("%MAPNAME%", mapname);
             }
 
-            // Local server broadcast
-            Bukkit.getServer().broadcastMessage(ChatColor.translateAlternateColorCodes('&', msg));
-
             // Broadcast the message to other servers
-            if (!msg.isEmpty())
-                ChatControlAPI.sendMessage(mConfig.channel, ChatColor.translateAlternateColorCodes('&', msg));
+            if (msg != null && !msg.isEmpty())
+                mPlugin.sendChatControlMessage(Bukkit.getConsoleSender(), mConfig.channel, msg);
         }
     }
 

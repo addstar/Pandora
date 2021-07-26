@@ -6,11 +6,11 @@ import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import nl.Steffion.BlockHunt.Arena.ArenaState;
 import nl.Steffion.BlockHunt.Events.EndArenaEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.mineacademy.chatcontrol.api.ChatControlAPI;
 
 import java.io.File;
 
@@ -58,7 +58,7 @@ public class BlockhuntBroadcaster implements Module, Listener {
                     .replaceAll("%LOSETEAM%", "Seekers")
                     .replaceAll("%ARENA%", event.getArena().arenaName);
         }
-        ChatControlAPI.sendMessage(mConfig.channel, ChatColor.translateAlternateColorCodes('&', msg));
+        mPlugin.sendChatControlMessage(Bukkit.getConsoleSender(), mConfig.channel, msg);
     }
 
     private class Config extends AutoConfig {
