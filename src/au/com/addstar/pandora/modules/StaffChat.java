@@ -3,6 +3,7 @@ package au.com.addstar.pandora.modules;
 import au.com.addstar.pandora.MasterPlugin;
 import au.com.addstar.pandora.Module;
 import org.apache.commons.lang.ArrayUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -60,6 +61,10 @@ public class StaffChat implements Module, CommandExecutor {
             if ((ArrayUtils.contains(prefixChannels, channel)) && (commandSender instanceof ConsoleCommandSender)) {
                 ConsoleCommandSender con = (ConsoleCommandSender) commandSender;
                 if (con.getName() != null && !con.getName().isEmpty() && !con.getName().equalsIgnoreCase("CONSOLE")) {
+                    if (Bukkit.getServer().getOnlinePlayers().size() == 0) {
+                        mPlugin.getLogger().warning("[StaffChat] Error: Unable to send message - No players online.");
+                        return true;
+                    }
                     // Prepend the rcon user to message
                     msg = ChatColor.GRAY + "[" + ChatColor.RED + con.getName() + ChatColor.GRAY + "]: " + ChatColor.WHITE + msg;
                 }
