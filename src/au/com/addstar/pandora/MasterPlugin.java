@@ -22,6 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mineacademy.chatcontrol.lib.exception.EventHandledException;
 import org.mineacademy.chatcontrol.model.Channel;
 
 import java.io.File;
@@ -122,6 +123,7 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("PrisonPayLimiter", "au.com.addstar.pandora.modules.PrisonPayLimiter", "PrisonMines");
         registerModule("ChatControlHelper", "au.com.addstar.pandora.modules.ChatControlHelper", "ChatControlRed");
         registerModule("StaffChat", "au.com.addstar.pandora.modules.StaffChat", "ChatControlRed");
+        registerModule("RPlaceDynmap", "au.com.addstar.pandora.modules.RPlaceDynmap", "dynmap", "RPlace");
     }
 
     @Override
@@ -363,7 +365,24 @@ public class MasterPlugin extends JavaPlugin {
         if (Channel.isChannelLoaded(channel)) {
             Channel realchannel = Channel.findChannel(channel);
             String colourmsg = ChatColor.translateAlternateColorCodes('&', msg);
-            realchannel.sendMessage(sender, msg, true);
+            try {
+                realchannel.sendMessage(sender, msg, true);
+            } catch (EventHandledException e) {
+                if (e.isCancelled()) {
+                    getLogger().warning("Error: Chat message of " + sender.getName()
+                            + " was cancelled by CCR: " + e.getMessages()[0]);
+                    sender.sendMessage(ChatColor.RED + "Your chat message was cancelled");
+                } else {
+                    getLogger().warning("Error: Failed to send chat message of " + sender.getName() + ": "
+                            + e.getMessages()[0]);
+                    sender.sendMessage(ChatColor.RED + "Error sending channel message");
+                }
+            } catch (Exception e) {
+                getLogger().warning("Error sending channel message: " + e.getClass());
+                getLogger().warning("Reason: " + e.getMessage());
+                e.printStackTrace();
+                sender.sendMessage(ChatColor.RED + "Error sending channel message");
+            }
         } else {
             getLogger().warning("[Pandora] Invalid channel \"" + channel + "\"");
             Thread.dumpStack();
