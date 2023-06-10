@@ -44,6 +44,16 @@ public class SlimefunTweaks implements Module, Listener {
         for (Map.Entry<Enchantment, Integer> entry : stack.getEnchantments().entrySet()) {
             int level = entry.getValue();
             Enchantment enchant = entry.getKey();
+
+            if (mConfig.allowSlimefunEnchants) {
+                // Allow disenchanting of Reinforced Armour
+                if (
+                        ((enchant == Enchantment.PROTECTION_ENVIRONMENTAL) && (level == 9)) ||
+                        ((enchant == Enchantment.PROTECTION_ENVIRONMENTAL) && (level == 9))) {
+                    break;
+                }
+            }
+
             // If the max level for this enchant is too high, cancel the event
             if (level > mConfig.maxDisenchantLevel) {
                 event.setCancelled(true);
@@ -71,5 +81,8 @@ public class SlimefunTweaks implements Module, Listener {
 
         @ConfigField(comment = "Max allowed enchant level for the Slimefun Disenchanter")
         public int maxDisenchantLevel = 6;
+
+        @ConfigField(comment = "Allow specific enchants found on Slimefun items (Prot IX/Dura IX)")
+        public boolean allowSlimefunEnchants = true;
     }
 }
