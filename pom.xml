@@ -99,8 +99,8 @@
         </repository>
         <!-- WorldEdit, WorldGuard -->
         <repository>
-            <id>sk89q-mvn2</id>
-            <url>https://maven.sk89q.com/repo</url>
+            <id>enginehub-maven</id>
+            <url>https://maven.enginehub.org/repo/</url>
         </repository>
 
         <!-- Citizens/NPC -->
@@ -132,10 +132,11 @@
         </repository>
 
         <!-- MurderMystery, BuildBattle and VillageDefense -->
-        <repository>
+        <!-- Broken -->
+        <!--<repository>
             <id>plajerlair-repo</id>
             <url>https://maven.plajer.xyz/minecraft</url>
-        </repository>
+        </repository>-->
 
         <!-- dynmap -->
         <repository>
