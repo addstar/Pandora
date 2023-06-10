@@ -5,7 +5,7 @@ description: ${project.description}
 
 main: ${mainClass}
 
-softdepend: [Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier, Monolith, Minigames, MurderMystery, BuildBattle, VillageDefense, PrisonMines, ChatControlRed]
+softdepend: [Multiverse-Core, GriefPrevention, QuickShop, VanishNoPacket, Citizens, Votifier, Monolith, Minigames, MurderMystery, BuildBattle, VillageDefense, PrisonMines, ChatControlRed, RPlace]
 
 loadbefore: [CommandHelper]
 
