@@ -111,7 +111,7 @@
 
         <repository>
             <id>dmulloy2-repo</id>
-            <url>http://repo.dmulloy2.net/content/groups/public/</url>
+            <url>https://repo.dmulloy2.net/content/groups/public/</url>
         </repository>
 
         <!-- item-nbt-api -->
@@ -135,6 +135,12 @@
         <repository>
             <id>plajerlair-repo</id>
             <url>https://maven.plajer.xyz/minecraft</url>
+        </repository>
+
+        <!-- dynmap -->
+        <repository>
+            <id>MikeRepo</id>
+            <url>https://repo.mikeprimm.com/</url>
         </repository>
     </repositories>
 
@@ -399,7 +405,7 @@
         <dependency>
             <groupId>org.mineacademy</groupId>
             <artifactId>ChatControl-Red</artifactId>
-            <version>10.5.0</version>
+            <version>10.18.8</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.mineacademy</groupId>
@@ -460,6 +466,21 @@
             <artifactId>craftconomy3</artifactId>
             <version>3.4.0-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+
+        <!-- Dynmap for RPlace -->
+        <dependency>
+            <groupId>us.dynmap</groupId>
+            <artifactId>dynmap-api</artifactId>
+            <version>3.4-beta-3</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- RPlace -->
+        <dependency>
+            <groupId>me.evilterabite</groupId>
+            <artifactId>RPlace</artifactId>
+            <version>1.1</version>
         </dependency>
     </dependencies>
 
