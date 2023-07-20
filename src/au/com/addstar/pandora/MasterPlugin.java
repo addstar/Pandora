@@ -76,7 +76,9 @@ public class MasterPlugin extends JavaPlugin {
 
     private void registerModules() {
         // TrustedHomes also depends on geSuitHomes; explicit dependency removed due to the Redis refactor of geSuit
-        registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes","GriefPrevention");
+        // Re-added geSuitHomes under auth slack-adnap/add5tar dated:230722I1525 "thats fine, ignore that"
+        registerModule("TrustedHomes", "au.com.addstar.pandora.modules.TrustedHomes",
+                "GriefPrevention", "geSuitHomes");
         registerModule("Quickshop-Griefprevention-Interop", "au.com.addstar.pandora.modules.QuickshopGPInterop",
                 "GriefPrevention", "QuickShop");
         registerModule("Vanish-Citizens-Interop", "au.com.addstar.pandora.modules.VanishCitizensIO",
