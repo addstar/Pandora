@@ -85,12 +85,6 @@ permissions:
     default: true
   pandora.giveallworld:
     default: op
-  pandora.list:
-    default: true
-  pandora.list.see.console:
-    default: op
-  pandora.list.see.hidden:
-    default: op
   pandora.spawner.change:
     default: op
   pandora.santahelper:
@@ -155,10 +149,6 @@ commands:
   giveallworld:
     usage: /<command> <world> (<minecraftname> [<data> <amount> [<metadata>]]|<item|item:data> [<amount> [<metadata>]])
     permission: pandora.giveallworld
-  list:
-    usage: /<command>
-    permission: pandora.list
-    aliases: [who, playerlist, online, plist]
   santahelper:
     usage: /<command> <world>
     permission: pandora.santahelper
