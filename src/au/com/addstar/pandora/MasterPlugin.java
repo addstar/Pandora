@@ -126,6 +126,7 @@ public class MasterPlugin extends JavaPlugin {
         registerModule("ChatControlHelper", "au.com.addstar.pandora.modules.ChatControlHelper", "ChatControlRed");
         registerModule("StaffChat", "au.com.addstar.pandora.modules.StaffChat", "ChatControlRed");
         registerModule("RPlaceDynmap", "au.com.addstar.pandora.modules.RPlaceDynmap", "dynmap", "RPlace");
+        registerModule("Konquest", "au.com.addstar.pandora.modules.Konquest", "Konquest");
     }
 
     @Override
