@@ -44,9 +44,24 @@ public class LobbyProtection implements Module, Listener {
         KILL
     }
 
+    public class ProtExtendedAction {
+        public ProtExtendedAction() {
+            this.action = ProtAction.IGNORE;
+            this.params = "";
+        }
+
+        public ProtExtendedAction(ProtAction action, String params) {
+            this.action = action;
+            this.params = params;
+        }
+
+        ProtAction action;
+        String params;
+    }
+
     public class ProtOpts {
-        ProtAction defaultOpt = ProtAction.IGNORE;
-        HashMap<EntityDamageEvent.DamageCause, ProtAction> causeAction = new HashMap<>();
+        ProtExtendedAction defaultOpt = new ProtExtendedAction(ProtAction.IGNORE, "");
+        HashMap<EntityDamageEvent.DamageCause, ProtExtendedAction> causeAction = new HashMap<>();
         boolean inventoryLock = false;
         ItemStack[] inventory;
         ItemStack[] armour;
@@ -152,9 +167,11 @@ public class LobbyProtection implements Module, Listener {
             return;
 
         ProtOpts opts = protworlds.get(e.getEntity().getWorld());
-        ProtAction action = opts.causeAction.get(e.getCause());
-        if (action == null) {
-            action = opts.defaultOpt;
+        ProtExtendedAction extaction = opts.causeAction.get(e.getCause());
+        ProtAction action = extaction.action;
+        if (extaction == null || action == null) {
+            extaction = opts.defaultOpt;
+            action = extaction.action;
         }
 
         switch (action) {
@@ -167,7 +184,15 @@ public class LobbyProtection implements Module, Listener {
                 if (Debug) mPlugin.getLogger().info("[LobbyProtection] Spawning player");
                 e.setCancelled(true);
                 final Player ps = (Player) e.getEntity();
-                Location pos = Bukkit.getServer().getWorlds().get(0).getSpawnLocation();
+                World world = e.getEntity().getWorld();
+                if (extaction.params != null && !extaction.params.trim().isEmpty()) {
+                    if (Bukkit.getWorld(extaction.params) == null) {
+                        mPlugin.getLogger().warning("[LobbyProtection] World \"" + extaction.params + "\" does not exist!");
+                    } else {
+                        world = Bukkit.getWorld(extaction.params);
+                    }
+                }
+                Location pos = world.getSpawnLocation();
                 if (ps.teleport(pos)) {
                     ps.setVelocity(new Vector(0, 0, 0));
                     ps.setHealth(20.0f);
@@ -317,24 +342,33 @@ public class LobbyProtection implements Module, Listener {
                 opts.armour = armour;
             }
 
-
             // Get cause/action params
             for (String c : worldSection.getKeys(false)) {
-                String a = worldSection.getString(c).toUpperCase();
-                if (c.equals("clearinv") || c.equals("cleararmour") || c.equals("inventory")) {
+                String a = worldSection.getString(c);
+                if (c.equals("clearinv") || c.equals("cleararmour") || c.equals("inventory") || c.equals("lockinv")) {
                     continue;
                 }
 
-                ProtAction action;
+                ProtExtendedAction extaction = new ProtExtendedAction();
                 try {
-                    action = ProtAction.valueOf(a);
+                    String[] parts = a.split(":", 2);
+                    extaction.action = ProtAction.valueOf(parts[0].toUpperCase());
+                    if (parts.length > 1) {
+                        extaction.params = parts[1];
+                        if (extaction.action == ProtAction.SPAWN) {
+                            if (Bukkit.getWorld(extaction.params) == null) {
+                                mPlugin.getLogger().warning("[LobbyProtection] World \"" + extaction.params + "\" does not exist!");
+                                extaction.params = "";
+                            }
+                        }
+                    }
                 } catch (Exception e) {
                     mPlugin.getLogger().warning("[LobbyProtection] Invalid action \"" + a + "\" on cause \"" + c + "\"!");
                     continue;
                 }
 
                 if (c.equalsIgnoreCase("DEFAULT")) {
-                    opts.defaultOpt = action;
+                    opts.defaultOpt = extaction;
                 } else {
                     EntityDamageEvent.DamageCause cause;
                     try {
@@ -343,7 +377,7 @@ public class LobbyProtection implements Module, Listener {
                         mPlugin.getLogger().warning("[LobbyProtection] Invalid cause \"" + c + "\"!");
                         continue;
                     }
-                    opts.causeAction.put(cause, action);
+                    opts.causeAction.put(cause, extaction);
                 }
             }
             protworlds.put(world, opts);
@@ -355,11 +389,23 @@ public class LobbyProtection implements Module, Listener {
                 System.out.println("World: " + entry.getKey().getName());
                 ProtOpts opts = entry.getValue();
                 System.out.println("  lockinv: " + opts.inventoryLock);
-                System.out.println("  default: " + opts.defaultOpt);
-                for (Map.Entry<EntityDamageEvent.DamageCause, ProtAction> opt : opts.causeAction.entrySet()) {
-                    ProtAction action = opt.getValue();
+                System.out.println("  clearinv: " + opts.clearInventory);
+                System.out.println("  cleararmour: " + opts.clearArmour);
+                if (opts.defaultOpt.params != null && !opts.defaultOpt.params.isEmpty()) {
+                    System.out.println("  DEFAULT: " + opts.defaultOpt.action + " (\"" + opts.defaultOpt.params + "\")");
+                } else {
+                    System.out.println("  DEFAULT: " + opts.defaultOpt.action);
+                }
+
+                for (Map.Entry<EntityDamageEvent.DamageCause, ProtExtendedAction> opt : opts.causeAction.entrySet()) {
+                    ProtExtendedAction extaction = opt.getValue();
+                    ProtAction action = extaction.action;
                     EntityDamageEvent.DamageCause cause = opt.getKey();
-                    System.out.println("  " + cause + ": " + action);
+                    if (extaction.params != null && !extaction.params.isEmpty()) {
+                        System.out.println("  " + cause + ": " + action + " (\"" + extaction.params + "\")");
+                    } else {
+                        System.out.println("  " + cause + ": " + action);
+                    }
                 }
             }
             System.out.println("==============================================");
