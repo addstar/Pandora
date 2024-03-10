@@ -168,7 +168,7 @@ public class LobbyProtection implements Module, Listener {
 
         ProtOpts opts = protworlds.get(e.getEntity().getWorld());
         ProtExtendedAction extaction = opts.causeAction.get(e.getCause());
-        ProtAction action = extaction.action;
+        ProtAction action = extaction == null ? null : extaction.action;
         if (extaction == null || action == null) {
             extaction = opts.defaultOpt;
             action = extaction.action;
