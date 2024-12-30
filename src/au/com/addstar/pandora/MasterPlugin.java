@@ -314,7 +314,10 @@ public class MasterPlugin extends JavaPlugin {
         StringBuilder missingDeps = new StringBuilder();
 
         for (String plugin : module.dependencies) {
-            if (!Bukkit.getPluginManager().isPluginEnabled(plugin)) {
+            // Don't check if plugin is enabled, only check if it's loaded
+            // We have to assume it _will_ enable in future to avoid problems with circular dependencies
+            // Plugin may not have been "enabled" yet due to the complex initialisation order of plugins
+            if (Bukkit.getPluginManager().getPlugin(plugin) == null) {
                 if (missingDeps.length() > 0)
                     missingDeps.append(", ");
                 missingDeps.append(plugin);
