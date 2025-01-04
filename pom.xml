@@ -2,7 +2,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>au.com.addstar</groupId>
     <artifactId>Pandora</artifactId>
-    <version>1.16.5-SNAPSHOT</version>
+    <version>1.19.2-SNAPSHOT</version>
     <name>Pandora</name>
     <description>Multi Module plugin for NMS VERSION ${spigot.version} and Monolith ${monolith.version} designed
         for AddstarMC
@@ -18,8 +18,8 @@
         <plugin.version>${project.version}-${build.number}</plugin.version>
         <mainClass>au.com.addstar.pandora.MasterPlugin</mainClass>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spigot.api.version>1.16</spigot.api.version>
-        <spigot.version>${spigot.api.version}.5-R0.1-SNAPSHOT</spigot.version>
+        <spigot.api.version>1.19</spigot.api.version>
+        <spigot.version>${spigot.api.version}.2-R0.1-SNAPSHOT</spigot.version>
         <monolith.version>1.16.3-SNAPSHOT</monolith.version>
     </properties>
     <scm>
@@ -53,6 +53,11 @@
         </snapshotRepository>
     </distributionManagement>
     <repositories>
+        <!-- We want to use Paper API now -->
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
         <!-- For spigot  and vault-->
         <repository>
             <id>spigot-repo</id>
@@ -143,6 +148,13 @@
     </repositories>
 
     <dependencies>
+        <!-- We want to include Paper now -->
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.19.2-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
         <!-- We use Spigot now, not Bukkit -->
         <dependency>
             <groupId>org.spigotmc</groupId>
